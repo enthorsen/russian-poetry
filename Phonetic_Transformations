@@ -71,23 +71,6 @@
         <xsl:apply-templates select="$stage9output"/>
     </xsl:template>
 
-<!-- Stage Nine: Convert Cyrillic to Latin -->
-<xsl:template match="w" mode="latinize">
-    <w orth="{@orth}">
-        <xsl:apply-templates select="*" mode="latinize"/>
-    </w>
-</xsl:template>
-    
-<xsl:template match="cons" mode="latinize">
-    <cons>
-        <xsl:value-of select="translate(lower-case(.), 'бвгдзжйклмнпрстфцхчшьъ','bvgdzžjklmnprstfcxčšj″')"/>
-    </cons>
-</xsl:template>
-    <xsl:template match="v" mode="latinize">
-        <v stress="{@stress}">
-            <xsl:value-of select="translate(lower-case(.), 'аэиыоу', 'aeiyou')"/>
-        </v>
-    </xsl:template>
     <!-- Stage One: w template in strToConsVows mode will return a 
         streamlined w to variable $stage1output -->
     <xsl:template match="w" mode="strToConsVow">
@@ -326,4 +309,21 @@
         </cons>
     </xsl:template>
 
+<!-- Stage Nine: Convert Cyrillic to Latin -->
+<xsl:template match="w" mode="latinize">
+    <w orth="{@orth}">
+        <xsl:apply-templates select="*" mode="latinize"/>
+    </w>
+</xsl:template>
+    
+<xsl:template match="cons" mode="latinize">
+    <cons>
+        <xsl:value-of select="translate(lower-case(.), 'бвгдзжйклмнпрстфцхчшьъ','bvgdzžjklmnprstfcxčšj″')"/>
+    </cons>
+</xsl:template>
+    <xsl:template match="v" mode="latinize">
+        <v stress="{@stress}">
+            <xsl:value-of select="translate(lower-case(.), 'аэиыоу', 'aeiyou')"/>
+        </v>
+    </xsl:template>
 </xsl:stylesheet>
