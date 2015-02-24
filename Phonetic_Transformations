@@ -26,65 +26,68 @@
     <!-- Streamlining w element -->
 
     <xsl:template match="l">
-        <!-- $stage1output will return w elements that have moved from the
-             tiered orth-str system to a set of cons v siblings-->
+        <!-- Stage One: return w elements that have changed the
+            orth/str siblings, each containing 
+            different information (punctuation, stress)
+            to a set of cons v siblings-->
         <xsl:variable name="stage1output">
             <xsl:apply-templates select="w" mode="strToConsVow"/>
         </xsl:variable>
-        <!-- $stage2output will return w elements that have combined proclitics with 
-             the words that follow them-->
+        <!-- Stage Two: return w elements that have combined proclitics with 
+             the words that follow them, 
+             e.g. <w>nado</w><w>mnoi</w> becomes <w>nadomnoi</w>-->
         <xsl:variable name="stage2output">
             <xsl:apply-templates select="$stage1output" mode="proclitics"/>
         </xsl:variable>
-        <!-- $stage3output will return w elements that have combined the contents 
-            of neighboring cons elements-->
+        <!-- Stage Three: return w elements that have combined the contents 
+            of neighboring cons elements
+            e.g. <cons>d</cons><cons>r<cons> beomces <cons>dr</cons>-->
         <xsl:variable name="stage3output">
             <xsl:apply-templates select="$stage2output" mode="consProclitics"/>
         </xsl:variable>
-        <!-- $stage4output will map all soft vowels to j+hard vowel letter  
-        -->
+        <!-- Stage Four: map all soft vowels to j+hard vowel letter
+            e.g. <cons>d</cons><v>ja</v> becomes <cons>dj</cons><v>a</v>-->
         <xsl:variable name="stage4output">
             <xsl:apply-templates select="$stage3output" mode="softVowels"/>
         </xsl:variable>
-        <!-- $stage5output will remove soft sign after unpaired hard cons;
-            add soft sign after unpaired soft cons; work out compound letters
-        -->
+        <!-- Stage Five: work out compound letters (shch, ts); 
+            remove soft sign after unpaired hard cons (zhj becomes zh);
+            add soft sign after unpaired soft cons (ch becomes chj);-->
         <xsl:variable name="stage5output">
             <xsl:apply-templates select="$stage4output" mode="unpairedCons"/>
         </xsl:variable>
-        <!-- $stage6output will reduce unstressed vowels after j to и -->
+        <!-- Stage Six: reduce unstressed vowels after j to и -->
         <xsl:variable name="stage6output">
             <xsl:apply-templates select="$stage5output" mode="reduceVowels"/>
         </xsl:variable>
-        <!-- $stage7output will devoice final consonants -->
+        <!-- Stage Seven: devoice final consonants -->
         <xsl:variable name="stage7output">
             <xsl:apply-templates select="$stage6output" mode="devoiceFinal"/>
         </xsl:variable>
-        <!-- $stage8output will voice and devoice consonant clusters -->
+        <!-- Stage Eight: voice and devoice consonant clusters -->
         <xsl:variable name="stage8output">
             <xsl:apply-templates select="$stage7output" mode="voicingClusters"/>
         </xsl:variable>
-        <!-- Convert all Cyrillic to Latin -->
+        <!-- Stage Nine: convert all Cyrillic to Latin -->
         <xsl:variable name="stage9output">
             <xsl:apply-templates select="$stage8output" mode="latinize"/>
         </xsl:variable>
         <xsl:apply-templates select="$stage9output"/>
     </xsl:template>
 
-    <!-- Stage One: w template in strToConsVows mode will return a 
-        streamlined w to variable $stage1output -->
+    <!-- Stage One: 
+        w template in strToConsVows mode will return a 
+        streamlined w to variable $stage1output
+        Stress set transformations
+        1) If str element has a stress child (i.e., is not an ambiguous monosyllable, preposition, or pronoun), identify all vowels in its text nodes as v with stress attribute of "0", for the time being. 
+        2) If str element does not contain a stress, probability of vowels being stressed or unstressed between 0 and 1. Mark as something to refer meter to at later time.
+        3) If a stress element, then wrap contents in v element with stress=1-->
     <xsl:template match="w" mode="strToConsVow">
         <w orth="{orth}">
             <xsl:apply-templates mode="consVowels"/>
         </w>
     </xsl:template>
     <xsl:template match="orth" mode="consVowels"/>
-
-    <!-- Stage One: Stress set transformations
-        1) If str element has a stress child (i.e., is not an ambiguous monosyllable, preposition, or pronoun), identify all vowels in its text nodes as v with stress attribute of "0", for the time being. 
-        2) If str element does not contain a stress, probability of vowels being stressed or unstressed between 0 and 1. Mark as something to refer meter to at later time.
-        3) If a stress element, then wrap contents in v element with stress=1
-    -->
 
     <xsl:template match="stress" mode="consVowels">
         <v stress="1">
@@ -117,7 +120,7 @@
         <xsl:analyze-string select="." regex="[аэыоуяеиёюАЭЫОУЯЕИЁЮ]">
             <xsl:matching-substring>
                 <v stress="probability">
-                    <xsl:value-of select="."/>
+                    <xsl:value-of select="lower-case(.)"/>
                 </v>
             </xsl:matching-substring>
             <xsl:non-matching-substring>
@@ -125,7 +128,7 @@
                     <xsl:matching-substring/>
                     <xsl:non-matching-substring>
                         <cons>
-                            <xsl:value-of select="."/>
+                            <xsl:value-of select="lower-case(.)"/>
                         </cons>
                     </xsl:non-matching-substring>
                 </xsl:analyze-string>
@@ -190,16 +193,16 @@
         </cons>
     </xsl:template>
     <xsl:template
-        match="v[matches(., '^[ЯЕЁЮяеёю]$') and preceding-sibling::*[1] is preceding-sibling::cons[1]]"
+        match="v[matches(., '^[яеёю]$') and preceding-sibling::*[1] is preceding-sibling::cons[1]]"
         mode="palatComps">
         <v stress="{@stress}" surface="{.}">
-            <xsl:value-of select="translate(., 'ЯЕИЁЮяеиёю', 'аэыоуаэыоу')"/>
+            <xsl:value-of select="translate(., 'яеёю', 'аэоу')"/>
         </v>
     </xsl:template>
     <xsl:template match="v[preceding-sibling::*[1] is preceding-sibling::v[1]]" mode="palatComps">
         <cons>j</cons>
         <v stress="{@stress}" surface="{.}">
-            <xsl:value-of select="translate(., 'ЯЕИЁЮяеиёю', 'аэыоуаэыоу')"/>
+            <xsl:value-of select="translate(., 'яеёю', 'аэоу')"/>
         </v>
     </xsl:template>
 
@@ -215,16 +218,16 @@
 
     <xsl:template match="cons" mode="unpairedCons">
         <xsl:variable name="compoundLetters">
-            <xsl:value-of select="replace(replace(lower-case(.), 'щ','шч'), 'т[jь]?с[jь]?', 'ц')"/>
+            <xsl:value-of select="replace(replace(., 'щ','шч'), 'т[jь]?с[jь]?', 'ц')"/>
         </xsl:variable>
         <cons>
-            <xsl:analyze-string select="$compoundLetters" regex="^(.*)([ЖШЦжшцЧЩчщ])([jь]?)$">
+            <xsl:analyze-string select="$compoundLetters" regex="^(.*)([жшцчщ])([jь]?)$">
                 <xsl:matching-substring>
                     <xsl:choose>
-                        <xsl:when test="matches(., '^(.*)([ЖШЦжшц])([jь]?)$')">
+                        <xsl:when test="matches(., '^(.*)([жшц])([jь]?)$')">
                             <xsl:value-of select="concat(regex-group(1), regex-group(2))"/>
                         </xsl:when>
-                        <xsl:when test="matches(., '^(.*)([ЧЩчщ])([jь]?)$')">
+                        <xsl:when test="matches(., '^(.*)([чщ])([jь]?)$')">
                             <xsl:value-of select="concat(regex-group(1), regex-group(2), 'j')"/>
                         </xsl:when>
                     </xsl:choose>
@@ -247,10 +250,10 @@
         <v stress="{@stress}">
             <xsl:choose>
                 <xsl:when test="contains(preceding-sibling::cons[1], 'j')">
-                    <xsl:value-of select="translate(., 'АЭОаэо', 'ииииии')"/>
+                    <xsl:value-of select="translate(., 'аэо', 'иии')"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:value-of select="translate(., 'Оо', 'аа')"/>
+                    <xsl:value-of select="translate(., 'о', 'а')"/>
                 </xsl:otherwise>
             </xsl:choose>
         </v>
@@ -263,12 +266,12 @@
         </w>
     </xsl:template>
 
-    <xsl:template match="cons[last()][not(following-sibling::*)]" mode="devoiceFinal">
+    <xsl:template match="cons[not(following-sibling::*)]" mode="devoiceFinal">
         <cons>
-            <xsl:analyze-string select="." regex="(.*)([бвгдзж])([jь]?)">
+            <xsl:analyze-string select="." regex="(.*)([бвгдзж]+)([jь]?)">
                 <xsl:matching-substring>
                     <xsl:value-of
-                        select="concat(regex-group(1), translate(regex-group(2),'[бвгдзж]','[пфктсш]'), regex-group(3))"
+                        select="concat(regex-group(0), translate(regex-group(1),'[бвгдзж]','[пфктсш]'), regex-group(3))"
                     />
                 </xsl:matching-substring>
                 <xsl:non-matching-substring>
@@ -287,17 +290,17 @@
 
     <xsl:template match="cons" mode="voicingClusters">
         <cons>
-            <xsl:analyze-string select="." regex="(.*[ПФКТСШпфктсш]*)([бгдзж]+)(.*)">
+            <xsl:analyze-string select="." regex="(.*[пфктсш]*)([бгдзж]+)(.*)">
                 <xsl:matching-substring>
                     <xsl:value-of
-                        select="concat(translate(regex-group(1), 'ПФКТСШпфктсш', 'бвгдзжбвгдзж'), regex-group(2), regex-group(3))"
+                        select="concat(translate(regex-group(1), 'пфктсш', 'бвгдзж'), regex-group(2), regex-group(3))"
                     />
                 </xsl:matching-substring>
                 <xsl:non-matching-substring>
-                    <xsl:analyze-string select="." regex="(.*[БВГДЗЖбвглзж]*)([пфктсш]+)(.*)">
+                    <xsl:analyze-string select="." regex="(.*[бвглзж]*)([пфктсш]+)(.*)">
                         <xsl:matching-substring>
                             <xsl:value-of
-                                select="concat(translate(regex-group(1), 'БВГДЗЖбвгдзж', 'пфктсшпфктсш'), regex-group(2), regex-group(3))"
+                                select="concat(translate(regex-group(1), 'бвгдзж', 'пфктсш'), regex-group(2), regex-group(3))"
                             />
                         </xsl:matching-substring>
                         <xsl:non-matching-substring>
@@ -309,21 +312,24 @@
         </cons>
     </xsl:template>
 
-<!-- Stage Nine: Convert Cyrillic to Latin -->
-<xsl:template match="w" mode="latinize">
-    <w orth="{@orth}">
-        <xsl:apply-templates select="*" mode="latinize"/>
-    </w>
-</xsl:template>
-    
-<xsl:template match="cons" mode="latinize">
-    <cons>
-        <xsl:value-of select="translate(lower-case(.), 'бвгдзжйклмнпрстфцхчшьъ','bvgdzžjklmnprstfcxčšj″')"/>
-    </cons>
-</xsl:template>
+    <!-- Stage Nine: Convert Cyrillic to Latin -->
+    <xsl:template match="w" mode="latinize">
+        <w orth="{@orth}">
+            <xsl:apply-templates select="*" mode="latinize"/>
+        </w>
+    </xsl:template>
+
+    <xsl:template match="cons" mode="latinize">
+        <cons>
+            <xsl:value-of
+                select="translate(., 'бвгдзжйклмнпрстфцхчшьъ','bvgdzžjklmnprstfcxčšj″')"
+            />
+        </cons>
+    </xsl:template>
     <xsl:template match="v" mode="latinize">
         <v stress="{@stress}">
             <xsl:value-of select="translate(lower-case(.), 'аэиыоу', 'aeiyou')"/>
         </v>
     </xsl:template>
+
 </xsl:stylesheet>
