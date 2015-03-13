@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs" version="2.0">
+
+    <xsl:output indent="yes"/>
+    <xsl:strip-space elements="*"/>
+
+    <xsl:template match="node()|@*" mode="#all">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <xsl:template match="divs">
+        <xsl:variable name="addRhyme">
+            <xsl:apply-templates select="lg" mode="setUp"/>
+        </xsl:variable>
+        <xsl:apply-templates select="$addRhyme" mode="match"/>
+    </xsl:template>
+
+    <xsl:template match="lg" mode="setUp">
+        <lg>
+            <!-- Rhyme Stage One: Determine if possible rhyme is masc, 
+                fem, dactylic -->
+            <xsl:variable name="stage1Rhyme">
+                <xsl:apply-templates select="l" mode="posRhyme"/>
+            </xsl:variable>
+            <!-- Rhyme Stage Two: Create "exact" match context for rhyme-->
+            <xsl:apply-templates select="$stage1Rhyme" mode="rhymeContext"/>
+        </lg>
+    </xsl:template>
+
+    <xsl:template match="lg" mode="match">
+        <lg>
+            <!-- Rhyme Stage Three: Return lines which are exact matches-->
+            <xsl:apply-templates select="l" mode="rhymeMatch"/>
+        </lg>
+    </xsl:template>
+
+    <!-- Rhyme Stage One: Determine if possible rhyme is masc, 
+                fem, dactylic -->
+    <xsl:template match="l" mode="posRhyme">
+        <l posRhyme="{w[last()]/v[@stress = '1']/count(following-sibling::v)}">
+            <xsl:apply-templates/>
+        </l>
+    </xsl:template>
+
+    <!-- Rhyme Stage Two: Create "exact" match context for rhyme-->
+    <xsl:template match="l" mode="rhymeContext">
+        <xsl:variable name="position">
+            <xsl:value-of select="@posRhyme"/>
+        </xsl:variable>
+        <xsl:variable name="context">
+            <xsl:choose>
+                <xsl:when test="w[last()]/v[@stress = '1' and last()] is w[last()]/child::*[last()]">
+                    <xsl:value-of
+                        select="string-join(w[last()]/cons[last()]/text(), w[last()]/v[last()]/text())"
+                    />
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of
+                        select="w[last()]/v[@stress='1']/concat(., string-join(following-sibling::*/text(), ''))"
+                    />
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <l posRhyme="{$position}" compText="{$context}">
+            <xsl:apply-templates/>
+        </l>
+    </xsl:template>
+
+    <!-- Rhyme Stage Three: Return lines which are exact matches-->
+    <xsl:template match="l" mode="rhymeMatch">
+        <xsl:variable name="currentCompText">
+            <xsl:value-of select="@compText"/>
+        </xsl:variable>
+        <xsl:variable name="matchingLines">
+            <xsl:value-of
+                select="string-join(parent::lg/l[@compText = $currentCompText]/string(count(preceding-sibling::l)+1), ' ')"
+            />
+        </xsl:variable>
+
+        <l posRhyme="{@posRhyme}" compText="{$currentCompText}" matchingLines="{$matchingLines}">
+            <xsl:apply-templates/>
+        </l>
+    </xsl:template>
+</xsl:stylesheet>
