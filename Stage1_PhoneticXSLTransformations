@@ -171,9 +171,9 @@
     <xsl:template match="w" mode="proclitics">
         <xsl:choose>
             <xsl:when
-                test="matches(@orth, '^([Вв]|[Сс]|[Нн]ад|[Оо]т|[Пп][е]?ред|[Сс]квозь|[Чч][е]?рез|[Бб]ез|[Ии]з|[Пп]ротив|[Бб]лиз|[Пп]од|[Ии]с-под|[Вв][о]?круг|[Оо][б]?|[Нн]а|[Сс]ред[иь]|[Уу])[о]?$')"/>
+                test="matches(@orth, '^([Вв]|[Сс]|[Нн]ад|[Оо]т|[Пп][е]?ред|[Сс]квозь|[Чч][е]?рез|[Бб]ез|[Ии]з|[Пп]ротив|[Бб]лиз|[Пп]од|[Ии]с-под|[Вв][о]?круг|[Оо][б]?|[Нн]а|[Сс]ред[иь]|[Уу]|[Кк]|[Пп]ро)[о]?$')"/>
             <xsl:when
-                test="./matches((preceding-sibling::w[1])/@orth, '^([Вв]|[Сс]|[Нн]ад|[Оо]т|[Пп][е]?ред|[Сс]квозь|[Чч][е]?рез|[Бб]ез|[Ии]з|[Пп]ротив|[Бб]лиз|[Пп]од|[Ии]с-под|[Вв][о]?круг|[Оо][б]?|[Нн]а|[Сс]ред[иь]|[Уу])[о]?$')">
+                test="./matches((preceding-sibling::w[1])/@orth, '^([Вв]|[Сс]|[Нн]ад|[Оо]т|[Пп][е]?ред|[Сс]квозь|[Чч][е]?рез|[Бб]ез|[Ии]з|[Пп]ротив|[Бб]лиз|[Пп]од|[Ии]с-под|[Вв][о]?круг|[Оо][б]?|[Нн]а|[Сс]ред[иь]|[Уу]|[Кк]|[Пп]ро)[о]?$')">
                 <xsl:variable name="newOrth">
                     <xsl:value-of select="concat((preceding-sibling::w[1])/@orth, ' ', @orth)"/>
                 </xsl:variable>
@@ -332,17 +332,17 @@
 
     <xsl:template match="cons" mode="voicingClusters">
         <cons>
-            <xsl:analyze-string select="." regex="(.*[пфктсш]*)([бгдзж]+)(.*)">
+            <xsl:analyze-string select="." regex="([а-я]*)([пфктсш]+[бгдзж]+)([a-z]*)">
                 <xsl:matching-substring>
                     <xsl:value-of
-                        select="concat(translate(regex-group(1), 'пфктсш', 'бвгдзж'), regex-group(2), regex-group(3))"
+                        select="concat(regex-group(1), translate(regex-group(2), 'пфктсш', 'бвгдзж'),  regex-group(3))"
                     />
                 </xsl:matching-substring>
                 <xsl:non-matching-substring>
-                    <xsl:analyze-string select="." regex="(.*[бвгдзж]*)([пфктсшц]+)(.*)">
+                    <xsl:analyze-string select="." regex="([а-я]*)([бвгдзж]+[пфктсшц]+)([a-z]*)">
                         <xsl:matching-substring>
                             <xsl:value-of
-                                select="concat(translate(regex-group(1), 'бвгдзж', 'пфктсш'), regex-group(2), regex-group(3))"
+                                select="concat(regex-group(1),translate(regex-group(2), 'бвгдзж', 'пфктсш'),  regex-group(3))"
                             />
                         </xsl:matching-substring>
                         <xsl:non-matching-substring>
