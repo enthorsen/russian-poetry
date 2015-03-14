@@ -131,11 +131,8 @@
                <cons>kl</cons>
                <v stress="0">a</v>
             </w>
-            <w orth="к">
-               <cons>k</cons>
-            </w>
-            <w orth="покою">
-               <cons>p</cons>
+            <w orth="к покою">
+               <cons>kp</cons>
                <v stress="0">a</v>
                <cons>k</cons>
                <v stress="1">o</v>
@@ -263,7 +260,7 @@
                <v stress="0">a</v>
                <cons>mp</cons>
                <v stress="1">a</v>
-               <cons>dk</cons>
+               <cons>tk</cons>
                <v stress="0">u</v>
             </w>
             <w orth="внутри">
@@ -289,7 +286,7 @@
             <w orth="будто">
                <cons>b</cons>
                <v stress="probability">u</v>
-               <cons>dt</cons>
+               <cons>tt</cons>
                <v stress="probability">a</v>
             </w>
             <w orth="темное">
@@ -303,7 +300,7 @@
             <w orth="сердце">
                <cons>sj</cons>
                <v stress="1">e</v>
-               <cons>rdts</cons>
+               <cons>rtts</cons>
                <v stress="0">e</v>
             </w>
          </l>
@@ -361,22 +358,18 @@
             </w>
          </l>
          <l>
-            <w orth="Про">
+            <w orth="Про иной,">
                <cons>pr</cons>
                <v stress="probability">a</v>
-            </w>
-            <w orth="иной,">
                <cons>j</cons>
                <v stress="0">y</v>
                <cons>n</cons>
                <v stress="1">o</v>
                <cons>j</cons>
             </w>
-            <w orth="про">
+            <w orth="про небесный">
                <cons>pr</cons>
                <v stress="probability">a</v>
-            </w>
-            <w orth="небесный">
                <cons>nj</cons>
                <v stress="0">i</v>
                <cons>bj</cons>
@@ -411,13 +404,13 @@
                <cons>x</cons>
             </w>
             <w orth="укоряя:">
-               <v stress="probability">u</v>
+               <v stress="0">u</v>
                <cons>k</cons>
-               <v stress="probability">a</v>
+               <v stress="0">a</v>
                <cons>rj</cons>
-               <v stress="probability">i</v>
+               <v stress="1">a</v>
                <cons>j</cons>
-               <v stress="probability">i</v>
+               <v stress="0">i</v>
             </w>
          </l>
          <l>
@@ -475,7 +468,7 @@
                <v stress="0">i</v>
                <cons>lj</cons>
                <v stress="1">e</v>
-               <cons>v</cons>
+               <cons>f</cons>
             </w>
             <w orth="от боли,">
                <v stress="probability">a</v>
@@ -549,7 +542,7 @@
                <v stress="probability">u</v>
                <cons>n</cons>
                <v stress="1">o</v>
-               <cons>g</cons>
+               <cons>k</cons>
             </w>
             <w orth="голубой">
                <cons>g</cons>
