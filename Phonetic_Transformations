@@ -26,53 +26,84 @@
     <!-- Streamlining w element -->
 
     <xsl:template match="l">
-        <!-- Stage One: return w elements that have changed the
+        <l>
+            <!-- Stage Zero: currently when a word has no strong stress
+             David's dictionary returns <str>none</str>-->
+            <xsl:variable name="stage0output">
+                <xsl:apply-templates select="w" mode="addStresses"/>
+            </xsl:variable>
+
+            <!-- Stage One: return w elements that have changed the
             orth/str siblings, each containing 
             different information (punctuation, stress)
             to a set of cons v siblings-->
-        <xsl:variable name="stage1output">
-            <xsl:apply-templates select="w" mode="strToConsVow"/>
-        </xsl:variable>
-        <!-- Stage Two: return w elements that have combined proclitics with 
+            <xsl:variable name="stage1output">
+                <xsl:apply-templates select="$stage0output" mode="strToConsVow"/>
+            </xsl:variable>
+
+            <!-- Stage Two: return w elements that have combined proclitics with 
              the words that follow them, 
              e.g. <w>nado</w><w>mnoi</w> becomes <w>nadomnoi</w>-->
-        <xsl:variable name="stage2output">
-            <xsl:apply-templates select="$stage1output" mode="proclitics"/>
-        </xsl:variable>
-        <!-- Stage Three: return w elements that have combined the contents 
+            <xsl:variable name="stage2output">
+                <xsl:apply-templates select="$stage1output" mode="proclitics"/>
+            </xsl:variable>
+
+            <!-- Stage Three: return w elements that have combined the contents 
             of neighboring cons elements
             e.g. <cons>d</cons><cons>r<cons> beomces <cons>dr</cons>-->
-        <xsl:variable name="stage3output">
-            <xsl:apply-templates select="$stage2output" mode="consProclitics"/>
-        </xsl:variable>
-        <!-- Stage Four: map all soft vowels to j+hard vowel letter
+            <xsl:variable name="stage3output">
+                <xsl:apply-templates select="$stage2output" mode="consProclitics"/>
+            </xsl:variable>
+
+            <!-- Stage Four: map all soft vowels to j+hard vowel letter
             e.g. <cons>d</cons><v>ja</v> becomes <cons>dj</cons><v>a</v>-->
-        <xsl:variable name="stage4output">
-            <xsl:apply-templates select="$stage3output" mode="softVowels"/>
-        </xsl:variable>
-        <!-- Stage Five: work out compound letters (shch, ts); 
+            <xsl:variable name="stage4output">
+                <xsl:apply-templates select="$stage3output" mode="softVowels"/>
+            </xsl:variable>
+            <xsl:message>
+                <xsl:apply-templates select="$stage4output"/>
+            </xsl:message>
+            <!-- Stage Five: work out compound letters (shch, ts); 
             remove soft sign after unpaired hard cons (zhj becomes zh);
             add soft sign after unpaired soft cons (ch becomes chj);-->
-        <xsl:variable name="stage5output">
-            <xsl:apply-templates select="$stage4output" mode="unpairedCons"/>
-        </xsl:variable>
-        <!-- Stage Six: reduce unstressed vowels after j to и -->
-        <xsl:variable name="stage6output">
-            <xsl:apply-templates select="$stage5output" mode="reduceVowels"/>
-        </xsl:variable>
-        <!-- Stage Seven: devoice final consonants -->
-        <xsl:variable name="stage7output">
-            <xsl:apply-templates select="$stage6output" mode="devoiceFinal"/>
-        </xsl:variable>
-        <!-- Stage Eight: voice and devoice consonant clusters -->
-        <xsl:variable name="stage8output">
-            <xsl:apply-templates select="$stage7output" mode="voicingClusters"/>
-        </xsl:variable>
-        <!-- Stage Nine: convert all Cyrillic to Latin -->
-        <xsl:variable name="stage9output">
-            <xsl:apply-templates select="$stage8output" mode="latinize"/>
-        </xsl:variable>
-        <xsl:apply-templates select="$stage9output"/>
+            <xsl:variable name="stage5output">
+                <xsl:apply-templates select="$stage4output" mode="unpairedCons"/>
+            </xsl:variable>
+            <!-- Stage Six: reduce unstressed vowels after j to и -->
+            <xsl:variable name="stage6output">
+                <xsl:apply-templates select="$stage5output" mode="reduceVowels"/>
+            </xsl:variable>
+            <!-- Stage Seven: devoice final consonants -->
+            <xsl:variable name="stage7output">
+                <xsl:apply-templates select="$stage6output" mode="devoiceFinal"/>
+            </xsl:variable>
+            <!-- Stage Eight: voice and devoice consonant clusters -->
+            <xsl:variable name="stage8output">
+                <xsl:apply-templates select="$stage7output" mode="voicingClusters"/>
+            </xsl:variable>
+            <!-- Stage Nine: convert all Cyrillic to Latin -->
+            <xsl:variable name="stage9output">
+                <xsl:apply-templates select="$stage8output" mode="latinize"/>
+            </xsl:variable>
+            <xsl:apply-templates select="$stage9output"/>
+        </l>
+    </xsl:template>
+
+    <!-- Stage Zero: -->
+    <xsl:template match="w" mode="addStresses">
+        <w>
+            <xsl:apply-templates select="orth"/>
+            <xsl:choose>
+                <xsl:when test="str/contains(., '(none)')">
+                    <str>
+                        <xsl:value-of select="replace(orth/text(), '[&#34;.,!$:;\*]', '')"/>
+                    </str>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="str"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </w>
     </xsl:template>
 
     <!-- Stage One: 
@@ -140,9 +171,9 @@
     <xsl:template match="w" mode="proclitics">
         <xsl:choose>
             <xsl:when
-                test="matches(@orth, '^([Вв]|[Сс]|[Нн]ад|[Оо]т|[Пп][е]?ред|[Сс]квозь|[Чч][е]?рез|[Бб]ез|[Ии]з|[Пп]ротив|[Бб]лиз|[Пп]од|[Ии]с-под|[Вв][о]?круг|[Оо][б]?|[Нн]а|[Сс]ред[иь])[о]?$')"/>
+                test="matches(@orth, '^([Вв]|[Сс]|[Нн]ад|[Оо]т|[Пп][е]?ред|[Сс]квозь|[Чч][е]?рез|[Бб]ез|[Ии]з|[Пп]ротив|[Бб]лиз|[Пп]од|[Ии]с-под|[Вв][о]?круг|[Оо][б]?|[Нн]а|[Сс]ред[иь]|[Уу])[о]?$')"/>
             <xsl:when
-                test="./matches((preceding-sibling::w[1])/@orth, '^([Вв]|[Сс]|[Нн]ад|[Оо]т|[Пп][е]?ред|[Сс]квозь|[Чч][е]?рез|[Бб]ез|[Ии]з|[Пп]ротив|[Бб]лиз|[Пп]од|[Ии]с-под|[Вв][о]?круг|[Оо][б]?|[Нн]а|[Сс]ред[иь])[о]?$')">
+                test="./matches((preceding-sibling::w[1])/@orth, '^([Вв]|[Сс]|[Нн]ад|[Оо]т|[Пп][е]?ред|[Сс]квозь|[Чч][е]?рез|[Бб]ез|[Ии]з|[Пп]ротив|[Бб]лиз|[Пп]од|[Ии]с-под|[Вв][о]?круг|[Оо][б]?|[Нн]а|[Сс]ред[иь]|[Уу])[о]?$')">
                 <xsl:variable name="newOrth">
                     <xsl:value-of select="concat((preceding-sibling::w[1])/@orth, ' ', @orth)"/>
                 </xsl:variable>
@@ -193,16 +224,24 @@
         </cons>
     </xsl:template>
     <xsl:template
-        match="v[matches(., '^[яеёю]$') and preceding-sibling::*[1] is preceding-sibling::cons[1]]"
+        match="v[matches(., '^[яиеёю]$') and preceding-sibling::*[1] is preceding-sibling::cons[1]]"
         mode="palatComps">
         <v stress="{@stress}" surface="{.}">
-            <xsl:value-of select="translate(., 'яеёю', 'аэоу')"/>
+            <xsl:value-of select="translate(., 'яиеёю', 'аыэоу')"/>
+        </v>
+    </xsl:template>
+    <xsl:template match="v[matches(., '^[яиеёю]$') and count(preceding-sibling::*)=0]">
+        <cons>
+            <xsl:text>j</xsl:text>
+        </cons>
+        <v stress="{@stress}" surface="{.}">
+            <xsl:value-of select="translate(., 'яиеёю', 'аыэоу')"/>
         </v>
     </xsl:template>
     <xsl:template match="v[preceding-sibling::*[1] is preceding-sibling::v[1]]" mode="palatComps">
         <cons>j</cons>
         <v stress="{@stress}" surface="{.}">
-            <xsl:value-of select="translate(., 'яеёю', 'аэоу')"/>
+            <xsl:value-of select="translate(., 'яиеёю', 'аыэоу')"/>
         </v>
     </xsl:template>
 
@@ -217,11 +256,11 @@
     </xsl:template>
 
     <xsl:template match="cons" mode="unpairedCons">
-        <xsl:variable name="compoundLetters">
-            <xsl:value-of select="replace(replace(., 'щ','шч'), 'т[jь]?с[jь]?', 'ц')"/>
+        <xsl:variable name="reflexiveToHardTs">
+            <xsl:value-of select="replace(., 'т[jь]?с[jь]?', 'ц')"/>
         </xsl:variable>
-        <cons>
-            <xsl:analyze-string select="$compoundLetters" regex="^(.*)([жшцчщ])([jь]?)$">
+        <xsl:variable name="alwaysHardSoft">
+            <xsl:analyze-string select="$reflexiveToHardTs" regex="^(.*)([жшчцщ])([jь]?)$">
                 <xsl:matching-substring>
                     <xsl:choose>
                         <xsl:when test="matches(., '^(.*)([жшц])([jь]?)$')">
@@ -236,6 +275,9 @@
                     <xsl:value-of select="."/>
                 </xsl:non-matching-substring>
             </xsl:analyze-string>
+        </xsl:variable>
+        <cons>
+            <xsl:value-of select="replace(replace($alwaysHardSoft, 'ц', 'тс'), 'щ','шч')"/>
         </cons>
     </xsl:template>
 
@@ -297,7 +339,7 @@
                     />
                 </xsl:matching-substring>
                 <xsl:non-matching-substring>
-                    <xsl:analyze-string select="." regex="(.*[бвглзж]*)([пфктсш]+)(.*)">
+                    <xsl:analyze-string select="." regex="(.*[бвгдзж]*)([пфктсшц]+)(.*)">
                         <xsl:matching-substring>
                             <xsl:value-of
                                 select="concat(translate(regex-group(1), 'бвгдзж', 'пфктсш'), regex-group(2), regex-group(3))"
@@ -321,9 +363,7 @@
 
     <xsl:template match="cons" mode="latinize">
         <cons>
-            <xsl:value-of
-                select="translate(., 'бвгдзжйклмнпрстфцхчшьъ','bvgdzžjklmnprstfcxčšj″')"
-            />
+            <xsl:value-of select="translate(., 'бвгдзжйклмнпрстфцхчшьъ','bvgdzžjklmnprstfcxčšj″')"/>
         </cons>
     </xsl:template>
     <xsl:template match="v" mode="latinize">
