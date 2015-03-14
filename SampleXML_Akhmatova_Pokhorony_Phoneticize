@@ -16,8 +16,7 @@
                </cons>
             </w>
             <w orth="ищу">
-               <cons>j</cons>
-               <v stress="0">y</v>
+               <v stress="0">i</v>
                <cons>ščj</cons>
                <v stress="1">u</v>
             </w>
@@ -142,8 +141,7 @@
          </l>
          <l>
             <w orth="И">
-               <cons>j</cons>
-               <v stress="probability">y</v>
+               <v stress="probability">i</v>
             </w>
             <w orth="любит">
                <cons>lj</cons>
@@ -412,7 +410,7 @@
                <cons>j</cons>
                <v stress="0">i</v>
             </w>
-         </l>
+         </l>v
          <l>
             <w orth="&#34;Не">
                <cons>nj</cons>
@@ -452,8 +450,7 @@
       <lg type="stanza">
          <l>
             <w orth="И">
-               <cons>j</cons>
-               <v stress="probability">y</v>
+               <v stress="probability">i</v>
             </w>
             <w orth="тогда,">
                <cons>t</cons>
@@ -535,8 +532,7 @@
          </l>
          <l>
             <w orth="И">
-               <cons>j</cons>
-               <v stress="probability">y</v>
+               <v stress="probability">i</v>
             </w>
             <w orth="у ног">
                <v stress="probability">u</v>
