@@ -14,8 +14,7 @@
             <cons/>
          </w>
          <w orth="ищу">
-            <cons>j</cons>
-            <v stress="0">y</v>
+            <v stress="0">i</v>
             <cons>ščj</cons>
             <v stress="1">u</v>
          </w>
@@ -140,8 +139,7 @@
       </l>
       <l posRhyme="0" compText="et" matchingLines="2 4">
          <w orth="И">
-            <cons>j</cons>
-            <v stress="probability">y</v>
+            <v stress="probability">i</v>
          </w>
          <w orth="любит">
             <cons>lj</cons>
@@ -450,8 +448,7 @@
    <lg>
       <l posRhyme="1" compText="oljy" matchingLines="1">
          <w orth="И">
-            <cons>j</cons>
-            <v stress="probability">y</v>
+            <v stress="probability">i</v>
          </w>
          <w orth="тогда,">
             <cons>t</cons>
@@ -533,8 +530,7 @@
       </l>
       <l posRhyme="0" compText="oj" matchingLines="2 4">
          <w orth="И">
-            <cons>j</cons>
-            <v stress="probability">y</v>
+            <v stress="probability">i</v>
          </w>
          <w orth="у ног">
             <v stress="probability">u</v>
