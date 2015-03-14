@@ -217,7 +217,7 @@
         </w>
     </xsl:template>
     <xsl:template
-        match="cons[following-sibling::*[1] is following-sibling::v[1][matches(., '^[ЯЕИЁЮяеиёю]$')]]"
+        match="cons[following-sibling::*[1] is following-sibling::v[1][matches(., '^[яеиёю]$')]]"
         mode="palatComps">
         <cons surface="{.}">
             <xsl:value-of select="concat(., 'j')"/>
@@ -231,11 +231,11 @@
         </v>
     </xsl:template>
     <xsl:template match="v[matches(., '^[яиеёю]$') and count(preceding-sibling::*)=0]">
-        <cons>
+        <xsl:if test="not(. = 'и')"><cons>
             <xsl:text>j</xsl:text>
-        </cons>
+        </cons></xsl:if>
         <v stress="{@stress}" surface="{.}">
-            <xsl:value-of select="translate(., 'яиеёю', 'аыэоу')"/>
+            <xsl:value-of select="translate(., 'яеёю', 'аэоу')"/>
         </v>
     </xsl:template>
     <xsl:template match="v[preceding-sibling::*[1] is preceding-sibling::v[1]]" mode="palatComps">
