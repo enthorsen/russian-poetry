@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lg>
+    <l rhymeSet="13">
+        <w othog="Я">i</w>
+        <w othog="место">M<stress>e</stress>sta</w>
+        <w othog="ищу">iŠČ<stress>u</stress>
+      </w>
+        <w othog="для">dLi</w>
+        <w othog="могилы">maG<stress>i</stress>li</w>
+    </l>
+    <l rhymeSet="24">
+        <w othog="Не">Ni</w>
+        <w othog="знаешь">zn<stress>a</stress>iš</w>
+        <w othog="ли">Li</w>
+        <w othog="где">gD<stress>e</stress>
+      </w>
+        <w othog="светлей?">sVitL<stress>e</stress>J</w>
+    </l>
+    <l rhymeSet="13">
+        <w othog="Так">tak</w>
+        <w othog="холодно">x<stress>o</stress>ladna</w>
+        <w othog="в">v</w>
+        <w othog="поле.">p<stress>o</stress>Li</w>
+        <w othog="Унылы">un<stress>i</stress>li</w>
+    </l>
+    <l rhymeSet="24">
+        <w othog="У">u</w>
+        <w othog="моря">m<stress>o</stress>Ri</w>
+        <w othog="груды">gr<stress>u</stress>di</w>
+        <w othog="камней.">kamN<stress>e</stress>J</w>
+    </l>
+</lg>
