@@ -1,344 +1,404 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<poem title="Наследница" dateAttr="1959 20 ноября" placeAttr="Ленинград">
-   <divs>
-      <lg ambRhyme="1,2" avgLPerRhyme="1">
-         <l posRhyme="0" compText="ip" matchingLines="1">
-            <w orth="от сарскосельских">
-               <v stress="probability">a</v>
-               <cons>ts</cons>
-               <v stress="0">a</v>
-               <cons>rsk</cons>
-               <v stress="0">a</v>
-               <cons>sj</cons>
-               <v stress="1">e</v>
-               <cons>ljskj</cons>
-               <v stress="0">i</v>
-               <cons>x</cons>
-            </w>
-            <w orth="лип...">
-               <cons>lj</cons>
-               <v stress="1">i</v>
-               <cons>p</cons>
-            </w>
-         </l>
-         <l posRhyme="1" compText="uškjn" matchingLines="2">
-            <w orth="Пушкин">
-               <cons>p</cons>
-               <v stress="1">u</v>
-               <cons>škj</cons>
-               <v stress="0">i</v>
-               <cons>n</cons>
-            </w>
-         </l>
-      </lg>
-      <lg ambRhyme="1 4,2 3,5,6 7,8,9 12,10 11"
-          avgLPerRhyme="1.833333333333333333">
-         <l posRhyme="1" compText="et" matchingLines="1 4">
-            <w orth="Казалось">
-               <cons>k</cons>
-               <v stress="0">a</v>
-               <cons>z</cons>
-               <v stress="1">a</v>
-               <cons>l</cons>
-               <v stress="0">a</v>
-               <cons>sj</cons>
-            </w>
-            <w orth="мне,">
-               <cons>mnj</cons>
-               <v stress="probability">i</v>
-            </w>
-            <w orth="что">
-               <cons>čt</cons>
-               <v stress="probability">a</v>
-            </w>
-            <w orth="песня">
-               <cons>pj</cons>
-               <v stress="1">e</v>
-               <cons>snj</cons>
-               <v stress="0">i</v>
-            </w>
-            <w orth="спета">
-               <cons>spj</cons>
-               <v stress="1">e</v>
-               <cons>t</cons>
-               <v stress="0">a</v>
-            </w>
-         </l>
-         <l posRhyme="0" compText="al" matchingLines="2 3">
-            <w orth="средь этих">
-               <cons>srj</cons>
-               <v stress="probability">i</v>
-               <cons>dj</cons>
-               <v stress="1">e</v>
-               <cons>tj</cons>
-               <v stress="0">i</v>
-               <cons>x</cons>
-            </w>
-            <w orth="опустелых">
-               <v stress="0">a</v>
-               <cons>p</cons>
-               <v stress="0">u</v>
-               <cons>stj</cons>
-               <v stress="1">e</v>
-               <cons>l</cons>
-               <v stress="0">i</v>
-               <cons>x</cons>
-            </w>
-            <w orth="зал.">
-               <cons>z</cons>
-               <v stress="1">a</v>
-               <cons>l</cons>
-            </w>
-         </l>
-         <l posRhyme="0" compText="al" matchingLines="2 3">
-            <w orth="О,">
-               <v stress="probability">a</v>
-            </w>
-            <w orth="кто бы">
-               <cons>kt</cons>
-               <v stress="probability">a</v>
-               <cons>b</cons>
-               <v stress="probability">i</v>
-            </w>
-            <w orth="мне">
-               <cons>mnj</cons>
-               <v stress="probability">i</v>
-            </w>
-            <w orth="тогда">
-               <cons>t</cons>
-               <v stress="0">a</v>
-               <cons>gd</cons>
-               <v stress="1">a</v>
-            </w>
-            <w orth="сказал,">
-               <cons>sk</cons>
-               <v stress="0">a</v>
-               <cons>z</cons>
-               <v stress="1">a</v>
-               <cons>l</cons>
-            </w>
-         </l>
-         <l posRhyme="1" compText="et" matchingLines="1 4">
-            <w orth="Что">
-               <cons>čt</cons>
-               <v stress="probability">a</v>
-            </w>
-            <w orth="я">
-               <cons>j</cons>
-               <v stress="probability">i</v>
-            </w>
-            <w orth="наследую">
-               <cons>n</cons>
-               <v stress="0">a</v>
-               <cons>slj</cons>
-               <v stress="1">e</v>
-               <cons>d</cons>
-               <v stress="0">u</v>
-               <cons>j</cons>
-               <v stress="0">u</v>
-            </w>
-            <w orth="всё">
-               <cons>fsj</cons>
-               <v stress="1">o</v>
-            </w>
-            <w orth="это:">
-               <v stress="1">e</v>
-               <cons>t</cons>
-               <v stress="0">a</v>
-            </w>
-         </l>
-         <l posRhyme="0" compText="st" matchingLines="5">
-            <w orth="Фелицу,">
-               <cons>fj</cons>
-               <v stress="0">i</v>
-               <cons>lj</cons>
-               <v stress="1">i</v>
-               <cons>ts</cons>
-               <v stress="0">u</v>
-            </w>
-            <w orth="лебедя,">
-               <cons>lj</cons>
-               <v stress="1">e</v>
-               <cons>bj</cons>
-               <v stress="0">i</v>
-               <cons>dj</cons>
-               <v stress="0">i</v>
-            </w>
-            <w orth="мосты">
-               <cons>m</cons>
-               <v stress="0">a</v>
-               <cons>st</cons>
-               <v stress="1">i</v>
-            </w>
-         </l>
-         <l posRhyme="1" compText="ej" matchingLines="6 7">
-            <w orth="и все">
-               <v stress="probability">i</v>
-               <cons>fsj</cons>
-               <v stress="probability">i</v>
-            </w>
-            <w orth="китайские">
-               <cons>kj</cons>
-               <v stress="0">i</v>
-               <cons>t</cons>
-               <v stress="1">a</v>
-               <cons>jskj</cons>
-               <v stress="0">i</v>
-               <cons>j</cons>
-               <v stress="0">i</v>
-            </w>
-            <w orth="затеи,">
-               <cons>z</cons>
-               <v stress="0">a</v>
-               <cons>tj</cons>
-               <v stress="1">e</v>
-               <cons>j</cons>
-               <v stress="0">i</v>
-            </w>
-         </l>
-         <l posRhyme="1" compText="ej" matchingLines="6 7">
-            <w orth="Дворца">
-               <cons>dv</cons>
-               <v stress="0">a</v>
-               <cons>rts</cons>
-               <v stress="1">a</v>
-            </w>
-            <w orth="сквозные">
-               <cons>skv</cons>
-               <v stress="0">a</v>
-               <cons>zn</cons>
-               <v stress="1">i</v>
-               <cons>j</cons>
-               <v stress="0">i</v>
-            </w>
-            <w orth="галереи">
-               <cons>g</cons>
-               <v stress="0">a</v>
-               <cons>lj</cons>
-               <v stress="0">i</v>
-               <cons>rj</cons>
-               <v stress="1">e</v>
-               <cons>j</cons>
-               <v stress="0">i</v>
-            </w>
-         </l>
-         <l posRhyme="0" compText="t" matchingLines="8">
-            <w orth="и липы">
-               <v stress="probability">i</v>
-               <cons>lj</cons>
-               <v stress="1">i</v>
-               <cons>p</cons>
-               <v stress="0">i</v>
-            </w>
-            <w orth="дивной">
-               <cons>dj</cons>
-               <v stress="1">i</v>
-               <cons>vn</cons>
-               <v stress="0">a</v>
-               <cons>j</cons>
-            </w>
-            <w orth="красоты.">
-               <cons>kr</cons>
-               <v stress="0">a</v>
-               <cons>s</cons>
-               <v stress="0">a</v>
-               <cons>t</cons>
-               <v stress="1">i</v>
-            </w>
-         </l>
-         <l posRhyme="0" compText="enj" matchingLines="9 12">
-            <w orth="и даже">
-               <v stress="probability">i</v>
-               <cons>d</cons>
-               <v stress="1">a</v>
-               <cons>ž</cons>
-               <v stress="0">i</v>
-            </w>
-            <w orth="собственную">
-               <cons>s</cons>
-               <v stress="1">o</v>
-               <cons>pstvj</cons>
-               <v stress="0">i</v>
-               <cons>n</cons>
-               <v stress="0">u</v>
-               <cons>j</cons>
-               <v stress="0">u</v>
-            </w>
-            <w orth="тень,">
-               <cons>tj</cons>
-               <v stress="1">e</v>
-               <cons>nj</cons>
-            </w>
-         </l>
-         <l posRhyme="1" compText="ax" matchingLines="10 11">
-            <w orth="Всю">
-               <cons>fsj</cons>
-               <v stress="probability">u</v>
-            </w>
-            <w orth="искаженную">
-               <v stress="0">i</v>
-               <cons>sk</cons>
-               <v stress="0">a</v>
-               <cons>ž</cons>
-               <v stress="1">o</v>
-               <cons>n</cons>
-               <v stress="0">u</v>
-               <cons>j</cons>
-               <v stress="0">u</v>
-            </w>
-            <w orth="от страха,">
-               <v stress="probability">a</v>
-               <cons>tstr</cons>
-               <v stress="1">a</v>
-               <cons>x</cons>
-               <v stress="0">a</v>
-            </w>
-         </l>
-         <l posRhyme="1" compText="ax" matchingLines="10 11">
-            <w orth="и покаянную">
-               <v stress="probability">i</v>
-               <cons>p</cons>
-               <v stress="0">a</v>
-               <cons>k</cons>
-               <v stress="0">a</v>
-               <cons>j</cons>
-               <v stress="1">a</v>
-               <cons>n</cons>
-               <v stress="0">u</v>
-               <cons>j</cons>
-               <v stress="0">u</v>
-            </w>
-            <w orth="рубаху,">
-               <cons>r</cons>
-               <v stress="0">u</v>
-               <cons>b</cons>
-               <v stress="1">a</v>
-               <cons>x</cons>
-               <v stress="0">u</v>
-            </w>
-         </l>
-         <l posRhyme="0" compText="enj" matchingLines="9 12">
-            <w orth="и замогильную">
-               <v stress="probability">i</v>
-               <cons>z</cons>
-               <v stress="0">a</v>
-               <cons>m</cons>
-               <v stress="0">a</v>
-               <cons>gj</cons>
-               <v stress="1">i</v>
-               <cons>ljn</cons>
-               <v stress="0">u</v>
-               <cons>j</cons>
-               <v stress="0">u</v>
-            </w>
-            <w orth="сирень.">
-               <cons>sj</cons>
-               <v stress="0">i</v>
-               <cons>rj</cons>
-               <v stress="1">e</v>
-               <cons>nj</cons>
-            </w>
-         </l>
-      </lg>
-   </divs>
-</poem>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs" version="2.0">
+
+    <xsl:output indent="yes"/>
+    <xsl:strip-space elements="*"/>
+
+    <xsl:template match="node()|@*" mode="#all">
+        <xsl:copy>
+            <xsl:apply-templates select="node()|@*"/>
+        </xsl:copy>
+    </xsl:template>
+
+    <!-- Moves contextual information (title, attributed date, attributed place) to attributes in the root node-->
+
+    <xsl:template match="poem">
+
+        <poem title="{title}" dateAttr="{date}" placeAttr="{place}">
+            <xsl:apply-templates/>
+        </poem>
+
+    </xsl:template>
+
+    <xsl:template match="date|place|title"/>
+
+    <!-- Streamlining w element -->
+
+    <xsl:template match="l">
+        <l>
+            <!-- Stage Zero: currently when a word has no strong stress
+             David's dictionary returns <str>none</str>-->
+            <xsl:variable name="stage0output">
+                <xsl:apply-templates select="w" mode="addStresses"/>
+            </xsl:variable>
+
+            <!-- Stage One: return w elements that have changed the
+            orth/str siblings, each containing 
+            different information (punctuation, stress)
+            to a set of cons v siblings-->
+            <xsl:variable name="stage1output">
+                <xsl:apply-templates select="$stage0output" mode="strToConsVow"/>
+            </xsl:variable>
+
+            <!-- Stage Two: return w elements that have combined proclitics with 
+             the words that follow them, 
+             e.g. <w>nado</w><w>mnoi</w> becomes <w>nadomnoi</w>-->
+            <xsl:variable name="stage2output">
+                <xsl:apply-templates select="$stage1output" mode="proclitics"/>
+            </xsl:variable>
+            <xsl:message><xsl:apply-templates select="$stage2output"/></xsl:message>
+
+            <!-- Stage Three: return w elements that have combined the contents 
+            of neighboring cons elements
+            e.g. <cons>d</cons><cons>r<cons> beomces <cons>dr</cons>-->
+            <xsl:variable name="stage3output">
+                <xsl:apply-templates select="$stage2output" mode="consProclitics"/>
+            </xsl:variable>
+
+            <!-- Stage Four: map all soft vowels to j+hard vowel letter
+            e.g. <cons>d</cons><v>ja</v> becomes <cons>dj</cons><v>a</v>-->
+            <xsl:variable name="stage4output">
+                <xsl:apply-templates select="$stage3output" mode="softVowels"/>
+            </xsl:variable>
+            <xsl:message>
+                <xsl:apply-templates select="$stage4output"/>
+            </xsl:message>
+
+            <!-- Stage Five: work out compound letters (shch, ts); 
+            remove soft sign after unpaired hard cons (zhj becomes zh);
+            add soft sign after unpaired soft cons (ch becomes chj);-->
+            <xsl:variable name="stage5output">
+                <xsl:apply-templates select="$stage4output" mode="unpairedCons"/>
+            </xsl:variable>
+
+            <!-- Stage Six: reduce unstressed vowels after j to и -->
+            <xsl:variable name="stage6output">
+                <xsl:apply-templates select="$stage5output" mode="reduceVowels"/>
+            </xsl:variable>
+
+            <!-- Stage Seven: devoice final consonants -->
+            <xsl:variable name="stage7output">
+                <xsl:apply-templates select="$stage6output" mode="devoiceFinal"/>
+            </xsl:variable>
+
+            <!-- Stage Eight: voice and devoice consonant clusters -->
+            <xsl:variable name="stage8output">
+                <xsl:apply-templates select="$stage7output" mode="voicingClusters"/>
+            </xsl:variable>
+
+            <!-- Stage Nine: convert all Cyrillic to Latin -->
+            <xsl:variable name="stage9output">
+                <xsl:apply-templates select="$stage8output" mode="latinize"/>
+            </xsl:variable>
+            <xsl:apply-templates select="$stage9output"/>
+        </l>
+    </xsl:template>
+
+    <!-- Stage Zero: -->
+    <xsl:template match="w" mode="addStresses">
+        <w>
+            <xsl:apply-templates select="orth"/>
+            <xsl:choose>
+                <xsl:when test="str/contains(., '(none)')">
+                    <str>
+                        <xsl:value-of select="lower-case(replace(orth/text(), '[&#34;.,!$:;\\\*\(\))]', ''))"/>
+                    </str>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="str"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </w>
+    </xsl:template>
+
+    <!-- Stage One: 
+        w template in strToConsVows mode will return a 
+        streamlined w to variable $stage1output
+        Stress set transformations
+        1) If str element has a stress child (i.e., is not an ambiguous monosyllable, preposition, or pronoun), identify all vowels in its text nodes as v with stress attribute of "0", for the time being. 
+        2) If str element does not contain a stress, probability of vowels being stressed or unstressed between 0 and 1. Mark as something to refer meter to at later time.
+        3) If a stress element, then wrap contents in v element with stress=1-->
+    <xsl:template match="w" mode="strToConsVow">
+        <w orth="{orth}">
+            <xsl:apply-templates mode="consVowels"/>
+        </w>
+    </xsl:template>
+    <xsl:template match="orth" mode="consVowels"/>
+
+    <xsl:template match="stress" mode="consVowels">
+        <v stress="1">
+            <xsl:apply-templates/>
+        </v>
+    </xsl:template>
+
+    <xsl:template match="str[child::stress]" mode="consVowels">
+        <xsl:apply-templates select="stress|text()" mode="consVowels"/>
+    </xsl:template>
+
+    <xsl:template match="str/text()" mode="consVowels">
+        <xsl:analyze-string select="." regex="[аэыоуяеиёюАЭЫОУЯЕИЁЮ]">
+            <xsl:matching-substring>
+                <v stress="0">
+                    <xsl:value-of select="."/>
+                </v>
+            </xsl:matching-substring>
+            <xsl:non-matching-substring>
+                <xsl:if test="not(. = '')">
+                    <cons>
+                        <xsl:value-of select="lower-case(.)"/>
+                    </cons>
+                </xsl:if>
+            </xsl:non-matching-substring>
+        </xsl:analyze-string>
+    </xsl:template>
+
+    <xsl:template match="str[not(child::stress)]" mode="consVowels">
+        <xsl:analyze-string select="." regex="[аэыоуяеиёюАЭЫОУЯЕИЁЮ]">
+            <xsl:matching-substring>
+                <v stress="probability">
+                    <xsl:value-of select="lower-case(.)"/>
+                </v>
+            </xsl:matching-substring>
+            <xsl:non-matching-substring>
+                <xsl:analyze-string select="." regex="\s+">
+                    <xsl:matching-substring/>
+                    <xsl:non-matching-substring>
+                        <cons>
+                            <xsl:value-of select="lower-case(.)"/>
+                        </cons>
+                    </xsl:non-matching-substring>
+                </xsl:analyze-string>
+            </xsl:non-matching-substring>
+        </xsl:analyze-string>
+    </xsl:template>
+
+    <!-- Stage Two: Combine proclitics with following word -->
+    <xsl:template match="w" mode="proclitics">
+        <xsl:choose>
+            <xsl:when
+                test="matches(lower-case(@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеи]|над|о[тб]?|п[е]?ред|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у|то|б[ы]?|л[иь]|ж[е])[о]?$')"/>
+            <xsl:when
+                test="./matches(lower-case((preceding-sibling::w[1])/@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеи]|над|о[тб]?|п[е]?ред|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у)[о]?$')">
+                <xsl:variable name="addProclitic">
+                    <xsl:value-of select="lower-case(concat((preceding-sibling::w[1])/@orth, ' ', @orth))"/>
+                </xsl:variable>
+                <w orth="{$addProclitic}">
+                    <xsl:apply-templates select="(preceding-sibling::w[1])/*"/>
+                    <xsl:apply-templates select="*"/>
+                </w>
+            </xsl:when>
+            <xsl:when test="./matches((following-sibling::w[1])/@orth, '^(то|б[ы]?|л[иь]|ж[е])$')">
+                <xsl:variable name="addEnclitic">
+                    <xsl:value-of select="concat(@orth, ' ', (following-sibling::w[1])/@orth)"/>
+                </xsl:variable>
+                <w orth="{$addEnclitic}">
+                    <xsl:apply-templates select="*"/>
+                    <xsl:apply-templates select="(following-sibling::w[1])/*"/>
+                </w>
+            </xsl:when>
+            <xsl:otherwise>
+                <w orth="{@orth}">
+                    <xsl:apply-templates/>
+                </w>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <!-- Stage Three: Combine the contents of neighboring cons elements 
+    (necessary after combining proclitics)-->
+    <xsl:template match="w" mode="consProclitics">
+        <w orth="{@orth}">
+            <xsl:apply-templates select="*" mode="consProclitics"/>
+        </w>
+    </xsl:template>
+
+    <xsl:template match="cons[preceding-sibling::*[1] is preceding-sibling::cons[1]]"
+        mode="consProclitics">
+        <cons>
+            <xsl:value-of select="lower-case(concat(preceding-sibling::cons[1], .))"/>
+        </cons>
+    </xsl:template>
+
+    <xsl:template match="cons[following-sibling::*[1] is following-sibling::cons[1]]"
+        mode="consProclitics"/>
+
+    <!-- Stage Four: Map soft vowels to 'j'+hard paired vowel
+        This leaves things "incorrect" for a while.
+    -->
+    <xsl:template match="w" mode="softVowels">
+        <w orth="{@orth}">
+            <xsl:apply-templates select="*" mode="palatComps"/>
+        </w>
+    </xsl:template>
+    <xsl:template
+        match="cons[following-sibling::*[1] is following-sibling::v[1][matches(., '^[яеиёю]$')]]"
+        mode="palatComps">
+        <cons surface="{.}">
+            <xsl:value-of select="concat(., 'j')"/>
+        </cons>
+    </xsl:template>
+    <xsl:template
+        match="v[matches(., '^[яиеёю]$') and preceding-sibling::*[1] is preceding-sibling::cons[1]]"
+        mode="palatComps">
+        <v stress="{@stress}" surface="{.}">
+            <xsl:value-of select="translate(., 'яиеёю', 'аыэоу')"/>
+        </v>
+    </xsl:template>
+    <xsl:template match="v[matches(., '^[яиеёю]$') and count(preceding-sibling::*)=0]">
+        <xsl:if test="not(. = 'и')">
+            <cons>
+                <xsl:text>j</xsl:text>
+            </cons>
+        </xsl:if>
+        <v stress="{@stress}" surface="{.}">
+            <xsl:value-of select="translate(., 'яеёю', 'аэоу')"/>
+        </v>
+    </xsl:template>
+    <xsl:template match="v[preceding-sibling::*[1] is preceding-sibling::v[1]][matches(., '^[яиеёю]$')]" mode="palatComps">
+        <cons>j</cons>
+        <v stress="{@stress}" surface="{.}">
+            <xsl:value-of select="translate(., 'яиеёю', 'аыэоу')"/>
+        </v>
+    </xsl:template>
+
+    <!-- Stage Five: Remove soft sign or 'j' after unpaired hard consonant
+        Replace soft sign or add 'j' after unpaired soft consonant.
+        This is a convenient place to fix up compound letters: щ->шч, т(ь)с(ь)->ц
+    -->
+    <xsl:template match="w" mode="unpairedCons">
+        <w orth="{@orth}">
+            <xsl:apply-templates mode="unpairedCons"/>
+        </w>
+    </xsl:template>
+
+    <xsl:template match="cons" mode="unpairedCons">
+        <xsl:variable name="reflexiveToHardTs">
+            <xsl:value-of select="replace(., 'т[jь]?с[jь]?', 'ц')"/>
+        </xsl:variable>
+        <xsl:variable name="alwaysHardSoft">
+            <xsl:analyze-string select="$reflexiveToHardTs" regex="^(.*)([жшчцщ])([jь]?)$">
+                <xsl:matching-substring>
+                    <xsl:choose>
+                        <xsl:when test="matches(., '^(.*)([жшц])([jь]?)$')">
+                            <xsl:value-of select="concat(regex-group(1), regex-group(2))"/>
+                        </xsl:when>
+                        <xsl:when test="matches(., '^(.*)([чщ])([jь]?)$')">
+                            <xsl:value-of select="concat(regex-group(1), regex-group(2), 'j')"/>
+                        </xsl:when>
+                    </xsl:choose>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:variable>
+        <cons>
+            <xsl:value-of select="replace(replace($alwaysHardSoft, 'ц', 'тс'), 'щ','шч')"/>
+        </cons>
+    </xsl:template>
+
+    <!-- Stage Six: Reduce unstressed vowels -->
+    <xsl:template match="w" mode="reduceVowels">
+        <w orth="{@orth}">
+            <xsl:apply-templates select="*" mode="reduceVowels"/>
+        </w>
+    </xsl:template>
+
+    <xsl:template match="v[not(@stress = '1')]" mode="reduceVowels">
+        <v stress="{@stress}">
+            <xsl:choose>
+                <!-- Reduce 'o' to 'a' in absolute initial position and directly before stressed vowel,
+                in approximation of [ɐ]-->
+                <xsl:when test="contains(preceding-sibling::cons[1], 'j')">
+                    <xsl:value-of select="translate(., 'аоэ','иии')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:choose>
+                        <xsl:when
+                            test="following-sibling::v[@stress='1'] or not(preceding-sibling::v)">
+                            <xsl:value-of select="translate(., 'аоу', 'аaу')"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="translate(., 'эо','иа')"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:otherwise>
+            </xsl:choose>
+        </v>
+    </xsl:template>
+
+    <!-- Stage Seven: Devoice final consonants-->
+    <xsl:template match="w" mode="devoiceFinal">
+        <w orth="{@orth}">
+            <xsl:apply-templates select="*" mode="devoiceFinal"/>
+        </w>
+    </xsl:template>
+
+    <xsl:template match="cons[not(following-sibling::*)]" mode="devoiceFinal">
+        <cons>
+            <xsl:analyze-string select="." regex="(.*)([бвгдзж]+)([jь]?)">
+                <xsl:matching-substring>
+                    <xsl:value-of
+                        select="concat(regex-group(1), translate(regex-group(2),'[бвгдзж]','[пфктсш]'), regex-group(3))"
+                    />
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:value-of select="."/>
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </cons>
+    </xsl:template>
+
+    <!-- Stage Eight: Voice and devoice consonant clusters  -->
+    <xsl:template match="w" mode="voicingClusters">
+        <w orth="{@orth}">
+            <xsl:apply-templates select="*" mode="voicingClusters"/>
+        </w>
+    </xsl:template>
+
+    <xsl:template match="cons" mode="voicingClusters">
+        <cons>
+            <xsl:analyze-string select="." regex="([а-я]*)([пфктсш]+[бгдзж]+)([a-z]*)">
+                <xsl:matching-substring>
+                    <xsl:value-of
+                        select="concat(regex-group(1), translate(regex-group(2), 'пфктсш', 'бвгдзж'),  regex-group(3))"
+                    />
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:analyze-string select="." regex="([а-я]*)([бвгдзж]+[пфктсшц]+)([a-z]*)">
+                        <xsl:matching-substring>
+                            <xsl:value-of
+                                select="concat(regex-group(1),translate(regex-group(2), 'бвгдзж', 'пфктсш'),  regex-group(3))"
+                            />
+                        </xsl:matching-substring>
+                        <xsl:non-matching-substring>
+                            <xsl:value-of select="."/>
+                        </xsl:non-matching-substring>
+                    </xsl:analyze-string>
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </cons>
+    </xsl:template>
+
+    <!-- Stage Nine: Convert Cyrillic to Latin -->
+    <xsl:template match="w" mode="latinize">
+        <w orth="{@orth}">
+            <xsl:apply-templates select="*" mode="latinize"/>
+        </w>
+    </xsl:template>
+
+    <xsl:template match="cons" mode="latinize">
+        <cons>
+            <xsl:value-of
+                select="replace(translate(., 'бвгдзжйклмнпрстфцхчшьъ','bvgdzžjklmnprstfcxčšj″'),'([a-zžčš])\1','$1')"
+            />
+        </cons>
+    </xsl:template>
+    <xsl:template match="v" mode="latinize">
+        <v stress="{@stress}">
+            <xsl:value-of select="translate(lower-case(.), 'аэиыоу', 'aeiiou')"/>
+        </v>
+    </xsl:template>
+
+</xsl:stylesheet>
