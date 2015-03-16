@@ -25,7 +25,18 @@
             <xsl:variable name="ambRhyme2">
                 <xsl:apply-templates select="$ambRhyme1" mode="match"/>
             </xsl:variable>
-            <xsl:apply-templates select="$ambRhyme2" mode="stanzaAmbient"/>
+            <xsl:variable name="ambRhyme3">
+                <xsl:apply-templates select="$ambRhyme2" mode="stanzaAmbient"/>
+            </xsl:variable>
+            <xsl:choose>
+                <xsl:when test="$ambRhyme3/count(distinct-values(@ambRhyme)) > 1">
+                    <xsl:text>There's something special about this strophe</xsl:text>
+                    <xsl:apply-templates select="$ambRhyme3"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates select="$ambRhyme3"/>
+                </xsl:otherwise>
+            </xsl:choose>
         </divs>
     </xsl:template>
 
@@ -34,7 +45,7 @@
             <!-- Rhyme Stage One: Determine if possible rhyme is masc, 
                 fem, dactylic -->
             <xsl:apply-templates select="l" mode="rhymeContext"/>
-            
+
         </lg>
     </xsl:template>
 
@@ -49,8 +60,8 @@
         <xsl:variable name="noMatchingLines">
             <xsl:value-of select="avg(l/count(tokenize(@matchingLines, ' ')))"/>
         </xsl:variable>
-                  
-        
+
+
         <xsl:variable name="ambientRhyme">
             <xsl:value-of select="string-join(distinct-values(l/@matchingLines), ',')"/>
         </xsl:variable>
@@ -73,7 +84,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of
-                        select="w[last()]/v[@stress='1']/concat(., string-join(following-sibling::*/text(), ''))"
+                        select="w[last()]/v[@stress='1']/concat(., string-join(following-sibling::cons|v['u']/text(), ''))"
                     />
                 </xsl:otherwise>
             </xsl:choose>
@@ -85,16 +96,19 @@
 
     <!-- Rhyme Stage Three: Return lines which are exact matches-->
     <xsl:template match="l" mode="rhymeMatch">
+        <xsl:variable name="currentPosRhyme">
+            <xsl:value-of select="@posRhyme"/>
+        </xsl:variable>
         <xsl:variable name="currentCompText">
             <xsl:value-of select="@compText"/>
         </xsl:variable>
         <xsl:variable name="matchingLines">
             <xsl:value-of
-                select="string-join(parent::lg/l[@compText = $currentCompText]/string(count(preceding-sibling::l)+1), ' ')"
+                select="string-join(parent::lg/l[@compText = $currentCompText][@posRhyme=$currentPosRhyme]/string(count(preceding-sibling::l)+1), ' ')"
             />
         </xsl:variable>
 
-        <l posRhyme="{@posRhyme}" compText="{$currentCompText}" matchingLines="{$matchingLines}">
+        <l posRhyme="{$currentPosRhyme}" compText="{$currentCompText}" matchingLines="{$matchingLines}">
             <xsl:apply-templates/>
         </l>
     </xsl:template>
