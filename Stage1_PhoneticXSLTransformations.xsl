@@ -40,6 +40,9 @@
             <xsl:variable name="stage1output">
                 <xsl:apply-templates select="$stage0output" mode="strToConsVow"/>
             </xsl:variable>
+            <xsl:message>
+                <xsl:apply-templates select="$stage1output"/>
+            </xsl:message>
 
             <!-- Stage Two: return w elements that have combined proclitics with 
              the words that follow them, 
@@ -47,7 +50,9 @@
             <xsl:variable name="stage2output">
                 <xsl:apply-templates select="$stage1output" mode="proclitics"/>
             </xsl:variable>
-            <xsl:message><xsl:apply-templates select="$stage2output"/></xsl:message>
+            <xsl:message>
+                <xsl:apply-templates select="$stage2output"/>
+            </xsl:message>
 
             <!-- Stage Three: return w elements that have combined the contents 
             of neighboring cons elements
@@ -99,16 +104,27 @@
     <xsl:template match="w" mode="addStresses">
         <w>
             <xsl:apply-templates select="orth"/>
+
             <xsl:choose>
-                <xsl:when test="str/contains(., '(none)')">
-                    <str>
-                        <xsl:value-of select="lower-case(replace(orth/text(), '[&#34;.,!$:;\\\*\(\))]', ''))"/>
-                    </str>
+                <xsl:when test="str/stress">
+                    <xsl:apply-templates select="str"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:apply-templates select="str"/>
+                    <str>
+                        <xsl:analyze-string select="str" regex="\((.+)\)">
+                            <xsl:matching-substring>
+
+                                <xsl:value-of select="regex-group(1)"/>
+
+                            </xsl:matching-substring>
+                            <xsl:non-matching-substring>
+                                <xsl:value-of select="."/>
+                            </xsl:non-matching-substring>
+                        </xsl:analyze-string>
+                    </str>
                 </xsl:otherwise>
             </xsl:choose>
+
         </w>
     </xsl:template>
 
@@ -136,9 +152,10 @@
         <xsl:apply-templates select="stress|text()" mode="consVowels"/>
     </xsl:template>
 
-    <xsl:template match="str/text()" mode="consVowels">
-        <xsl:analyze-string select="." regex="[аэыоуяеиёюАЭЫОУЯЕИЁЮ]">
+    <xsl:template match="str[child::stress]/text()" mode="consVowels">
+        <xsl:analyze-string select="." regex="([аэыоуяеиёю])">
             <xsl:matching-substring>
+
                 <v stress="0">
                     <xsl:value-of select="."/>
                 </v>
@@ -154,23 +171,55 @@
     </xsl:template>
 
     <xsl:template match="str[not(child::stress)]" mode="consVowels">
-        <xsl:analyze-string select="." regex="[аэыоуяеиёюАЭЫОУЯЕИЁЮ]">
-            <xsl:matching-substring>
-                <v stress="probability">
-                    <xsl:value-of select="lower-case(.)"/>
-                </v>
-            </xsl:matching-substring>
-            <xsl:non-matching-substring>
-                <xsl:analyze-string select="." regex="\s+">
-                    <xsl:matching-substring/>
+        <xsl:choose>
+            <xsl:when test="contains(., 'ё')">
+                <xsl:analyze-string select="." regex="[аэыоуяеиёюАЭЫОУЯЕИЁЮ]">
+                    <xsl:matching-substring>
+                        <xsl:choose>
+                            <xsl:when test="matches(., 'ё')">
+                                <v stress="1">
+                                    <xsl:value-of select="."/>
+                                </v>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <v stress="0">
+                                    <xsl:value-of select="."/>
+                                </v>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:matching-substring>
                     <xsl:non-matching-substring>
-                        <cons>
-                            <xsl:value-of select="lower-case(.)"/>
-                        </cons>
+                        <xsl:analyze-string select="." regex="\s+">
+                            <xsl:matching-substring/>
+                            <xsl:non-matching-substring>
+                                <cons>
+                                    <xsl:value-of select="lower-case(.)"/>
+                                </cons>
+                            </xsl:non-matching-substring>
+                        </xsl:analyze-string>
                     </xsl:non-matching-substring>
                 </xsl:analyze-string>
-            </xsl:non-matching-substring>
-        </xsl:analyze-string>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:analyze-string select="." regex="[аэыоуяеиёюАЭЫОУЯЕИЁЮ]">
+                    <xsl:matching-substring>
+                        <v stress="probability">
+                            <xsl:value-of select="."/>
+                        </v>
+                    </xsl:matching-substring>
+                    <xsl:non-matching-substring>
+                        <xsl:analyze-string select="." regex="\s+">
+                            <xsl:matching-substring/>
+                            <xsl:non-matching-substring>
+                                <cons>
+                                    <xsl:value-of select="lower-case(.)"/>
+                                </cons>
+                            </xsl:non-matching-substring>
+                        </xsl:analyze-string>
+                    </xsl:non-matching-substring>
+                </xsl:analyze-string>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <!-- Stage Two: Combine proclitics with following word -->
@@ -181,7 +230,8 @@
             <xsl:when
                 test="./matches(lower-case((preceding-sibling::w[1])/@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеи]|над|о[тб]?|п[е]?ред|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у)[о]?$')">
                 <xsl:variable name="addProclitic">
-                    <xsl:value-of select="lower-case(concat((preceding-sibling::w[1])/@orth, ' ', @orth))"/>
+                    <xsl:value-of
+                        select="lower-case(concat((preceding-sibling::w[1])/@orth, ' ', @orth))"/>
                 </xsl:variable>
                 <w orth="{$addProclitic}">
                     <xsl:apply-templates select="(preceding-sibling::w[1])/*"/>
@@ -255,7 +305,9 @@
             <xsl:value-of select="translate(., 'яеёю', 'аэоу')"/>
         </v>
     </xsl:template>
-    <xsl:template match="v[preceding-sibling::*[1] is preceding-sibling::v[1]][matches(., '^[яиеёю]$')]" mode="palatComps">
+    <xsl:template
+        match="v[preceding-sibling::*[1] is preceding-sibling::v[1]][matches(., '^[яиеёю]$')]"
+        mode="palatComps">
         <cons>j</cons>
         <v stress="{@stress}" surface="{.}">
             <xsl:value-of select="translate(., 'яиеёю', 'аыэоу')"/>
