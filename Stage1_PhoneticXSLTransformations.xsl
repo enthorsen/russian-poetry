@@ -25,7 +25,23 @@
 
     <!-- Streamlining w element -->
 
-    <xsl:template match="l">
+    <xsl:template match="lg">
+        <lg>
+            <xsl:variable name="lgStress">
+                <xsl:apply-templates select="l" mode="stress"/>
+            </xsl:variable>
+            <!-- Check for Meter -->
+            <xsl:variable name="meter1">
+                <xsl:apply-templates select="$lgStress" mode="meter"/>
+            </xsl:variable>
+            <xsl:message>
+                <xsl:value-of select="$meter1"/>
+            </xsl:message>
+            <xsl:apply-templates select="$meter1" mode="phonetic"/>
+        </lg>
+    </xsl:template>
+
+    <xsl:template match="l" mode="stress">
         <l>
             <!-- Stage Zero: currently when a word has no strong stress
              David's dictionary returns <str>none</str>-->
@@ -40,19 +56,19 @@
             <xsl:variable name="stage1output">
                 <xsl:apply-templates select="$stage0output" mode="strToConsVow"/>
             </xsl:variable>
-            <xsl:message>
-                <xsl:apply-templates select="$stage1output"/>
-            </xsl:message>
+            <xsl:apply-templates select="$stage1output"/>
 
+        </l>
+    </xsl:template>
+
+    <xsl:template match="l" mode="phonetic">
+        <l rhythm="{@rhythm}" ambientMeter="{@ambientMeter}">
             <!-- Stage Two: return w elements that have combined proclitics with 
              the words that follow them, 
              e.g. <w>nado</w><w>mnoi</w> becomes <w>nadomnoi</w>-->
             <xsl:variable name="stage2output">
-                <xsl:apply-templates select="$stage1output" mode="proclitics"/>
+                <xsl:apply-templates select="w" mode="proclitics"/>
             </xsl:variable>
-            <xsl:message>
-                <xsl:apply-templates select="$stage2output"/>
-            </xsl:message>
 
             <!-- Stage Three: return w elements that have combined the contents 
             of neighboring cons elements
@@ -66,9 +82,6 @@
             <xsl:variable name="stage4output">
                 <xsl:apply-templates select="$stage3output" mode="softVowels"/>
             </xsl:variable>
-            <xsl:message>
-                <xsl:apply-templates select="$stage4output"/>
-            </xsl:message>
 
             <!-- Stage Five: work out compound letters (shch, ts); 
             remove soft sign after unpaired hard cons (zhj becomes zh);
@@ -136,7 +149,7 @@
         2) If str element does not contain a stress, probability of vowels being stressed or unstressed between 0 and 1. Mark as something to refer meter to at later time.
         3) If a stress element, then wrap contents in v element with stress=1-->
     <xsl:template match="w" mode="strToConsVow">
-        <w orth="{orth}">
+        <w orth="{orth}" stressGiven="{count(str/stress)}">
             <xsl:apply-templates mode="consVowels"/>
         </w>
     </xsl:template>
@@ -203,7 +216,7 @@
             <xsl:otherwise>
                 <xsl:analyze-string select="." regex="[аэыоуяеиёюАЭЫОУЯЕИЁЮ]">
                     <xsl:matching-substring>
-                        <v stress="probability">
+                        <v stress="0">
                             <xsl:value-of select="."/>
                         </v>
                     </xsl:matching-substring>
@@ -233,7 +246,7 @@
                     <xsl:value-of
                         select="lower-case(concat((preceding-sibling::w[1])/@orth, ' ', @orth))"/>
                 </xsl:variable>
-                <w orth="{$addProclitic}">
+                <w orth="{$addProclitic}" stressGiven="{@stressGiven}">
                     <xsl:apply-templates select="(preceding-sibling::w[1])/*"/>
                     <xsl:apply-templates select="*"/>
                 </w>
@@ -242,13 +255,13 @@
                 <xsl:variable name="addEnclitic">
                     <xsl:value-of select="concat(@orth, ' ', (following-sibling::w[1])/@orth)"/>
                 </xsl:variable>
-                <w orth="{$addEnclitic}">
+                <w orth="{$addEnclitic}" stressGiven="{@stressGiven}">
                     <xsl:apply-templates select="*"/>
                     <xsl:apply-templates select="(following-sibling::w[1])/*"/>
                 </w>
             </xsl:when>
             <xsl:otherwise>
-                <w orth="{@orth}">
+                <w orth="{@orth}" stressGiven="{@stressGiven}">
                     <xsl:apply-templates/>
                 </w>
             </xsl:otherwise>
@@ -258,7 +271,7 @@
     <!-- Stage Three: Combine the contents of neighboring cons elements 
     (necessary after combining proclitics)-->
     <xsl:template match="w" mode="consProclitics">
-        <w orth="{@orth}">
+        <w orth="{@orth}" stressGiven="{@stressGiven}">
             <xsl:apply-templates select="*" mode="consProclitics"/>
         </w>
     </xsl:template>
@@ -277,7 +290,7 @@
         This leaves things "incorrect" for a while.
     -->
     <xsl:template match="w" mode="softVowels">
-        <w orth="{@orth}">
+        <w orth="{@orth}" stressGiven="{@stressGiven}">
             <xsl:apply-templates select="*" mode="palatComps"/>
         </w>
     </xsl:template>
@@ -319,7 +332,7 @@
         This is a convenient place to fix up compound letters: щ->шч, т(ь)с(ь)->ц
     -->
     <xsl:template match="w" mode="unpairedCons">
-        <w orth="{@orth}">
+        <w orth="{@orth}" stressGiven="{@stressGiven}">
             <xsl:apply-templates mode="unpairedCons"/>
         </w>
     </xsl:template>
@@ -352,7 +365,7 @@
 
     <!-- Stage Six: Reduce unstressed vowels -->
     <xsl:template match="w" mode="reduceVowels">
-        <w orth="{@orth}">
+        <w orth="{@orth}" stressGiven="{@stressGiven}">
             <xsl:apply-templates select="*" mode="reduceVowels"/>
         </w>
     </xsl:template>
@@ -382,7 +395,7 @@
 
     <!-- Stage Seven: Devoice final consonants-->
     <xsl:template match="w" mode="devoiceFinal">
-        <w orth="{@orth}">
+        <w orth="{@orth}" stressGiven="{@stressGiven}">
             <xsl:apply-templates select="*" mode="devoiceFinal"/>
         </w>
     </xsl:template>
@@ -404,7 +417,7 @@
 
     <!-- Stage Eight: Voice and devoice consonant clusters  -->
     <xsl:template match="w" mode="voicingClusters">
-        <w orth="{@orth}">
+        <w orth="{@orth}" stressGiven="{@stressGiven}">
             <xsl:apply-templates select="*" mode="voicingClusters"/>
         </w>
     </xsl:template>
@@ -435,7 +448,7 @@
 
     <!-- Stage Nine: Convert Cyrillic to Latin -->
     <xsl:template match="w" mode="latinize">
-        <w orth="{@orth}">
+        <w orth="{@orth}" stressGiven="{@stressGiven}">
             <xsl:apply-templates select="*" mode="latinize"/>
         </w>
     </xsl:template>
@@ -451,6 +464,57 @@
         <v stress="{@stress}">
             <xsl:value-of select="translate(lower-case(.), 'аэиыоу', 'aeiiou')"/>
         </v>
+    </xsl:template>
+
+    <xsl:template match="l" mode="meter">
+        <xsl:variable name="total">
+            <xsl:value-of select="count(w/v)"/>
+        </xsl:variable>
+
+        <xsl:variable name="avgDistanceBinary">
+            <xsl:value-of select="avg(for $i in (2 to $total) return abs((w/v)[$i]/@stress - (w/v)[$i - 2]/@stress))"/>
+        </xsl:variable>
+        <xsl:variable name="avgDistanceTernary">
+            <xsl:value-of select="avg(for $i in (3 to $total) return abs((w/v)[$i]/@stress - (w/v)[$i - 3]/@stress))"/>
+        </xsl:variable>
+
+        <xsl:variable name="seq">
+            <xsl:for-each select="w/v">
+                <xsl:choose>
+                    <xsl:when test="@stress = 'probability'">
+                        <xs:integer>0</xs:integer>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="@stress"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </xsl:variable>
+
+        <xsl:message>
+            <xsl:text>Binary: </xsl:text><xsl:value-of select="$avgDistanceBinary"/>
+            <xsl:text>Ternary: </xsl:text><xsl:value-of select="$avgDistanceTernary"/>
+            <xsl:text>Rhythm: </xsl:text><xsl:value-of select="$seq"/>
+        </xsl:message>
+
+        <l rhythm="{$seq}">
+            <xsl:attribute name="ambientMeter">
+                <xsl:choose>
+                    <xsl:when test="$avgDistanceBinary lt $avgDistanceTernary">
+                        <xsl:text>binary</xsl:text>
+                    </xsl:when>
+                    <xsl:when test="$avgDistanceBinary gt $avgDistanceTernary">
+                        <xsl:text>ternary</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>indeterminate</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+            <xsl:apply-templates/>
+        </l>
+
+
     </xsl:template>
 
 </xsl:stylesheet>
