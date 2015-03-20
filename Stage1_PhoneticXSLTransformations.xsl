@@ -87,7 +87,7 @@
     <xsl:template match="w" mode="propagateMeter">
         <w orth="{@orth}" stressGiven="{@stressGiven}">
             <xsl:choose>
-                <xsl:when test="count(v) = 1 and @stressGiven='0'">
+                <xsl:when test="(@monosyllable = '1' or count(v) = 1) and @stressGiven='0'">
                     <xsl:attribute name="corr">Corrected</xsl:attribute>
                     <xsl:apply-templates select="*" mode="propagateMeter"/>
                 </xsl:when>
@@ -361,6 +361,11 @@
                         select="lower-case(concat((preceding-sibling::w[1])/@orth, ' ', @orth))"/>
                 </xsl:variable>
                 <w orth="{$addProclitic}" stressGiven="{@stressGiven}">
+                    <xsl:if test="count(v) = 1">
+                        <xsl:attribute name="monosyllable">
+                            <xsl:text>1</xsl:text>
+                        </xsl:attribute>
+                    </xsl:if>
                     <xsl:apply-templates select="(preceding-sibling::w[1])/*"/>
                     <xsl:apply-templates select="*"/>
                 </w>
@@ -370,12 +375,22 @@
                     <xsl:value-of select="concat(@orth, ' ', (following-sibling::w[1])/@orth)"/>
                 </xsl:variable>
                 <w orth="{$addEnclitic}" stressGiven="{@stressGiven}">
+                    <xsl:if test="count(v) = 1">
+                        <xsl:attribute name="monosyllable">
+                            <xsl:text>1</xsl:text>
+                        </xsl:attribute>
+                    </xsl:if>
                     <xsl:apply-templates select="*"/>
                     <xsl:apply-templates select="(following-sibling::w[1])/*"/>
                 </w>
             </xsl:when>
             <xsl:otherwise>
                 <w orth="{@orth}" stressGiven="{@stressGiven}">
+                    <xsl:if test="count(v) = 1">
+                        <xsl:attribute name="monosyllable">
+                            <xsl:text>1</xsl:text>
+                        </xsl:attribute>
+                    </xsl:if>
                     <xsl:apply-templates/>
                 </w>
             </xsl:otherwise>
@@ -385,7 +400,7 @@
     <!-- Stage Three: Combine the contents of neighboring cons elements 
     (necessary after combining proclitics)-->
     <xsl:template match="w" mode="consProclitics">
-        <w orth="{@orth}" stressGiven="{@stressGiven}">
+        <w orth="{@orth}" stressGiven="{@stressGiven}" monosyllable="{@monosyllable}">
             <xsl:apply-templates select="*" mode="consProclitics"/>
         </w>
     </xsl:template>
