@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <poem title="Наследница" dateAttr="1959 20 ноября" placeAttr="Ленинград">
    <divs>
-      <lg>
-         <l rhythm="000101" ambientMeter="binary">
+      <lg ambRhyme="1,2" avgLPerRhyme="1">
+         <l posRhyme="0"
+            compText="ip"
+            matchingLines="1"
+            rhythm="000101"
+            ambientMeter="binary">
             <w orth="от сарскосельских" stressGiven="1">
                <v stress="0">o</v>
                <cons>ts</cons>
@@ -21,7 +25,11 @@
                <cons>p</cons>
             </w>
          </l>
-         <l rhythm="10" ambientMeter="indeterminate">
+         <l posRhyme="1"
+            compText="uškjn"
+            matchingLines="2"
+            rhythm="10"
+            ambientMeter="indeterminate">
             <w orth="Пушкин" stressGiven="1">
                <cons>p</cons>
                <v stress="1">u</v>
@@ -31,8 +39,13 @@
             </w>
          </l>
       </lg>
-      <lg>
-         <l rhythm="010001010" ambientMeter="binary">
+      <lg ambRhyme="1 4,2 3,5,6 7,8,9 12,10 11"
+          avgLPerRhyme="1.833333333333333333">
+         <l posRhyme="1"
+            compText="et"
+            matchingLines="1 4"
+            rhythm="010001010"
+            ambientMeter="binary">
             <w orth="Казалось" stressGiven="1">
                <cons>k</cons>
                <v stress="0">a</v>
@@ -63,7 +76,11 @@
                <v stress="0">a</v>
             </w>
          </l>
-         <l rhythm="01000101" ambientMeter="binary">
+         <l posRhyme="0"
+            compText="al"
+            matchingLines="2 3"
+            rhythm="01000101"
+            ambientMeter="binary">
             <w orth="средь этих" stressGiven="1">
                <cons>srj</cons>
                <v stress="0">i</v>
@@ -89,7 +106,11 @@
                <cons>l</cons>
             </w>
          </l>
-         <l rhythm="00000101" ambientMeter="binary">
+         <l posRhyme="0"
+            compText="al"
+            matchingLines="2 3"
+            rhythm="00000101"
+            ambientMeter="binary">
             <w orth="О," stressGiven="0">
                <v stress="0">o</v>
             </w>
@@ -117,7 +138,11 @@
                <cons>l</cons>
             </w>
          </l>
-         <l rhythm="000100110" ambientMeter="ternary">
+         <l posRhyme="1"
+            compText="et"
+            matchingLines="1 4"
+            rhythm="000100110"
+            ambientMeter="ternary">
             <w orth="Что" stressGiven="0">
                <cons>čt</cons>
                <v stress="0">a</v>
@@ -146,7 +171,11 @@
                <v stress="0">a</v>
             </w>
          </l>
-         <l rhythm="01010001" ambientMeter="binary">
+         <l posRhyme="0"
+            compText="st"
+            matchingLines="5"
+            rhythm="01010001"
+            ambientMeter="binary">
             <w orth="Фелицу," stressGiven="1">
                <cons>fj</cons>
                <v stress="0">i</v>
@@ -170,7 +199,11 @@
                <v stress="1">i</v>
             </w>
          </l>
-         <l rhythm="000100010" ambientMeter="binary">
+         <l posRhyme="1"
+            compText="ej"
+            matchingLines="6 7"
+            rhythm="000100010"
+            ambientMeter="binary">
             <w orth="и все" stressGiven="0">
                <v stress="0">i</v>
                <cons>fsj</cons>
@@ -195,7 +228,11 @@
                <v stress="0">i</v>
             </w>
          </l>
-         <l rhythm="010100010" ambientMeter="binary">
+         <l posRhyme="1"
+            compText="ej"
+            matchingLines="6 7"
+            rhythm="010100010"
+            ambientMeter="binary">
             <w orth="Дворца" stressGiven="1">
                <cons>dv</cons>
                <v stress="0">a</v>
@@ -221,7 +258,11 @@
                <v stress="0">i</v>
             </w>
          </l>
-         <l rhythm="01010001" ambientMeter="binary">
+         <l posRhyme="0"
+            compText="t"
+            matchingLines="8"
+            rhythm="01010001"
+            ambientMeter="binary">
             <w orth="и липы" stressGiven="1">
                <v stress="0">i</v>
                <cons>lj</cons>
@@ -245,7 +286,11 @@
                <v stress="1">i</v>
             </w>
          </l>
-         <l rhythm="01010001" ambientMeter="binary">
+         <l posRhyme="0"
+            compText="enj"
+            matchingLines="9 12"
+            rhythm="01010001"
+            ambientMeter="binary">
             <w orth="и даже" stressGiven="1">
                <v stress="0">i</v>
                <cons>d</cons>
@@ -269,7 +314,11 @@
                <cons>nj</cons>
             </w>
          </l>
-         <l rhythm="000100010" ambientMeter="binary">
+         <l posRhyme="1"
+            compText="ax"
+            matchingLines="10 11"
+            rhythm="000100010"
+            ambientMeter="binary">
             <w orth="Всю" stressGiven="0">
                <cons>fsj</cons>
                <v stress="0">u</v>
@@ -293,7 +342,11 @@
                <v stress="0">a</v>
             </w>
          </l>
-         <l rhythm="000100010" ambientMeter="binary">
+         <l posRhyme="1"
+            compText="ax"
+            matchingLines="10 11"
+            rhythm="000100010"
+            ambientMeter="binary">
             <w orth="и покаянную" stressGiven="1">
                <v stress="0">i</v>
                <cons>p</cons>
@@ -316,7 +369,11 @@
                <v stress="0">u</v>
             </w>
          </l>
-         <l rhythm="00010001" ambientMeter="binary">
+         <l posRhyme="0"
+            compText="enj"
+            matchingLines="9 12"
+            rhythm="00010001"
+            ambientMeter="binary">
             <w orth="и замогильную" stressGiven="1">
                <v stress="0">i</v>
                <cons>z</cons>
