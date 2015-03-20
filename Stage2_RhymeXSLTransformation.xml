@@ -28,15 +28,7 @@
             <xsl:variable name="ambRhyme3">
                 <xsl:apply-templates select="$ambRhyme2" mode="stanzaAmbient"/>
             </xsl:variable>
-            <xsl:choose>
-                <xsl:when test="$ambRhyme3/count(distinct-values(@ambRhyme)) > 1">
-                    <xsl:text>There's something special about this strophe</xsl:text>
-                    <xsl:apply-templates select="$ambRhyme3"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:apply-templates select="$ambRhyme3"/>
-                </xsl:otherwise>
-            </xsl:choose>
+            <xsl:apply-templates select="$ambRhyme3" mode="divsAmbient"/>
         </divs>
     </xsl:template>
 
@@ -89,7 +81,7 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <l posRhyme="{$position}" compText="{$context}">
+        <l posRhyme="{$position}" compText="{$context}" rhythm="{@rhythm}" ambientMeter="{@ambientMeter}">
             <xsl:apply-templates/>
         </l>
     </xsl:template>
@@ -108,7 +100,7 @@
             />
         </xsl:variable>
 
-        <l posRhyme="{$currentPosRhyme}" compText="{$currentCompText}" matchingLines="{$matchingLines}">
+        <l posRhyme="{$currentPosRhyme}" compText="{$currentCompText}" matchingLines="{$matchingLines}"  rhythm="{@rhythm}" ambientMeter="{@ambientMeter}">
             <xsl:apply-templates/>
         </l>
     </xsl:template>
