@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
-    xmlns="http://www.w3.org/1999/xhtml">
+    xmlns="http://www.w3.org/1999/xhtml" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs">
     <xsl:output method="xhtml" indent="yes"/>
 
     <xsl:template match="/">
@@ -26,13 +27,11 @@
     </xsl:template>
 
     <xsl:template match="lg" mode="table">
-        <xsl:variable name="matchingLines">
-            <xsl:sequence select="tokenize(parent::lg/@ambRhyme, ',')"/>
-        </xsl:variable>
+        <xsl:variable name="matchingLines" select="tokenize(@ambRhyme, ',')" as="xs:string+"/>
         <xsl:variable name="numberMatches">
             <xsl:value-of select="count($matchingLines)"/>
         </xsl:variable>
-        
+
         <xsl:for-each select="l">
             <tr>
                 <td>
@@ -44,7 +43,7 @@
                     <xsl:value-of select="string-join(w/@orth, ' ')"/>
                 </td>
                 <td>
-                    <xsl:for-each select="w/v">
+<xsl:variable name="stressString">                    <xsl:for-each select="w/v">
                         <xsl:variable name="currentPos">
                             <xsl:value-of
                                 select="1 + count(preceding-sibling::v) + count(parent::w/preceding-sibling::w/v)"
@@ -73,21 +72,47 @@
                                 </xsl:if>
                             </xsl:when>
                         </xsl:choose>
+
+               
                     </xsl:for-each>
-                </td>
-                <td>                    
-                    <xsl:variable name="lineLevelRhyme" select="@matchingLines"/>
-                    <xsl:variable name="rhymePrimacy">
-                        <xsl:for-each select="$matchingLines">
-                            <xsl:if test="current() = $lineLevelRhyme">
-                                <xsl:value-of select="$matchingLines/position()"/>
+</xsl:variable>
+                    <xsl:message><xsl:value-of select="xs:string($stressString)"/></xsl:message>
+                    <xsl:variable name="feet" select="tokenize(normalize-space(xs:string($stressString)), '\|')"/>
+                        <xsl:for-each select="$feet"><span>
+                            <xsl:attribute name="class" select="current()"/>
+                            <xsl:value-of select="."/>
+                            <xsl:if test="not(position() = count($feet))">
+                                <xsl:text>|</xsl:text>
                             </xsl:if>
-                        </xsl:for-each>
+                        </span></xsl:for-each>
+                    
+                </td>
+                <td>
+                    <xsl:variable name="lineLevelRhyme" select="@matchingLines"/>
+                    <xsl:message>
+                        <xsl:value-of select="$lineLevelRhyme"/>
+                    </xsl:message>
+                    <xsl:variable name="rhymePrimacy">
+                        <xsl:value-of select="index-of($matchingLines, $lineLevelRhyme)"/>
                     </xsl:variable>
                     <xsl:message>
-                        <xsl:value-of select='$rhymePrimacy'/>
+                        <xsl:value-of select="$rhymePrimacy"/>
                     </xsl:message>
-                    <xsl:value-of select="translate($rhymePrimacy, '[12345]', '[abcde]')"/>
+                    <xsl:choose>
+                        <xsl:when test="@posRhyme='0'">
+                            <xsl:value-of select="translate($rhymePrimacy,'[1234567]','[abcdefg]')"
+                            />
+                        </xsl:when>
+                        <xsl:when test="@posRhyme='1'">
+                            <xsl:value-of select="translate($rhymePrimacy,'[1234567]','[ABCDEFG]')"
+                            />
+                        </xsl:when>
+                        <xsl:when test="xs:integer(@posRhyme) gt 1">
+                            <xsl:value-of
+                                select="concat(translate($rhymePrimacy,'[1234567]','[ABCDEFG]'),'&#x2032;')"
+                            />
+                        </xsl:when>
+                    </xsl:choose>
                 </td>
             </tr>
         </xsl:for-each>
