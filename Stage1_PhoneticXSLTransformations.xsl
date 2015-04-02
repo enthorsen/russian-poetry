@@ -79,16 +79,29 @@
     </xsl:template>
 
     <xsl:template match="l" mode="propagateMeter">
-        <l rhythm="{@rhythm}" ambientMeter="{@ambientMeter}">
+        <xsl:message>
+            <xsl:value-of select="w/@orth"/>
+            <xsl:value-of select="w/v/@stress"/>
+        </xsl:message>
+        <l rhythm="{@rhythm}">
+            <xsl:attribute name="ambientMeter">
+                <xsl:choose>
+                    <xsl:when test="not(parent::lg/@ambientMeter = 'indeterminate')">
+                        <xsl:value-of select="parent::lg/@ambientMeter"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="@ambientMeter"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
             <xsl:apply-templates select="w" mode="propagateMeter"/>
         </l>
     </xsl:template>
 
     <xsl:template match="w" mode="propagateMeter">
-        <w orth="{@orth}" stressGiven="{@stressGiven}">
+        <w orth="{@orth}">
             <xsl:choose>
-                <xsl:when test="(@monosyllable = '1' or count(v) = 1) and @stressGiven='0'">
-                    <xsl:attribute name="corr">Corrected</xsl:attribute>
+                <xsl:when test="(count(v[@stress='0']) gt 0)">
                     <xsl:apply-templates select="*" mode="propagateMeter"/>
                 </xsl:when>
                 <xsl:otherwise>
@@ -99,43 +112,65 @@
     </xsl:template>
 
     <xsl:template match="v" mode="propagateMeter">
+
         <xsl:variable name="posUltStress">
             <xsl:value-of
-                select="ancestor::l/(descendant::v[@stress='1'])[last()]/sum((count(preceding-sibling::v), count(parent::w/preceding-sibling::w/v)))"
-            />
-        </xsl:variable>
-        <xsl:variable name="posCurrent">
-            <xsl:value-of
-                select="sum((count(preceding-sibling::v), count(parent::w/preceding-sibling::w/v)))"
+                select="count(ancestor::l//v)-count((ancestor::l//v[@stress='1'])[last()]/following-sibling::v)"
             />
         </xsl:variable>
 
+        <xsl:variable name="posCurrent">
+            <xsl:value-of
+                select="sum((count(preceding-sibling::v), count(parent::w/preceding-sibling::w/v)))+1"
+            />
+        </xsl:variable>
+
+        <xsl:message>
+            <xsl:value-of select="ancestor::l"/>
+            <xsl:value-of select="parent::w"/>
+            <xsl:value-of select="floor(($posUltStress - $posCurrent) div 2)"/>
+            <xsl:value-of select="($posUltStress - $posCurrent) div 2"/>
+        </xsl:message>
         <v>
             <xsl:attribute name="stress">
                 <xsl:choose>
-                    <xsl:when test="ancestor::lg/@ambientMeter='binary'">
-                        <xsl:choose>
-                            <xsl:when
-                                test="round(($posUltStress - $posCurrent) div 2) = (($posUltStress - $posCurrent) div 2)">
-                                <xs:integer>1</xs:integer>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xs:integer>0</xs:integer>
-                            </xsl:otherwise>
-                        </xsl:choose>
+                    <xsl:when test="not(@stress = '0')">
+                        <xsl:value-of select="@stress"/>
                     </xsl:when>
-                    <xsl:when test="ancestor::lg/@ambientMeter='ternary'">
+                    <xsl:otherwise>
                         <xsl:choose>
-                            <xsl:when
-                                test="round(($posUltStress - $posCurrent) div 3) = (($posUltStress - $posCurrent) div 3)">
-                                <xs:integer>1</xs:integer>
+                            <xsl:when test="ancestor::lg/@ambientMeter='binary'">
+                                <xsl:choose>
+                                    <xsl:when
+                                        test="floor(($posUltStress - $posCurrent) div 2) = (($posUltStress - $posCurrent) div 2)">
+                                        <xsl:choose>
+                                            <xsl:when test="count(parent::w/v[@stress=0]) gt 2">
+                                                <xs:text>0</xs:text>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xs:text>1</xs:text>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xs:text>-1</xs:text>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </xsl:when>
-                            <xsl:otherwise>
-                                <xs:integer>0</xs:integer>
-                            </xsl:otherwise>
+                            <xsl:when test="ancestor::lg/@ambientMeter='ternary'">
+                                <xsl:choose>
+                                    <xsl:when
+                                        test="floor(($posUltStress - $posCurrent) div 3) = (($posUltStress - $posCurrent) div 3)">
+                                        <xs:integer>1</xs:integer>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xs:integer>-1</xs:integer>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:when>
+                            <xsl:otherwise>0</xsl:otherwise>
                         </xsl:choose>
-                    </xsl:when>
-                    <xsl:otherwise>0</xsl:otherwise>
+                    </xsl:otherwise>
                 </xsl:choose>
             </xsl:attribute>
             <xsl:apply-templates/>
@@ -173,12 +208,12 @@
             <xsl:apply-templates select="$stage3output"/>
         </l>
     </xsl:template>
-    
+
     <xsl:template match="l" mode="meter">
         <xsl:variable name="total">
             <xsl:value-of select="count(w/v)"/>
         </xsl:variable>
-        
+
         <xsl:variable name="avgDistanceBinary">
             <xsl:value-of
                 select="avg(for $i in (3 to $total) return abs((w/v)[$i]/@stress - (w/v)[$i - 2]/@stress))"
@@ -189,11 +224,11 @@
                 select="avg(for $i in (4 to $total) return abs((w/v)[$i]/@stress - (w/v)[$i - 3]/@stress))"
             />
         </xsl:variable>
-        
+
         <xsl:variable name="seq">
             <xsl:for-each select="w/v">
                 <xsl:choose>
-                    <xsl:when test="@stress = 'probability'">
+                    <xsl:when test="@stress = '0'">
                         <xs:integer>0</xs:integer>
                     </xsl:when>
                     <xsl:otherwise>
@@ -202,7 +237,7 @@
                 </xsl:choose>
             </xsl:for-each>
         </xsl:variable>
-        
+
         <xsl:message>
             <xsl:text>Binary: </xsl:text>
             <xsl:value-of select="$avgDistanceBinary"/>
@@ -211,7 +246,7 @@
             <xsl:text>Rhythm: </xsl:text>
             <xsl:value-of select="$seq"/>
         </xsl:message>
-        
+
         <l rhythm="{$seq}">
             <xsl:attribute name="ambientMeter">
                 <xsl:choose>
@@ -229,7 +264,7 @@
             <xsl:apply-templates/>
         </l>
     </xsl:template>
-    
+
     <!-- Stage Zero: -->
     <xsl:template match="w" mode="addStresses">
         <w>
@@ -252,8 +287,9 @@
                 </xsl:otherwise>
             </xsl:choose>
         </w>
+
     </xsl:template>
-    
+
     <!-- Stage One: 
         w template in strToConsVows mode will return a 
         streamlined w to variable $stage1output
@@ -263,7 +299,7 @@
         3) If a stress element, then wrap contents in v element with stress=1-->
 
     <xsl:template match="w" mode="strToConsVow">
-        <w orth="{orth}" stressGiven="{count(str/stress)}">
+        <w orth="{orth}">
             <xsl:apply-templates mode="consVowels"/>
         </w>
     </xsl:template>
@@ -275,15 +311,15 @@
             <xsl:apply-templates/>
         </v>
     </xsl:template>
-    
+
     <xsl:template match="str[child::stress]" mode="consVowels">
         <xsl:apply-templates select="stress|text()" mode="consVowels"/>
     </xsl:template>
-    
+
     <xsl:template match="str[child::stress]/text()" mode="consVowels">
         <xsl:analyze-string select="." regex="([аэыоуяеиёю])">
             <xsl:matching-substring>
-                <v stress="0">
+                <v stress="-1">
                     <xsl:value-of select="."/>
                 </v>
             </xsl:matching-substring>
@@ -296,7 +332,7 @@
             </xsl:non-matching-substring>
         </xsl:analyze-string>
     </xsl:template>
-    
+
     <xsl:template match="str[not(child::stress)]" mode="consVowels">
         <xsl:choose>
             <xsl:when test="contains(., 'ё')">
@@ -309,7 +345,7 @@
                                 </v>
                             </xsl:when>
                             <xsl:otherwise>
-                                <v stress="0">
+                                <v stress="-1">
                                     <xsl:value-of select="."/>
                                 </v>
                             </xsl:otherwise>
@@ -348,47 +384,48 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
     <!-- Stage Two: Combine proclitics with following word -->
     <xsl:template match="w" mode="proclitics">
         <xsl:choose>
             <xsl:when
-                test="matches(lower-case(@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеи]|над|о[тб]?|п[е]?ред|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у|то|б[ы]?|л[иь]|ж[е])[о]?$')"/>
-            <xsl:when
-                test="./matches(lower-case((preceding-sibling::w[1])/@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеи]|над|о[тб]?|п[е]?ред|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у)[о]?$')">
-                <xsl:variable name="addProclitic">
-                    <xsl:value-of
-                        select="lower-case(concat((preceding-sibling::w[1])/@orth, ' ', @orth))"/>
+                test="matches(lower-case(@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у|-то|б[ы]?|л[иь]|ж[е])[о]?$')"/>
+            <xsl:when test="./matches(lower-case((preceding-sibling::w[1])/@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у)[о]?$')
+                and ./matches(lower-case((preceding-sibling::w[2])/@orth), '^([иа]|н[ио])$')">
+                <xsl:variable name="addDoubleProclitic">
+                    <xsl:value-of select="concat((preceding-sibling::w[2])/@orth, ' ', (preceding-sibling::w[1])/@orth, ' ', @orth)"/>
                 </xsl:variable>
-                <w orth="{$addProclitic}" stressGiven="{@stressGiven}">
-                    <xsl:if test="count(v) = 1">
-                        <xsl:attribute name="monosyllable">
-                            <xsl:text>1</xsl:text>
-                        </xsl:attribute>
-                    </xsl:if>
-                    <xsl:apply-templates select="(preceding-sibling::w[1])/*"/>
+                <w orth="{$addDoubleProclitic}">
+                    <xsl:apply-templates select="(preceding-sibling::w[2])/*" mode="unstressClitic"/>
+                    <xsl:apply-templates select="(preceding-sibling::w[1])/*" mode="unstressClitic"/>
                     <xsl:apply-templates select="*"/>
                 </w>
             </xsl:when>
-            <xsl:when test="./matches((following-sibling::w[1])/@orth, '^(то|б[ы]?|л[иь]|ж[е])$')">
+            <xsl:when
+                test="./matches(lower-case((preceding-sibling::w[1])/@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у)[о]?$')">
+                <xsl:variable name="addProclitic">
+                    <xsl:value-of select="concat((preceding-sibling::w[1])/@orth, ' ', @orth)"/>
+                </xsl:variable>
+                <w orth="{$addProclitic}">
+                    <xsl:apply-templates select="(preceding-sibling::w[1])/*" mode="unstressClitic"/>
+                    <xsl:apply-templates select="*"/>
+                </w>
+            </xsl:when>
+            <xsl:when test="preceding-sibling::w and ./matches((following-sibling::w[1])/@orth, '^(-то|б[ы]?|л[иь]|ж[е])$')">
                 <xsl:variable name="addEnclitic">
                     <xsl:value-of select="concat(@orth, ' ', (following-sibling::w[1])/@orth)"/>
                 </xsl:variable>
-                <w orth="{$addEnclitic}" stressGiven="{@stressGiven}">
-                    <xsl:if test="count(v) = 1">
-                        <xsl:attribute name="monosyllable">
-                            <xsl:text>1</xsl:text>
-                        </xsl:attribute>
-                    </xsl:if>
+                <w orth="{$addEnclitic}">
                     <xsl:apply-templates select="*"/>
-                    <xsl:apply-templates select="(following-sibling::w[1])/*"/>
+                    <xsl:apply-templates select="(following-sibling::w[1])/*" mode="unstressClitic"
+                    />
                 </w>
             </xsl:when>
             <xsl:otherwise>
-                <w orth="{@orth}" stressGiven="{@stressGiven}">
+                <w orth="{@orth}">
                     <xsl:if test="count(v) = 1">
-                        <xsl:attribute name="monosyllable">
-                            <xsl:text>1</xsl:text>
+                        <xsl:attribute name="stress">
+                            <xsl:text>0</xsl:text>
                         </xsl:attribute>
                     </xsl:if>
                     <xsl:apply-templates/>
@@ -396,28 +433,34 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
+    <xsl:template match="v" mode="unstressClitic">
+        <v stress="-1">
+            <xsl:value-of select="."/>
+        </v>
+    </xsl:template>
+
     <!-- Stage Three: Combine the contents of neighboring cons elements 
     (necessary after combining proclitics)-->
     <xsl:template match="w" mode="consProclitics">
-        <w orth="{@orth}" stressGiven="{@stressGiven}" monosyllable="{@monosyllable}">
+        <w orth="{@orth}">
             <xsl:apply-templates select="*" mode="consProclitics"/>
         </w>
     </xsl:template>
-    
+
     <xsl:template match="cons[preceding-sibling::*[1] is preceding-sibling::cons[1]]"
         mode="consProclitics">
         <cons>
             <xsl:value-of select="lower-case(concat(preceding-sibling::cons[1], .))"/>
         </cons>
     </xsl:template>
-    
+
     <xsl:template match="cons[following-sibling::*[1] is following-sibling::cons[1]]"
         mode="consProclitics"/>
-    
-    
-    
-<!-- From here, ambient meter has fixed non-proclitic monosyllables, phonetic tranformation continues -->    
+
+
+
+    <!-- From here, ambient meter has fixed non-proclitic monosyllables, phonetic tranformation continues -->
     <xsl:template match="lg" mode="postAmbient">
         <lg ambientMeter="{@ambientMeter}">
             <xsl:apply-templates select="l" mode="phonetic"/>
@@ -464,12 +507,12 @@
         </l>
     </xsl:template>
 
-    
+
     <!-- Stage Four: Map soft vowels to 'j'+hard paired vowel
         This leaves things "incorrect" for a while.
     -->
     <xsl:template match="w" mode="softVowels">
-        <w orth="{@orth}" stressGiven="{@stressGiven}">
+        <w orth="{@orth}">
             <xsl:apply-templates select="*" mode="palatComps"/>
         </w>
     </xsl:template>
@@ -511,7 +554,7 @@
         This is a convenient place to fix up compound letters: щ->шч, т(ь)с(ь)->ц
     -->
     <xsl:template match="w" mode="unpairedCons">
-        <w orth="{@orth}" stressGiven="{@stressGiven}">
+        <w orth="{@orth}">
             <xsl:apply-templates mode="unpairedCons"/>
         </w>
     </xsl:template>
@@ -544,7 +587,7 @@
 
     <!-- Stage Six: Reduce unstressed vowels -->
     <xsl:template match="w" mode="reduceVowels">
-        <w orth="{@orth}" stressGiven="{@stressGiven}">
+        <w orth="{@orth}">
             <xsl:apply-templates select="*" mode="reduceVowels"/>
         </w>
     </xsl:template>
@@ -574,7 +617,7 @@
 
     <!-- Stage Seven: Devoice final consonants-->
     <xsl:template match="w" mode="devoiceFinal">
-        <w orth="{@orth}" stressGiven="{@stressGiven}">
+        <w orth="{@orth}">
             <xsl:apply-templates select="*" mode="devoiceFinal"/>
         </w>
     </xsl:template>
@@ -596,7 +639,7 @@
 
     <!-- Stage Eight: Voice and devoice consonant clusters  -->
     <xsl:template match="w" mode="voicingClusters">
-        <w orth="{@orth}" stressGiven="{@stressGiven}">
+        <w orth="{@orth}">
             <xsl:apply-templates select="*" mode="voicingClusters"/>
         </w>
     </xsl:template>
@@ -627,7 +670,7 @@
 
     <!-- Stage Nine: Convert Cyrillic to Latin -->
     <xsl:template match="w" mode="latinize">
-        <w orth="{@orth}" stressGiven="{@stressGiven}">
+        <w orth="{@orth}">
             <xsl:apply-templates select="*" mode="latinize"/>
         </w>
     </xsl:template>
