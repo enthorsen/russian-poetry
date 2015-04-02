@@ -39,7 +39,7 @@
     </xsl:template>
 
     <xsl:template match="lg" mode="preAmbient">
-        <lg>
+        <lg type="{@type}">
             <xsl:variable name="lgStress">
                 <xsl:apply-templates select="l" mode="stress"/>
             </xsl:variable>
@@ -52,7 +52,7 @@
     </xsl:template>
 
     <xsl:template match="lg" mode="ambientMeter">
-        <lg>
+        <lg type="{@type}">
             <xsl:attribute name="ambientMeter">
                 <xsl:choose>
                     <xsl:when
@@ -73,7 +73,7 @@
     </xsl:template>
 
     <xsl:template match="lg" mode="propagateMeter">
-        <lg ambientMeter="{@ambientMeter}">
+        <lg type="{@type}" ambientMeter="{@ambientMeter}">
             <xsl:apply-templates select="l" mode="propagateMeter"/>
         </lg>
     </xsl:template>
@@ -125,12 +125,6 @@
             />
         </xsl:variable>
 
-        <xsl:message>
-            <xsl:value-of select="ancestor::l"/>
-            <xsl:value-of select="parent::w"/>
-            <xsl:value-of select="floor(($posUltStress - $posCurrent) div 2)"/>
-            <xsl:value-of select="($posUltStress - $posCurrent) div 2"/>
-        </xsl:message>
         <v>
             <xsl:attribute name="stress">
                 <xsl:choose>
@@ -390,10 +384,13 @@
         <xsl:choose>
             <xsl:when
                 test="matches(lower-case(@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у|-то|б[ы]?|л[иь]|ж[е])[о]?$')"/>
-            <xsl:when test="./matches(lower-case((preceding-sibling::w[1])/@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у)[о]?$')
+            <xsl:when
+                test="./matches(lower-case((preceding-sibling::w[1])/@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у)[о]?$')
                 and ./matches(lower-case((preceding-sibling::w[2])/@orth), '^([иа]|н[ио])$')">
                 <xsl:variable name="addDoubleProclitic">
-                    <xsl:value-of select="concat((preceding-sibling::w[2])/@orth, ' ', (preceding-sibling::w[1])/@orth, ' ', @orth)"/>
+                    <xsl:value-of
+                        select="concat((preceding-sibling::w[2])/@orth, ' ', (preceding-sibling::w[1])/@orth, ' ', @orth)"
+                    />
                 </xsl:variable>
                 <w orth="{$addDoubleProclitic}">
                     <xsl:apply-templates select="(preceding-sibling::w[2])/*" mode="unstressClitic"/>
@@ -411,7 +408,8 @@
                     <xsl:apply-templates select="*"/>
                 </w>
             </xsl:when>
-            <xsl:when test="preceding-sibling::w and ./matches((following-sibling::w[1])/@orth, '^(-то|б[ы]?|л[иь]|ж[е])$')">
+            <xsl:when
+                test="preceding-sibling::w and ./matches((following-sibling::w[1])/@orth, '^(-то|б[ы]?|л[иь]|ж[е])$')">
                 <xsl:variable name="addEnclitic">
                     <xsl:value-of select="concat(@orth, ' ', (following-sibling::w[1])/@orth)"/>
                 </xsl:variable>
@@ -515,6 +513,9 @@
         <w orth="{@orth}">
             <xsl:apply-templates select="*" mode="palatComps"/>
         </w>
+        <xsl:message>
+            <xsl:value-of select="@preStressSubstring"/>
+        </xsl:message>
     </xsl:template>
     <xsl:template
         match="cons[following-sibling::*[1] is following-sibling::v[1][matches(., '^[яеиёю]$')]]"
