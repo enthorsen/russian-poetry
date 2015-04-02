@@ -11,12 +11,6 @@
         </xsl:copy>
     </xsl:template>
 
-    <!--<xsl:template match="/">
-        <xsl:apply-templates select="poem" mode="ambientRhymePoem"/>
-    </xsl:template>
-
-    <xsl:template match="poem"> </xsl:template>-->
-
     <xsl:template match="divs">
         <divs>
             <xsl:variable name="ambRhyme1">
@@ -65,18 +59,21 @@
     <!-- Rhyme Stage Two: Create "exact" match context for rhyme-->
     <xsl:template match="l" mode="rhymeContext">
         <xsl:variable name="position">
-            <xsl:value-of select="w[last()]/v[@stress = '1']/count(following-sibling::v)"/>
+            <xsl:value-of select="(w/v[@stress = '1'])[last()]/(count(following-sibling::v)+count(parent::w/following-sibling::w/v))"/>
         </xsl:variable>
+        <xsl:message>
+            <xsl:value-of select="$position"/>
+        </xsl:message>
         <xsl:variable name="context">
             <xsl:choose>
-                <xsl:when test="w[last()]/v[@stress = '1' and last()] is w[last()]/child::*[last()]">
+                <xsl:when test="(w/v[@stress = '1'])[last()] is w[last()]/child::*[last()]">
                     <xsl:value-of
                         select="string-join(w[last()]/cons[last()]/text(), w[last()]/v[last()]/text())"
                     />
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of
-                        select="w[last()]/v[@stress='1']/concat(., string-join(following-sibling::cons|v['u']/text(), ''))"
+                        select="w[last()]/v[@stress='1']/concat(., string-join(following-sibling::cons|v['u']/text(), ''), string-join(parent::w/following-sibling::w/cons|v['u'],''))"
                     />
                 </xsl:otherwise>
             </xsl:choose>
