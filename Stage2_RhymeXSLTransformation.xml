@@ -27,7 +27,7 @@
     </xsl:template>
 
     <xsl:template match="lg" mode="setUp">
-        <lg>
+        <lg ambientMeter="{@ambientMeter}" type="{@type}">
             <!-- Rhyme Stage One: Determine if possible rhyme is masc, 
                 fem, dactylic -->
             <xsl:apply-templates select="l" mode="rhymeContext"/>
@@ -36,7 +36,7 @@
     </xsl:template>
 
     <xsl:template match="lg" mode="match">
-        <lg>
+        <lg ambientMeter="{@ambientMeter}" type="{@type}">
             <!-- Rhyme Stage Three: Return lines which are exact matches-->
             <xsl:apply-templates select="l" mode="rhymeMatch"/>
         </lg>
@@ -51,7 +51,7 @@
         <xsl:variable name="ambientRhyme">
             <xsl:value-of select="string-join(distinct-values(l/@matchingLines), ',')"/>
         </xsl:variable>
-        <lg ambRhyme="{$ambientRhyme}" avgLPerRhyme="{$noMatchingLines}">
+        <lg ambientMeter="{@ambientMeter}" type="{@type}" ambRhyme="{$ambientRhyme}" avgLPerRhyme="{$noMatchingLines}">
             <xsl:apply-templates/>
         </lg>
     </xsl:template>
