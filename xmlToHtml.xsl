@@ -7,6 +7,7 @@
     <xsl:template match="/">
         <html>
             <head>
+                <link rel="stylesheet" type="text/css" href="verseTableCSS.css"/>
                 <title>Checking the poem</title>
             </head>
             <body>
@@ -57,17 +58,17 @@
                                 <xsl:text>o</xsl:text>
                             </xsl:when>
                             <xsl:when test="@stress = '0'">
-                                <xsl:text>w</xsl:text>
+                                <xsl:text>u</xsl:text>
                             </xsl:when>
                         </xsl:choose>
                         <xsl:choose>
                             <xsl:when test="ancestor::l/@ambientMeter='binary'">
-                                <xsl:if test="$currentPos div 2 = round($currentPos div 2)">
+                                <xsl:if test="$currentPos div 2 = floor($currentPos div 2)">
                                     <xsl:text>|</xsl:text>
                                 </xsl:if>
                             </xsl:when>
                             <xsl:when test="ancestor::l/@ambientMeter='ternary'">
-                                <xsl:if test="$currentPos div 3 = round($currentPos div 3)">
+                                <xsl:if test="$currentPos div 3 = floor($currentPos div 3)">
                                     <xsl:text>|</xsl:text>
                                 </xsl:if>
                             </xsl:when>
@@ -80,11 +81,11 @@
                     <xsl:variable name="feet" select="tokenize(normalize-space(xs:string($stressString)), '\|')"/>
                         <xsl:for-each select="$feet"><span>
                             <xsl:attribute name="class" select="current()"/>
-                            <xsl:value-of select="."/>
+                            <xsl:value-of select="."/></span>
                             <xsl:if test="not(position() = count($feet))">
                                 <xsl:text>|</xsl:text>
                             </xsl:if>
-                        </span></xsl:for-each>
+                        </xsl:for-each>
                     
                 </td>
                 <td>
@@ -100,16 +101,16 @@
                     </xsl:message>
                     <xsl:choose>
                         <xsl:when test="@posRhyme='0'">
-                            <xsl:value-of select="translate($rhymePrimacy,'[1234567]','[abcdefg]')"
+                            <xsl:value-of select="translate($rhymePrimacy,'123456789','abcdefghi')"
                             />
                         </xsl:when>
                         <xsl:when test="@posRhyme='1'">
-                            <xsl:value-of select="translate($rhymePrimacy,'[1234567]','[ABCDEFG]')"
+                            <xsl:value-of select="translate($rhymePrimacy,'123456789','ABCDEFGHI')"
                             />
                         </xsl:when>
                         <xsl:when test="xs:integer(@posRhyme) gt 1">
                             <xsl:value-of
-                                select="concat(translate($rhymePrimacy,'[1234567]','[ABCDEFG]'),'&#x2032;')"
+                                select="concat(translate($rhymePrimacy,'123456789','ABCDEFGHI'),'&#x2032;')"
                             />
                         </xsl:when>
                     </xsl:choose>
