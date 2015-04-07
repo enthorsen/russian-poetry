@@ -15,13 +15,53 @@
 
     <xsl:template match="poem">
 
-        <poem title="{title}" dateAttr="{date}" placeAttr="{place}">
+        <poem author="{author}">
+            <xsl:attribute name="title">
+                <xsl:choose>
+                    <xsl:when test="@title">
+                        <xsl:value-of select="@title"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="title"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+            <xsl:attribute name="date">
+                <xsl:choose>
+                    <xsl:when test="@date">
+                        <xsl:value-of select="@date"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="date"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+            <xsl:attribute name="placeAttr">
+                <xsl:choose>
+                    <xsl:when test="@placeAttr">
+                        <xsl:value-of select="@placeAttr"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="place"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
+            <xsl:attribute name="author">
+                <xsl:choose>
+                    <xsl:when test="@author">
+                        <xsl:value-of select="@author"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="author"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
             <xsl:apply-templates/>
         </poem>
 
     </xsl:template>
 
-    <xsl:template match="date|place|title"/>
+    <xsl:template match="date|place|title|author"/>
 
     <xsl:template match="divs">
         <divs>
@@ -39,7 +79,17 @@
     </xsl:template>
 
     <xsl:template match="lg" mode="preAmbient">
-        <lg type="{@type}">
+        <lg>
+            <xsl:attribute name="type">
+                <xsl:choose>
+                    <xsl:when test="@type">
+                        <xsl:value-of select="@type"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>stanza</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
             <xsl:variable name="lgStress">
                 <xsl:apply-templates select="l" mode="stress"/>
             </xsl:variable>
@@ -77,7 +127,7 @@
             <xsl:apply-templates select="l" mode="propagateMeter"/>
         </lg>
     </xsl:template>
-
+    
     <xsl:template match="l" mode="propagateMeter">
         <xsl:message>
             <xsl:value-of select="w/@orth"/>
@@ -115,7 +165,7 @@
 
         <xsl:variable name="posUltStress">
             <xsl:value-of
-                select="count(ancestor::l//v)-count((ancestor::l//v[@stress='1'])[last()]/following-sibling::v)"
+                select="count(ancestor::l//v)-sum((count((ancestor::l//v[@stress='1'])[last()]/following-sibling::v),count((ancestor::l//v[@stress='1'])[last()]/parent::w/following-sibling::w/v)))"
             />
         </xsl:variable>
 
@@ -136,7 +186,7 @@
                             <xsl:when test="ancestor::lg/@ambientMeter='binary'">
                                 <xsl:choose>
                                     <xsl:when
-                                        test="floor(($posUltStress - $posCurrent) div 2) = (($posUltStress - $posCurrent) div 2)">
+                                        test="floor(abs($posUltStress - $posCurrent) div 2) = (abs($posUltStress - $posCurrent) div 2)">
                                         <xsl:choose>
                                             <xsl:when test="count(parent::w/v[@stress=0]) gt 2">
                                                 <xs:text>0</xs:text>
@@ -154,7 +204,7 @@
                             <xsl:when test="ancestor::lg/@ambientMeter='ternary'">
                                 <xsl:choose>
                                     <xsl:when
-                                        test="floor(($posUltStress - $posCurrent) div 3) = (($posUltStress - $posCurrent) div 3)">
+                                        test="floor(abs($posUltStress - $posCurrent) div 3) = (abs($posUltStress - $posCurrent) div 3)">
                                         <xs:integer>1</xs:integer>
                                     </xsl:when>
                                     <xsl:otherwise>
@@ -383,10 +433,10 @@
     <xsl:template match="w" mode="proclitics">
         <xsl:choose>
             <xsl:when
-                test="matches(lower-case(@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у|-то|б[ы]?|л[иь]|ж[е])[о]?$')"/>
+                test="matches(lower-case(@orth), '^(без|[в]?близ|в|в[о]?круг|да|для|[иа]|из|ис-под|ж[е]?|за|к|л[иь]|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у|-то|б[ы]?|л[иь]|ж[е])[о]?$')"/>
             <xsl:when
-                test="./matches(lower-case((preceding-sibling::w[1])/@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у)[о]?$')
-                and ./matches(lower-case((preceding-sibling::w[2])/@orth), '^([иа]|н[ио])$')">
+                test="./matches(lower-case((preceding-sibling::w[1])/@orth), '^(без|[в]?близ|в|в[о]?круг|да|для|[иа]|из|ис-под|за|к|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у)[о]?$')
+                and ./matches(lower-case((preceding-sibling::w[2])/@orth), '^([иа]|н[еио])$')">
                 <xsl:variable name="addDoubleProclitic">
                     <xsl:value-of
                         select="concat((preceding-sibling::w[2])/@orth, ' ', (preceding-sibling::w[1])/@orth, ' ', @orth)"
@@ -399,7 +449,7 @@
                 </w>
             </xsl:when>
             <xsl:when
-                test="./matches(lower-case((preceding-sibling::w[1])/@orth), '^(без|[в]?близ|в|в[о]?круг|да|[иа]|из|ис-под|к|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у)[о]?$')">
+                test="./matches(lower-case((preceding-sibling::w[1])/@orth), '^(без|[в]?близ|в|в[о]?круг|да|для|[иа]|из|за|ис-под|к|н[аеио]|над|о[тб]?|п[е]?ред|по|под|про|против|с|сквозь|сред[иь]|ч[е]?рез|у)[о]?$')">
                 <xsl:variable name="addProclitic">
                     <xsl:value-of select="concat((preceding-sibling::w[1])/@orth, ' ', @orth)"/>
                 </xsl:variable>
@@ -408,14 +458,13 @@
                     <xsl:apply-templates select="*"/>
                 </w>
             </xsl:when>
-            <xsl:when
-                test="preceding-sibling::w and ./matches((following-sibling::w[1])/@orth, '^(-то|б[ы]?|л[иь]|ж[е])$')">
+            <xsl:when test="./matches(following-sibling::w[1]/@orth, '^(-то|б[ы]?|л[иь]|ж[е]?)$')">
                 <xsl:variable name="addEnclitic">
                     <xsl:value-of select="concat(@orth, ' ', (following-sibling::w[1])/@orth)"/>
                 </xsl:variable>
                 <w orth="{$addEnclitic}">
                     <xsl:apply-templates select="*"/>
-                    <xsl:apply-templates select="(following-sibling::w[1])/*" mode="unstressClitic"
+                    <xsl:apply-templates select="following-sibling::w[1]/*" mode="unstressClitic"
                     />
                 </w>
             </xsl:when>
@@ -460,7 +509,7 @@
 
     <!-- From here, ambient meter has fixed non-proclitic monosyllables, phonetic tranformation continues -->
     <xsl:template match="lg" mode="postAmbient">
-        <lg ambientMeter="{@ambientMeter}">
+        <lg ambientMeter="{@ambientMeter}" type="{@type}">
             <xsl:apply-templates select="l" mode="phonetic"/>
         </lg>
     </xsl:template>
@@ -679,7 +728,7 @@
     <xsl:template match="cons" mode="latinize">
         <cons>
             <xsl:value-of
-                select="replace(translate(., 'бвгдзжйклмнпрстфцхчшьъ','bvgdzžjklmnprstfcxčšj″'),'([a-zžčš])\1','$1')"
+                select="replace(translate(., 'бвгдзжйклмнпрстфцхчшьъ','bvgdzžqklmnprstfcxčšq″'),'([a-zžčš])\1','$1')"
             />
         </cons>
     </xsl:template>
