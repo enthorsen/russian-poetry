@@ -51,7 +51,8 @@
         <xsl:variable name="ambientRhyme">
             <xsl:value-of select="string-join(distinct-values(l/@matchingLines), ',')"/>
         </xsl:variable>
-        <lg ambientMeter="{@ambientMeter}" type="{@type}" ambRhyme="{$ambientRhyme}" avgLPerRhyme="{$noMatchingLines}">
+        <lg ambientMeter="{@ambientMeter}" type="{@type}" ambRhyme="{$ambientRhyme}"
+            avgLPerRhyme="{$noMatchingLines}">
             <xsl:apply-templates/>
         </lg>
     </xsl:template>
@@ -59,26 +60,36 @@
     <!-- Rhyme Stage Two: Create "exact" match context for rhyme-->
     <xsl:template match="l" mode="rhymeContext">
         <xsl:variable name="position">
-            <xsl:value-of select="(w/v[@stress = '1'])[last()]/(count(following-sibling::v)+count(parent::w/following-sibling::w/v))"/>
+            <xsl:value-of
+                select="(w/v[@stress = '1'])[last()]/(count(following-sibling::v)+count(parent::w/following-sibling::w/v))"
+            />
         </xsl:variable>
         <xsl:message>
             <xsl:value-of select="$position"/>
         </xsl:message>
         <xsl:variable name="context">
             <xsl:choose>
-                <xsl:when test="(w/v[@stress = '1'])[last()] is w[last()]/child::*[last()]">
+                <xsl:when test="$position eq '0'">
+                    <xsl:choose>
+                        <xsl:when test="(w/v[@stress='1'])[last()] is (w/*)[last()]">
+                            <xsl:value-of
+                                select="concat(codepoints-to-string(string-to-codepoints((.//cons)[last()]/translate(text(),'q','j'))[last()]), (.//v)[last()])"
+                            />
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="concat((.//v)[last()], (.//cons)[last()])"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:when>
+                <xsl:when test="$position gt '0'">
                     <xsl:value-of
-                        select="string-join(w[last()]/cons[last()]/text(), w[last()]/v[last()]/text())"
+                        select="concat((.//v[@stress='1'])[last()], string-join((.//v[@stress='1'])[last()]/following-sibling::cons|v['u'], ''), string-join((.//v[@stress='1'])[last()]/parent::w/following-sibling::w/cons|v['u'], ''))"
                     />
                 </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of
-                        select="w[last()]/v[@stress='1']/concat(., string-join(following-sibling::cons|v['u']/text(), ''), string-join(parent::w/following-sibling::w/cons|v['u'],''))"
-                    />
-                </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <l posRhyme="{$position}" compText="{$context}" rhythm="{@rhythm}" ambientMeter="{@ambientMeter}">
+        <l posRhyme="{$position}" compText="{$context}" rhythm="{@rhythm}"
+            ambientMeter="{@ambientMeter}">
             <xsl:apply-templates/>
         </l>
     </xsl:template>
@@ -93,11 +104,12 @@
         </xsl:variable>
         <xsl:variable name="matchingLines">
             <xsl:value-of
-                select="string-join(parent::lg/l[@compText = $currentCompText][@posRhyme=$currentPosRhyme]/string(count(preceding-sibling::l)+1), ' ')"
+                select="string-join(parent::lg/l[contains(@compText, $currentCompText) or contains($currentCompText, @compText)][@posRhyme=$currentPosRhyme]/string(count(preceding-sibling::l)+1), ' ')"
             />
         </xsl:variable>
 
-        <l posRhyme="{$currentPosRhyme}" compText="{$currentCompText}" matchingLines="{$matchingLines}"  rhythm="{@rhythm}" ambientMeter="{@ambientMeter}">
+        <l posRhyme="{$currentPosRhyme}" compText="{$currentCompText}"
+            matchingLines="{$matchingLines}" rhythm="{@rhythm}" ambientMeter="{@ambientMeter}">
             <xsl:apply-templates/>
         </l>
     </xsl:template>
