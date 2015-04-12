@@ -1,19 +1,17 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml" xmlns:xs="http://www.w3.org/2001/XMLSchema"
     exclude-result-prefixes="xs" version="2.0">
-    <xsl:output doctype-system="about:legacy-compat" indent="yes" method="xml"/>
+    <xsl:output doctype-system="about:legacy-compat" indent="no" method="xml"/>
     <xsl:template match="/">
-        
+
         <html>
             <xsl:comment>#set var="title" value="Verse Table"</xsl:comment>
             <xsl:comment>#config timefmt="%Y-%m-%dT%X%z"</xsl:comment>
             <head>
-                <link href="http://www.obdurodon.org/css/style.css" rel="stylesheet" type="text/css"/>
-
-                <title><xsl:value-of select="poem/@author"/>: <xsl:value-of select="poem/@title"
-                    /></title>
                 <xsl:comment>#include virtual="../inc/poetry-header.html"</xsl:comment>
                 <link rel="stylesheet" type="text/css" href="../css/verseTableCSS.css"/>
+                <title><xsl:value-of select="poem/@author"/>: <xsl:value-of select="poem/@title"
+                    /></title>
             </head>
             <body>
                 <xsl:comment>#include virtual="../inc/poetry-boilerplate.html"</xsl:comment>
@@ -39,6 +37,7 @@
                             <th>Text</th>
                             <th>Meter</th>
                             <th>Rhyme</th>
+                            <th>Stressed<br/>Vowels</th>
                         </tr>
                         <xsl:apply-templates select="lg" mode="table"/>
                     </table>
@@ -48,13 +47,13 @@
     </xsl:template>
 
     <xsl:template match="lg[@type='epigraph']" mode="table">
-
         <xsl:for-each select="l">
             <tr class="epigraph">
                 <td/>
                 <td class="epigraph">
                     <xsl:value-of select="string-join(w/@orth, ' ')"/>
                 </td>
+                <td/>
                 <td/>
                 <td/>
             </tr>
@@ -146,6 +145,52 @@
                     </xsl:for-each>
                 </td>
                 <td class="meter">
+                    <xsl:variable name="firstStress">
+                        <xsl:choose>
+                            <xsl:when test="@ambientMeter='binary'">
+                                <xsl:variable name="head" select="ancestor::divs//l/count(w/v[following::v[@stress='1'][1] is ancestor::l/(w/v[@stress='1'])[1]])"/>
+                                <xsl:variable name="trochee" select="count($head[. = 0 or . = 2])"/>
+                                <xsl:variable name="iamb" select="count($head[. = 1 or . = 3])"/>
+                                <xsl:message>
+                                    <xsl:value-of select="$head"/>
+                                    <xsl:value-of select="$trochee"/>
+                                    <xsl:value-of select="$iamb"/>
+                                </xsl:message>
+                                <xsl:choose>
+                                    <xsl:when test="$trochee gt $iamb">
+                                        <xsl:text>head-Zero</xsl:text>
+                                    </xsl:when>
+                                    <xsl:when test="$iamb gt $trochee">
+                                        <xsl:text>head-One</xsl:text>
+                                    </xsl:when>
+                                    <xsl:when test="$iamb eq $trochee">
+                                        <xsl:text>indeter</xsl:text>
+                                    </xsl:when>
+                                </xsl:choose>
+                            </xsl:when>
+                            <xsl:when test="@ambientMeter='ternary'">
+                                <xsl:variable name="head" select="ancestor::divs//l/count(w/v[following::v[@stress='1'][1] is ancestor::l/(w/v[@stress='1'])[1]])"/>
+                                <xsl:variable name="dactyl" select="count($head[. = 0 or . = 3])"/>
+                                <xsl:variable name="amphi" select="count($head[. = 1 or . = 4])"/>
+                                <xsl:variable name="anap" select="count($head[. = 2 or . = 5])"/>
+                                <xsl:choose>
+                                    <xsl:when test="$dactyl gt ($amphi + $anap)">
+                                        <xsl:text>head-Zero</xsl:text>
+                                    </xsl:when>
+                                    <xsl:when test="$amphi gt ($dactyl + $anap)">
+                                        <xsl:text>head-One</xsl:text>
+                                    </xsl:when>
+                                    <xsl:when test="$anap gt ($dactyl + $amphi)">
+                                        <xsl:text>head-Two</xsl:text>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:text>indeter</xsl:text>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:when>
+                        </xsl:choose>
+                    </xsl:variable>
+
                     <xsl:variable name="totSyll" as="xs:integer" select="count(w/v)"/>
                     <xsl:variable name="posFinalStress" as="xs:integer"
                         select="(w/v[@stress='1'])[last()]/sum((count(preceding-sibling::v), count(parent::w/preceding-sibling::w/v)))+1"/>
@@ -214,6 +259,7 @@
                         <xsl:choose>
                             <xsl:when test="not(contains(., '('))">
                                 <span>
+                                    <xsl:attribute name="data-meter" select="$firstStress"/>
                                     <xsl:attribute name="class" select="current()"/>
                                     <xsl:value-of select="."/>
                                 </span>
@@ -225,6 +271,7 @@
                                 <xsl:variable name="preHyperMetrical" select="tokenize(., '\(')"/>
                                 <span>
                                     <xsl:attribute name="class" select="$preHyperMetrical[1]"/>
+                                    <xsl:attribute name="data-meter" select="$firstStress"/>
                                     <xsl:value-of select="$preHyperMetrical[1]"/>
                                 </span>
                                 <span class="hypermetric">
@@ -234,7 +281,6 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:for-each>
-
                 </td>
                 <td>
                     <xsl:variable name="lineLevelRhyme" select="@matchingLines"/>
@@ -272,10 +318,20 @@
                         </xsl:when>
                     </xsl:choose>
                 </td>
+                <td>
+                    <xsl:for-each select="w/v[@stress='1']">
+                        <span>
+                            <xsl:attribute name="class" select="concat('vowel',text())"/>
+                            <xsl:value-of select="upper-case(.)"/>
+                            <xsl:text>&#160;</xsl:text>
+                        </span>
+                    </xsl:for-each>
+                </td>
             </tr>
         </xsl:for-each>
         <xsl:if test="following-sibling::lg">
             <tr class="blank">
+                <td/>
                 <td/>
                 <td/>
                 <td/>
