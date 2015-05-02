@@ -78,6 +78,39 @@
         </divs>
     </xsl:template>
 
+    <!--<xsl:template match="lg" mode="meterCheck">
+        <xsl:apply-templates select="l" mode="meterCheck"/>
+    </xsl:template>
+    <xsl:template match="l" mode="meterCheck">
+        <xsl:variable name="perfectMeter">
+            <xsl:for-each select="w/v">
+                <xsl:value-of select="@stress"/>
+            </xsl:for-each>
+        </xsl:variable>
+        <l>
+            <xsl:attribute name="ambientMeter">
+                <xsl:choose>
+                    <xsl:when test="parent::lg/@ambientMeter='ternary'">
+                        <xsl:variable name="meterDifference">
+                            <xsl:for-each select="1 to string-length($perfectMeter)-2">
+                                <xsl:value-of select="$perfectMeter[.] - $perfectMeter[. + 2]"/>
+                            </xsl:for-each>
+                        </xsl:variable>
+                        <xsl:choose>
+                            <xsl:when test="sum(($meterDifference)) ne '0'">
+                                <xsl:value-of select="@ambientMeter"/>
+                            </xsl:when>
+                            <xsl:when test="sum(($meterDifference)) eq '0'">
+                                <xsl:text>binary</xsl:text>
+                            </xsl:when>
+                        </xsl:choose>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:attribute>
+        </l>
+    </xsl:template>
+-->
+
     <xsl:template match="lg" mode="preAmbient">
         <lg>
             <xsl:attribute name="type">
@@ -127,7 +160,7 @@
             <xsl:apply-templates select="l" mode="propagateMeter"/>
         </lg>
     </xsl:template>
-    
+
     <xsl:template match="l" mode="propagateMeter">
         <xsl:message>
             <xsl:value-of select="w/@orth"/>
@@ -464,8 +497,7 @@
                 </xsl:variable>
                 <w orth="{$addEnclitic}">
                     <xsl:apply-templates select="*"/>
-                    <xsl:apply-templates select="following-sibling::w[1]/*" mode="unstressClitic"
-                    />
+                    <xsl:apply-templates select="following-sibling::w[1]/*" mode="unstressClitic"/>
                 </w>
             </xsl:when>
             <xsl:otherwise>
