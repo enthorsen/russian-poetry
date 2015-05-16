@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<poem>
+    <l>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+    </l>
+    <l>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+    </l>
+    <l>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+    </l>
+    <l>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+    </l>
+    <l>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+    </l>
+    <l>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+    </l>
+    <l>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+    </l>
+    <l>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="-1">v</v></w>
+        <w>c<v stress="1">v</v></w>
+    </l>
+</poem>
