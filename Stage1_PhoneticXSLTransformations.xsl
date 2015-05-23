@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs" version="2.0">
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:ent="http://whatever"
+    exclude-result-prefixes="xs" version="2.0">
 
     <xsl:output indent="yes"/>
     <xsl:strip-space elements="*"/>
@@ -155,6 +157,7 @@
             <xsl:apply-templates select="$meter1"/>
         </lg>
     </xsl:template>
+    
 
     <xsl:template match="lg" mode="ambientMeter">
         <lg type="{@type}">
@@ -182,7 +185,7 @@
             <xsl:apply-templates select="l" mode="propagateMeter"/>
         </lg>
     </xsl:template>
-
+    
     <xsl:template match="l" mode="propagateMeter">
         <xsl:message>
             <xsl:value-of select="w/@orth"/>

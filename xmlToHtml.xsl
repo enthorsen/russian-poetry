@@ -1,30 +1,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:ent="http://whatever" exclude-result-prefixes="xs" version="2.0">
+    xmlns:djb="http://www.obdurodon.org/" exclude-result-prefixes="xs" version="2.0">
     <xsl:output doctype-system="about:legacy-compat" indent="no" method="xml"/>
 
     <xsl:variable name="root" select="." as="document-node()"/>
-
-    <xsl:variable name="maxVowelPosition" as="xs:double">
-        <xsl:value-of select="max(.//lg[@type='stanza']/l[@ambientMeter = parent::lg/@ambientMeter]/count(.//v))"/>
-    </xsl:variable>
-
-    <xsl:variable name="stressValences" as="xs:double*">
-        <xsl:for-each select="1 to xs:integer($maxVowelPosition)">
-            <xsl:sequence select="ent:stressPercentage(current())"/>
-        </xsl:for-each>
-    </xsl:variable>
-
-    <xsl:function name="ent:stressPercentage" as="xs:double*">
-        <xsl:param name="stressPosition"/>
-        <xsl:variable name="totalLines" select="count($root//l)"/>
-        <xsl:variable name="vowels" select="$root//l/descendant::v[position() eq $stressPosition]"
-            as="element(v)+"/>
-        <xsl:variable name="stressed" select="count($vowels[@stress eq '1'])" as="xs:integer"/>
-        <xsl:variable name="unstressed" select="count($vowels[@stress eq '-1'])" as="xs:integer"/>
-        <xsl:variable name="total" select="$stressed + $unstressed" as="xs:integer"/>
-        <xsl:sequence select="$stressed div count($vowels)"/>
-    </xsl:function>
 
     <xsl:template match="/">
 
@@ -40,12 +19,9 @@
             <body>
                 <xsl:comment>#include virtual="../inc/poetry-boilerplate.html"</xsl:comment>
                 
-                    <h3>
-                        <xsl:value-of select="poem/@title"/>
-                    </h3>
-                    <h4>
-                        <xsl:value-of select="poem/@author"/>
-                    </h4>
+                    <h2>
+                        <xsl:value-of select="poem/@title"/> (<xsl:value-of select="poem/@author"/>)
+                    </h2>
                 <div class="verseTable">
                     <xsl:for-each select="poem/divs">
                         <xsl:variable name="divType" select="@type"/>
@@ -425,5 +401,28 @@
         </svg>
 
     </xsl:template>
+
+    <xsl:variable name="maxVowelPosition" as="xs:double">
+        <xsl:value-of select="max(.//lg[@type='stanza']/l[@ambientMeter = parent::lg/@ambientMeter]/count(.//v))"/>
+    </xsl:variable>
+    
+    <xsl:variable name="stressValences" as="xs:double*">
+        <xsl:for-each select="1 to xs:integer($maxVowelPosition)">
+            <xsl:sequence select="djb:stressPercentage(current())"/>
+        </xsl:for-each>
+    </xsl:variable>
+    
+    <xsl:function name="djb:stressPercentage" as="xs:double*">
+        <xsl:param name="stressPosition"/>
+        <xsl:variable name="totalLines" select="count($root//lg[@type='stanza']/l)"/>
+        <xsl:variable name="vowels" select="$root//lg[@type='stanza']/l/descendant::v[position() eq $stressPosition]"
+            as="element(v)+"/>
+        <xsl:variable name="stressed" select="count($vowels[@stress eq '1'])" as="xs:integer"/>
+        <xsl:variable name="unstressed" select="count($vowels[@stress eq '-1'])" as="xs:integer"/>
+        <xsl:variable name="total" select="$stressed + $unstressed" as="xs:integer"/>
+        <xsl:sequence select="$stressed div count($vowels)"/>
+    </xsl:function>
+    
+    
 
 </xsl:stylesheet>
