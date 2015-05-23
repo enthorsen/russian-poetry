@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<poem title="Лилии" author="Анна Андреевна Ахматова">
+<poem title="Лилии" author="Анна Андреевна Ахматова" placeAttr="Одесса">
    <title>Лилии</title>
    <divs>
       <lg type="stanza">
@@ -244,5 +244,5 @@
          </l>
       </lg>
    </divs>
-   <date>22 июня 1904 Одесса</date>
+   <date>22 июня 1904</date>
 </poem>

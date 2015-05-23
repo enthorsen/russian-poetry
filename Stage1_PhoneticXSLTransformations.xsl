@@ -74,42 +74,64 @@
             <xsl:variable name="lgMeterCorrected">
                 <xsl:apply-templates select="$lgAmbientMeter" mode="propagateMeter"/>
             </xsl:variable>
-            <xsl:apply-templates select="$lgMeterCorrected" mode="postAmbient"/>
+            <xsl:variable name="lgMeterOrphansRescued">
+                <xsl:apply-templates select="$lgMeterCorrected" mode="meterCheck"/>
+            </xsl:variable>
+            <xsl:apply-templates select="$lgMeterOrphansRescued" mode="postAmbient"/>
         </divs>
     </xsl:template>
 
-    <!--<xsl:template match="lg" mode="meterCheck">
-        <xsl:apply-templates select="l" mode="meterCheck"/>
+    <xsl:template match="lg[@type='stanza']" mode="meterCheck">
+        <lg ambientMeter="{@ambientMeter}" type="{@type}">
+            <xsl:apply-templates select="l" mode="meterCheck"/>
+        </lg>
     </xsl:template>
     <xsl:template match="l" mode="meterCheck">
-        <xsl:variable name="perfectMeter">
+        <xsl:variable name="total">
+            <xsl:value-of select="count(w/v)"/>
+        </xsl:variable>
+        <xsl:variable name="avgDistanceBinary">
+            <xsl:value-of
+                select="avg(for $i in (3 to $total) return abs((w/v)[$i]/@stress - (w/v)[$i - 2]/@stress))"
+            />
+        </xsl:variable>
+        <xsl:variable name="avgDistanceTernary">
+            <xsl:value-of
+                select="avg(for $i in (4 to $total) return abs((w/v)[$i]/@stress - (w/v)[$i - 3]/@stress))"
+            />
+        </xsl:variable>
+
+        <xsl:variable name="seq">
             <xsl:for-each select="w/v">
-                <xsl:value-of select="@stress"/>
+                <xsl:choose>
+                    <xsl:when test="@stress = '0'">
+                        <xs:integer>0</xs:integer>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="@stress"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:for-each>
         </xsl:variable>
-        <l>
+
+        <l rhythm="{@rhythm}">
             <xsl:attribute name="ambientMeter">
                 <xsl:choose>
-                    <xsl:when test="parent::lg/@ambientMeter='ternary'">
-                        <xsl:variable name="meterDifference">
-                            <xsl:for-each select="1 to string-length($perfectMeter)-2">
-                                <xsl:value-of select="$perfectMeter[.] - $perfectMeter[. + 2]"/>
-                            </xsl:for-each>
-                        </xsl:variable>
-                        <xsl:choose>
-                            <xsl:when test="sum(($meterDifference)) ne '0'">
-                                <xsl:value-of select="@ambientMeter"/>
-                            </xsl:when>
-                            <xsl:when test="sum(($meterDifference)) eq '0'">
-                                <xsl:text>binary</xsl:text>
-                            </xsl:when>
-                        </xsl:choose>
+                    <xsl:when test="$avgDistanceBinary = 0">
+                        <xsl:text>binary</xsl:text>
                     </xsl:when>
+                    <xsl:when test="$avgDistanceTernary = 0">
+                        <xsl:text>ternary</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="parent::lg/@ambientMeter"/>
+                    </xsl:otherwise>
                 </xsl:choose>
             </xsl:attribute>
+            <xsl:apply-templates/>
         </l>
     </xsl:template>
--->
+
 
     <xsl:template match="lg" mode="preAmbient">
         <lg>
@@ -549,43 +571,70 @@
     <xsl:template match="l" mode="phonetic">
         <l rhythm="{@rhythm}" ambientMeter="{@ambientMeter}">
 
-
-            <!-- Stage Four: map all soft vowels to j+hard vowel letter
-            e.g. <cons>d</cons><v>ja</v> becomes <cons>dj</cons><v>a</v>-->
+            <!-- Stage Four: fix -ogo/-ego sounds -->
             <xsl:variable name="stage4output">
-                <xsl:apply-templates select="w" mode="softVowels"/>
+                <xsl:apply-templates select="w" mode="ogoego"/>
             </xsl:variable>
 
-            <!-- Stage Five: work out compound letters (shch, ts); 
+            <!-- Stage Five: map all soft vowels to j+hard vowel letter
+            e.g. <cons>d</cons><v>ja</v> becomes <cons>dj</cons><v>a</v>-->
+            <xsl:variable name="stage5output">
+                <xsl:apply-templates select="$stage4output" mode="softVowels"/>
+            </xsl:variable>
+
+
+            <!-- Stage Six: work out compound letters (shch, ts); 
             remove soft sign after unpaired hard cons (zhj becomes zh);
             add soft sign after unpaired soft cons (ch becomes chj);-->
-            <xsl:variable name="stage5output">
-                <xsl:apply-templates select="$stage4output" mode="unpairedCons"/>
-            </xsl:variable>
-
-            <!-- Stage Six: reduce unstressed vowels after j to и -->
             <xsl:variable name="stage6output">
-                <xsl:apply-templates select="$stage5output" mode="reduceVowels"/>
+                <xsl:apply-templates select="$stage5output" mode="unpairedCons"/>
             </xsl:variable>
 
-            <!-- Stage Seven: devoice final consonants -->
+            <!-- Stage Seven: reduce unstressed vowels after j to и -->
             <xsl:variable name="stage7output">
-                <xsl:apply-templates select="$stage6output" mode="devoiceFinal"/>
+                <xsl:apply-templates select="$stage6output" mode="reduceVowels"/>
             </xsl:variable>
 
-            <!-- Stage Eight: voice and devoice consonant clusters -->
+            <!-- Stage Eight: devoice final consonants -->
             <xsl:variable name="stage8output">
-                <xsl:apply-templates select="$stage7output" mode="voicingClusters"/>
+                <xsl:apply-templates select="$stage7output" mode="devoiceFinal"/>
             </xsl:variable>
 
-            <!-- Stage Nine: convert all Cyrillic to Latin -->
+            <!-- Stage Nine: voice and devoice consonant clusters -->
             <xsl:variable name="stage9output">
-                <xsl:apply-templates select="$stage8output" mode="latinize"/>
+                <xsl:apply-templates select="$stage8output" mode="voicingClusters"/>
             </xsl:variable>
-            <xsl:apply-templates select="$stage9output"/>
+
+            <!-- Stage Ten: convert all Cyrillic to Latin -->
+            <xsl:variable name="stage10output">
+                <xsl:apply-templates select="$stage9output" mode="latinize"/>
+            </xsl:variable>
+            <xsl:apply-templates select="$stage10output"/>
         </l>
     </xsl:template>
 
+    <xsl:template match="w" mode="ogoego">
+        <w orth="{@orth}">
+            <xsl:apply-templates select="*" mode="ogoego"/>
+        </w>
+    </xsl:template>
+
+    <xsl:template match="cons[text() = 'г']" mode="ogoego">
+        <cons>
+            <xsl:choose>
+                <xsl:when
+                    test="(preceding-sibling::v[1])/matches(., '[еэо]') and (following-sibling::v[1])/matches(., 'о') and following-sibling::v[1] is following-sibling::*[last()] and parent::w/@orth/not(matches(., '[Сс]трого|[Мм]ного|[Дд]орого|[Бб]ого[а-яё]+'))">
+                    <xsl:text>в</xsl:text>
+                </xsl:when>
+                <xsl:when test="parent::w/@orth/matches(., '^[Бб]ог$')">
+                    <xsl:text>х</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:apply-templates/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </cons>
+    </xsl:template>
 
     <!-- Stage Four: Map soft vowels to 'j'+hard paired vowel
         This leaves things "incorrect" for a while.

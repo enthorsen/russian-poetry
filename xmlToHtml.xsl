@@ -1,7 +1,31 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml" xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    exclude-result-prefixes="xs" version="2.0">
+    xmlns:ent="http://whatever" exclude-result-prefixes="xs" version="2.0">
     <xsl:output doctype-system="about:legacy-compat" indent="no" method="xml"/>
+
+    <xsl:variable name="root" select="." as="document-node()"/>
+
+    <xsl:variable name="maxVowelPosition" as="xs:double">
+        <xsl:value-of select="max(.//lg[@type='stanza']/l[@ambientMeter = parent::lg/@ambientMeter]/count(.//v))"/>
+    </xsl:variable>
+
+    <xsl:variable name="stressValences" as="xs:double*">
+        <xsl:for-each select="1 to xs:integer($maxVowelPosition)">
+            <xsl:sequence select="ent:stressPercentage(current())"/>
+        </xsl:for-each>
+    </xsl:variable>
+
+    <xsl:function name="ent:stressPercentage" as="xs:double*">
+        <xsl:param name="stressPosition"/>
+        <xsl:variable name="totalLines" select="count($root//l)"/>
+        <xsl:variable name="vowels" select="$root//l/descendant::v[position() eq $stressPosition]"
+            as="element(v)+"/>
+        <xsl:variable name="stressed" select="count($vowels[@stress eq '1'])" as="xs:integer"/>
+        <xsl:variable name="unstressed" select="count($vowels[@stress eq '-1'])" as="xs:integer"/>
+        <xsl:variable name="total" select="$stressed + $unstressed" as="xs:integer"/>
+        <xsl:sequence select="$stressed div count($vowels)"/>
+    </xsl:function>
+
     <xsl:template match="/">
 
         <html>
@@ -15,33 +39,39 @@
             </head>
             <body>
                 <xsl:comment>#include virtual="../inc/poetry-boilerplate.html"</xsl:comment>
-                <h3>
-                    <xsl:value-of select="poem/@title"/>
-                </h3>
-                <h4>
-                    <xsl:value-of select="poem/@author"/>
-                </h4>
-                <xsl:for-each select="poem/divs">
-                    <xsl:variable name="divType" select="@type"/>
-                    <xsl:if test="count(parent::poem/divs) gt 1">
-                        <h5>
-                            <xsl:value-of select="@type"/>
-                            <xsl:text>&#160;</xsl:text>
-                            <xsl:value-of
-                                select="count(preceding-sibling::divs[@type=$divType]) + 1"/>
-                        </h5>
-                    </xsl:if>
-                    <table>
-                        <tr>
-                            <th>Line</th>
-                            <th>Text</th>
-                            <th>Meter</th>
-                            <th>Rhyme</th>
-                            <th>Stressed<br/>Vowels</th>
-                        </tr>
-                        <xsl:apply-templates select="lg" mode="table"/>
-                    </table>
-                </xsl:for-each>
+                
+                    <h3>
+                        <xsl:value-of select="poem/@title"/>
+                    </h3>
+                    <h4>
+                        <xsl:value-of select="poem/@author"/>
+                    </h4>
+                <div class="verseTable">
+                    <xsl:for-each select="poem/divs">
+                        <xsl:variable name="divType" select="@type"/>
+                        <xsl:if test="count(parent::poem/divs) gt 1">
+                            <h5>
+                                <xsl:value-of select="@type"/>
+                                <xsl:text>&#160;</xsl:text>
+                                <xsl:value-of
+                                    select="count(preceding-sibling::divs[@type=$divType]) + 1"/>
+                            </h5>
+                        </xsl:if>
+                        <table>
+                            <tr>
+                                <th>Line</th>
+                                <th>Text</th>
+                                <th>Meter</th>
+                                <th>Rhyme</th>
+                                <th>Stressed<br/>Vowels</th>
+                            </tr>
+                            <xsl:apply-templates select="lg" mode="table"/>
+                        </table>
+                    </xsl:for-each>
+                </div>
+                <div class="svg">
+                    <xsl:apply-templates select="poem" mode="stressGraph"/>
+                </div>
             </body>
         </html>
     </xsl:template>
@@ -134,7 +164,7 @@
                                 </span>
                                 <xsl:sequence
                                     select="string-join($explodedOrth[position() gt $stressPos],'')"/>
-                                <xsl:if test="not($explodedOrth[last()] = '-')">
+                                <xsl:if test="not(@orth/ends-with(., '-'))">
                                     <xsl:text>&#160;</xsl:text>
                                 </xsl:if>
                             </xsl:when>
@@ -148,7 +178,8 @@
                     <xsl:variable name="firstStress">
                         <xsl:choose>
                             <xsl:when test="@ambientMeter='binary'">
-                                <xsl:variable name="head" select="ancestor::divs//l/count(w/v[following::v[@stress='1'][1] is ancestor::l/(w/v[@stress='1'])[1]])"/>
+                                <xsl:variable name="head"
+                                    select="ancestor::divs//l/count(w/v[following::v[@stress='1'][1] is ancestor::l/(w/v[@stress='1'])[1]])"/>
                                 <xsl:variable name="trochee" select="count($head[. = 0 or . = 2])"/>
                                 <xsl:variable name="iamb" select="count($head[. = 1 or . = 3])"/>
                                 <xsl:message>
@@ -169,7 +200,8 @@
                                 </xsl:choose>
                             </xsl:when>
                             <xsl:when test="@ambientMeter='ternary'">
-                                <xsl:variable name="head" select="ancestor::divs//l/count(w/v[following::v[@stress='1'][1] is ancestor::l/(w/v[@stress='1'])[1]])"/>
+                                <xsl:variable name="head"
+                                    select="ancestor::divs//l/count(w/v[following::v[@stress='1'][1] is ancestor::l/(w/v[@stress='1'])[1]])"/>
                                 <xsl:variable name="dactyl" select="count($head[. = 0 or . = 3])"/>
                                 <xsl:variable name="amphi" select="count($head[. = 1 or . = 4])"/>
                                 <xsl:variable name="anap" select="count($head[. = 2 or . = 5])"/>
@@ -281,6 +313,9 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:for-each>
+                    <xsl:if test="not(@ambientMeter = parent::lg/@ambientMeter)">
+                        <xsl:text>*</xsl:text>
+                    </xsl:if>
                 </td>
                 <td>
                     <xsl:variable name="lineLevelRhyme" select="@matchingLines"/>
@@ -338,7 +373,57 @@
                 <td/>
             </tr>
         </xsl:if>
+    </xsl:template>
 
+    <xsl:template match="poem" mode="stressGraph">
+        <xsl:variable name="valueCount" select="count($stressValences)" as="xs:integer"/>
+        <xsl:variable name="xScale" select="20" as="xs:integer"/>
+        <xsl:variable name="yScale" select="20" as="xs:integer"/>
+        <xsl:variable name="yTop" select="10.5 * $yScale" as="xs:double"/>
+        <svg xmlns="http://www.w3.org/2000/svg" height="{$yTop + 70}"
+            width="{($valueCount + 3) * $xScale}">
+            <g transform="translate(30,{11 * $yScale})">
+                <line x1="0" y1="0" x2="{($valueCount + 1) * $xScale}" y2="0" stroke="black"
+                    stroke-width="1"/>
+                <line x1="0" y1="0" x2="0" y2="-{$yTop}" stroke="black" stroke-width="1"/>
+                <text x="{$xScale * ($valueCount + 1) div 2}" y="40" text-anchor="middle"
+                    >Syllable</text>
+                <xsl:for-each select="1 to 10">
+                    <line x1="0" y1="-{current() * $yScale}" x2="{($valueCount + 1) * $xScale}"
+                        y2="-{current() * $yScale}" stroke="lightgray" stroke-width="1"/>
+                    <text x="-5" y="-{current() * $yScale - 5}" text-anchor="end">
+                        <xsl:value-of select="current() * 10"/>
+                    </text>
+                </xsl:for-each>
+                <xsl:for-each select="1 to $valueCount">
+                    <xsl:variable name="currentX" select="current() * $xScale" as="xs:integer"/>
+                    <xsl:variable name="currentY"
+                        select="$stressValences[current()] * $yScale * -10" as="xs:double"/>
+                    <xsl:if test="position() ne last()">
+                        <xsl:variable name="nextX" select="(current() + 1) * $xScale"
+                            as="xs:integer"/>
+                        <xsl:variable name="nextY"
+                            select="$stressValences[current() + 1] * $yScale * -10" as="xs:double"/>
+                        <line x1="{$currentX}" y1="{$currentY}" x2="{$nextX}" y2="{$nextY}"
+                            stroke="black" stroke-width="1"/>
+                    </xsl:if>
+                    <line x1="{$currentX}" y1="0" x2="{$currentX}" y2="-{$yTop}" stroke="lightgray"
+                        stroke-width="1"/>
+                    <circle cx="{$currentX}" cy="{$currentY}" r="3" fill="red">
+                        <title>
+                            <xsl:value-of select="round($stressValences[current()] * 100)"/>
+                        </title>
+                    </circle>
+                    <text x="{$currentX}" y="20" text-anchor="middle">
+                        <xsl:value-of select="current()"/>
+                    </text>
+                    <!--<text x="{$currentX}" y="20" text-anchor="middle">
+                        <xsl:value-of select="round($stressValences[current()] * 100)"/>
+                    </text>-->
+                </xsl:for-each>
+            </g>
+        </svg>
 
     </xsl:template>
+
 </xsl:stylesheet>
