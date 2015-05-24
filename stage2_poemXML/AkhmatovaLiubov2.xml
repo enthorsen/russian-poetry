@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<poem xmlns:ent="http://whatever"
+      author="Анна Андреевна Ахматова"
+      title="Любовь"
+      date="1912"
+      placeAttr="">
+   <divs>
+      <lg ambientMeter="ternary"
+          type="stanza"
+          ambRhyme="1 3,2 4"
+          avgLPerRhyme="2">
+         <l posRhyme="0"
+            compText="om"
+            matchingLines="1 3"
+            rhythm="01-1-11-1-11"
+            ambientMeter="ternary">
+            <w orth="То">
+               <cons>t</cons>
+               <v stress="-1">a</v>
+            </w>
+            <w orth="змейкой,">
+               <cons>zmj</cons>
+               <v stress="1">e</v>
+               <cons>qk</cons>
+               <v stress="-1">a</v>
+               <cons>q</cons>
+            </w>
+            <w orth="свернувшись">
+               <cons>svj</cons>
+               <v stress="-1">i</v>
+               <cons>rn</cons>
+               <v stress="1">u</v>
+               <cons>fš</cons>
+               <v stress="-1">i</v>
+               <cons>sq</cons>
+            </w>
+            <w orth="клубком,">
+               <cons>kl</cons>
+               <v stress="-1">u</v>
+               <cons>pk</cons>
+               <v stress="1">o</v>
+               <cons>m</cons>
+            </w>
+         </l>
+         <l posRhyme="1"
+            compText="ujt"
+            matchingLines="2 4"
+            rhythm="-11-1-11-1-11-1"
+            ambientMeter="ternary">
+            <w orth="У самого">
+               <v stress="-1">u</v>
+               <cons>s</cons>
+               <v stress="1">a</v>
+               <cons>m</cons>
+               <v stress="-1">a</v>
+               <cons>g</cons>
+               <v stress="-1">a</v>
+               <cons/>
+            </w>
+            <w orth="сердца">
+               <cons>sj</cons>
+               <v stress="1">e</v>
+               <cons>rts</cons>
+               <v stress="-1">a</v>
+            </w>
+            <w orth="колдует,">
+               <cons>k</cons>
+               <v stress="-1">a</v>
+               <cons>ld</cons>
+               <v stress="1">u</v>
+               <cons>j</cons>
+               <v stress="-1">i</v>
+               <cons>t</cons>
+            </w>
+         </l>
+         <l posRhyme="0"
+            compText="om"
+            matchingLines="1 3"
+            rhythm="01-1-11-1-11"
+            ambientMeter="ternary">
+            <w orth="То">
+               <cons>t</cons>
+               <v stress="-1">a</v>
+            </w>
+            <w orth="целые">
+               <cons>ts</cons>
+               <v stress="1">e</v>
+               <cons>l</cons>
+               <v stress="-1">i</v>
+               <cons>j</cons>
+               <v stress="-1">i</v>
+            </w>
+            <w orth="дни">
+               <cons>dnj</cons>
+               <v stress="1">i</v>
+            </w>
+            <w orth="голубком">
+               <cons>g</cons>
+               <v stress="-1">a</v>
+               <cons>l</cons>
+               <v stress="-1">u</v>
+               <cons>pk</cons>
+               <v stress="1">o</v>
+               <cons>m</cons>
+            </w>
+         </l>
+         <l posRhyme="1"
+            compText="ujt"
+            matchingLines="2 4"
+            rhythm="-11-1-11-1-11-1"
+            ambientMeter="ternary">
+            <w orth="На белом">
+               <cons>n</cons>
+               <v stress="-1">a</v>
+               <cons>bj</cons>
+               <v stress="1">e</v>
+               <cons>l</cons>
+               <v stress="-1">a</v>
+               <cons>m</cons>
+            </w>
+            <w orth="окошке">
+               <v stress="-1">a</v>
+               <cons>k</cons>
+               <v stress="1">o</v>
+               <cons>škj</cons>
+               <v stress="-1">i</v>
+            </w>
+            <w orth="воркует,">
+               <cons>v</cons>
+               <v stress="-1">a</v>
+               <cons>rk</cons>
+               <v stress="1">u</v>
+               <cons>j</cons>
+               <v stress="-1">i</v>
+               <cons>t</cons>
+            </w>
+         </l>
+      </lg>
+      <lg ambientMeter="ternary"
+          type="stanza"
+          ambRhyme="1 3,2 4"
+          avgLPerRhyme="2">
+         <l posRhyme="0"
+            compText="ot"
+            matchingLines="1 3"
+            rhythm="01-1-11-1-11"
+            ambientMeter="ternary">
+            <w orth="То">
+               <cons>t</cons>
+               <v stress="-1">a</v>
+            </w>
+            <w orth="в инее">
+               <cons>vj</cons>
+               <v stress="1">i</v>
+               <cons>nj</cons>
+               <v stress="-1">i</v>
+               <cons>j</cons>
+               <v stress="-1">i</v>
+            </w>
+            <w orth="ярком">
+               <cons>j</cons>
+               <v stress="1">a</v>
+               <cons>rk</cons>
+               <v stress="-1">a</v>
+               <cons>m</cons>
+            </w>
+            <w orth="блеснет,">
+               <cons>blj</cons>
+               <v stress="-1">i</v>
+               <cons>snj</cons>
+               <v stress="1">o</v>
+               <cons>t</cons>
+            </w>
+         </l>
+         <l posRhyme="1"
+            compText="oj"
+            matchingLines="2 4"
+            rhythm="-11-1-11-1-11-1"
+            ambientMeter="ternary">
+            <w orth="Почудится">
+               <cons>p</cons>
+               <v stress="-1">a</v>
+               <cons>čj</cons>
+               <v stress="1">u</v>
+               <cons>dj</cons>
+               <v stress="-1">i</v>
+               <cons>ts</cons>
+               <v stress="-1">a</v>
+            </w>
+            <w orth="в дреме">
+               <cons>vdrj</cons>
+               <v stress="1">o</v>
+               <cons>mj</cons>
+               <v stress="-1">i</v>
+            </w>
+            <w orth="левкоя...">
+               <cons>lj</cons>
+               <v stress="-1">i</v>
+               <cons>fk</cons>
+               <v stress="1">o</v>
+               <cons>j</cons>
+               <v stress="-1">i</v>
+            </w>
+         </l>
+         <l posRhyme="0"
+            compText="ot"
+            matchingLines="1 3"
+            rhythm="-11-1-11-1-11"
+            ambientMeter="ternary">
+            <w orth="Но верно">
+               <cons>n</cons>
+               <v stress="-1">a</v>
+               <cons>vj</cons>
+               <v stress="1">e</v>
+               <cons>rn</cons>
+               <v stress="-1">a</v>
+            </w>
+            <w orth="и тайно">
+               <v stress="-1">i</v>
+               <cons>t</cons>
+               <v stress="1">a</v>
+               <cons>qn</cons>
+               <v stress="-1">a</v>
+            </w>
+            <w orth="ведет">
+               <cons>vj</cons>
+               <v stress="-1">i</v>
+               <cons>dj</cons>
+               <v stress="1">o</v>
+               <cons>t</cons>
+            </w>
+         </l>
+         <l posRhyme="1"
+            compText="oj"
+            matchingLines="2 4"
+            rhythm="-11-1-1-1-1-11-1"
+            ambientMeter="ternary">
+            <w orth="От радости">
+               <v stress="-1">o</v>
+               <cons>tr</cons>
+               <v stress="1">a</v>
+               <cons>d</cons>
+               <v stress="-1">a</v>
+               <cons>stj</cons>
+               <v stress="-1">i</v>
+            </w>
+            <w orth="и от покоя.">
+               <v stress="-1">i</v>
+               <v stress="-1">a</v>
+               <cons>tp</cons>
+               <v stress="-1">a</v>
+               <cons>k</cons>
+               <v stress="1">o</v>
+               <cons>j</cons>
+               <v stress="-1">i</v>
+            </w>
+         </l>
+      </lg>
+      <lg ambientMeter="ternary"
+          type="stanza"
+          ambRhyme="1 3,2 4"
+          avgLPerRhyme="2">
+         <l posRhyme="0"
+            compText="atq"
+            matchingLines="1 3"
+            rhythm="-11-101-1-11"
+            ambientMeter="ternary">
+            <w orth="Умеет">
+               <v stress="-1">u</v>
+               <cons>mj</cons>
+               <v stress="1">e</v>
+               <cons>j</cons>
+               <v stress="-1">i</v>
+               <cons>t</cons>
+            </w>
+            <w orth="так">
+               <cons>t</cons>
+               <v stress="-1">a</v>
+               <cons>k</cons>
+            </w>
+            <w orth="сладко">
+               <cons>sl</cons>
+               <v stress="1">a</v>
+               <cons>tk</cons>
+               <v stress="-1">a</v>
+            </w>
+            <w orth="рыдать">
+               <cons>r</cons>
+               <v stress="-1">i</v>
+               <cons>d</cons>
+               <v stress="1">a</v>
+               <cons>tq</cons>
+            </w>
+         </l>
+         <l posRhyme="1"
+            compText="ipkj"
+            matchingLines="2 4"
+            rhythm="-11-1-11-1-11-1"
+            ambientMeter="ternary">
+            <w orth="В молитве">
+               <cons>vm</cons>
+               <v stress="-1">a</v>
+               <cons>lj</cons>
+               <v stress="1">i</v>
+               <cons>tvj</cons>
+               <v stress="-1">i</v>
+            </w>
+            <w orth="тоскующей">
+               <cons>t</cons>
+               <v stress="-1">a</v>
+               <cons>sk</cons>
+               <v stress="1">u</v>
+               <cons>j</cons>
+               <v stress="-1">u</v>
+               <cons>ščj</cons>
+               <v stress="-1">i</v>
+               <cons>q</cons>
+            </w>
+            <w orth="скрипки,">
+               <cons>skrj</cons>
+               <v stress="1">i</v>
+               <cons>pkj</cons>
+               <v stress="-1">i</v>
+            </w>
+         </l>
+         <l posRhyme="0"
+            compText="atq"
+            matchingLines="1 3"
+            rhythm="-11-1-11-1-11"
+            ambientMeter="ternary">
+            <w orth="И страшно">
+               <v stress="-1">i</v>
+               <cons>str</cons>
+               <v stress="1">a</v>
+               <cons>šn</cons>
+               <v stress="-1">a</v>
+            </w>
+            <w orth="ее">
+               <cons>j</cons>
+               <v stress="-1">i</v>
+               <cons>j</cons>
+               <v stress="1">o</v>
+            </w>
+            <w orth="угадать">
+               <v stress="-1">u</v>
+               <cons>g</cons>
+               <v stress="-1">a</v>
+               <cons>d</cons>
+               <v stress="1">a</v>
+               <cons>tq</cons>
+            </w>
+         </l>
+         <l posRhyme="1"
+            compText="ipkj"
+            matchingLines="2 4"
+            rhythm="00-1-11-1-11-1"
+            ambientMeter="ternary">
+            <w orth="В еще">
+               <cons>vj</cons>
+               <v stress="-1">i</v>
+               <cons>ščj</cons>
+               <v stress="1">e</v>
+            </w>
+            <w orth="незнакомой">
+               <cons>nj</cons>
+               <v stress="-1">i</v>
+               <cons>zn</cons>
+               <v stress="-1">a</v>
+               <cons>k</cons>
+               <v stress="1">o</v>
+               <cons>m</cons>
+               <v stress="-1">a</v>
+               <cons>q</cons>
+            </w>
+            <w orth="улыбке.">
+               <v stress="-1">u</v>
+               <cons>l</cons>
+               <v stress="1">i</v>
+               <cons>pkj</cons>
+               <v stress="-1">i</v>
+            </w>
+         </l>
+      </lg>
+   </divs>
+</poem>
