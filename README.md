@@ -4,6 +4,7 @@ russian-poetry
 For Russian-language scansion and analysis
 
 Directory Navigation
+
   Stage0_PoemXML contains poems that have metadata and structural mark-up: poem, divs [chapters, sections], line groups [epigraph, stanzas], l, and w elements with two tiered child elements containing orthographic presentation and stress information, respectively.
   
   Stage1_PoemXML contains poems that have been processed by Stage1_MeterPhoneticTransformation.xsl. This stylesheet derives the metrical characteristics of the poem, propagates stress information to monosyllabic words on the basis of ambient meter, and renders a crude phonetic presentation of words.
