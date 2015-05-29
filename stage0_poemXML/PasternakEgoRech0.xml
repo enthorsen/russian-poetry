@@ -9,7 +9,7 @@
     <str>я</str>
   </w>
   <w>
-    <orth>помню</orth>
+    <orth>помню,</orth>
     <str>п<stress>о</stress>мню</str>
   </w>
   <w>
@@ -35,7 +35,7 @@
     <str><stress>и</stress>скрами</str>
   </w>
   <w>
-    <orth>загривок</orth>
+    <orth>загривок,</orth>
     <str>загр<stress>и</stress>вок</str>
   </w>
 </l>
@@ -53,7 +53,7 @@
     <str>м<stress>о</stress>лньи</str>
   </w>
   <w>
-    <orth>шаровой</orth>
+    <orth>шаровой.</orth>
     <str>шаров<stress>о</stress>й</str>
   </w>
 </l>
@@ -71,7 +71,7 @@
     <str>с</str>
   </w>
   <w>
-    <orth>мест</orth>
+    <orth>мест,</orth>
     <str>м<stress>е</stress>ст</str>
   </w>
   <w>
@@ -93,7 +93,7 @@
     <str>кр<stress>а</stress>йний</str>
   </w>
   <w>
-    <orth>стол</orth>
+    <orth>стол,</orth>
     <str>ст<stress>о</stress>л</str>
   </w>
 </l>
@@ -133,7 +133,7 @@
     <str>в<stress>ы</stress>рос</str>
   </w>
   <w>
-    <orth>раньше</orth>
+    <orth>раньше,</orth>
     <str>р<stress>а</stress>ньше</str>
   </w>
   <w>
@@ -141,7 +141,7 @@
     <str>чем</str>
   </w>
   <w>
-    <orth>вошёл</orth>
+    <orth>вошёл.</orth>
     <str>(вошёл)</str>
   </w>
 </l>
@@ -177,7 +177,7 @@
     <str>и</str>
   </w>
   <w>
-    <orth>подмог</orth>
+    <orth>подмог,</orth>
     <str>подм<stress>о</stress>г</str>
   </w>
 </l>
@@ -187,7 +187,7 @@
     <str>как</str>
   </w>
   <w>
-    <orth>этот</orth>
+    <orth>этот,</orth>
     <str><stress>э</stress>тот</str>
   </w>
   <w>
@@ -217,7 +217,7 @@
     <str>влет<stress>а</stress>ющий</str>
   </w>
   <w>
-    <orth>комок</orth>
+    <orth>комок.</orth>
     <str>ком<stress>о</stress>к</str>
   </w>
 </l>
@@ -243,7 +243,7 @@
     <str>на</str>
   </w>
   <w>
-    <orth>рапире</orth>
+    <orth>рапире.</orth>
     <str>рап<stress>и</stress>ре</str>
   </w>
 </l>
@@ -261,7 +261,7 @@
     <str>в<stress>ы</stress>сказанным</str>
   </w>
   <w>
-    <orth>вслед</orth>
+    <orth>вслед,</orth>
     <str>всл<stress>е</stress>д</str>
   </w>
 </l>
@@ -275,7 +275,7 @@
     <str>гн<stress>у</stress>л</str>
   </w>
   <w>
-    <orth>своё</orth>
+    <orth>своё,</orth>
     <str>(своё)</str>
   </w>
   <w>
@@ -301,7 +301,7 @@
     <str>передк<stress>и</stress>)</str>
   </w>
   <w>
-    <orth>штиблет</orth>
+    <orth>штиблет.</orth>
     <str>штибл<stress>е</stress>т</str>
   </w>
 </l>
@@ -323,7 +323,7 @@
     <str>о</str>
   </w>
   <w>
-    <orth>мазуте</orth>
+    <orth>мазуте,</orth>
     <str>маз<stress>у</stress>те</str>
   </w>
 </l>
@@ -359,7 +359,7 @@
     <str>г<stress>о</stress>лой</str>
   </w>
   <w>
-    <orth>сути</orth>
+    <orth>сути,</orth>
     <str>с<stress>у</stress>ти</str>
   </w>
 </l>
@@ -377,7 +377,7 @@
     <str>сл<stress>о</stress>й</str>
   </w>
   <w>
-    <orth>лузги</orth>
+    <orth>лузги.</orth>
     <str>лузг<stress>и</stress></str>
   </w>
 </l>
@@ -413,7 +413,7 @@
     <str>во</str>
   </w>
   <w>
-    <orth>всём</orth>
+    <orth>всём,</orth>
     <str>(всём)</str>
   </w>
 </l>
@@ -428,10 +428,10 @@
   </w>
   <w>
     <orth>былей</orth>
-    <str>был<stress>е</stress>й</str>
+    <str>б<stress>ы</stress>лей</str>
   </w>
   <w>
-    <orth>начерталось</orth>
+    <orth>начерталось:</orth>
     <str>начерт<stress>а</stress>лось</str>
   </w>
 </l>
@@ -453,7 +453,7 @@
     <str>звуков<stress>ы</stress>м</str>
   </w>
   <w>
-    <orth>лицом</orth>
+    <orth>лицом.</orth>
     <str>лиц<stress>о</stress>м</str>
   </w>
 </l>
@@ -467,7 +467,7 @@
     <str>з<stress>а</stress>вистью</str>
   </w>
   <w>
-    <orth>завистлив</orth>
+    <orth>завистлив,</orth>
     <str>зав<stress>и</stress>стлив</str>
   </w>
 </l>
@@ -485,7 +485,7 @@
     <str>р<stress>е</stress>вностью</str>
   </w>
   <w>
-    <orth>одной</orth>
+    <orth>одной,</orth>
     <str>одн<stress>о</stress>й</str>
   </w>
 </l>
@@ -521,7 +521,7 @@
     <str>потом<stress>у</stress></str>
   </w>
   <w>
-    <orth>страной</orth>
+    <orth>страной.</orth>
     <str>стран<stress>о</stress>й</str>
   </w>
 </l>

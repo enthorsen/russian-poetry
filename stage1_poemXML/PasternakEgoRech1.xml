@@ -11,7 +11,7 @@
                <cons>j</cons>
                <v stress="-1">i</v>
             </w>
-            <w orth="помню">
+            <w orth="помню,">
                <cons>p</cons>
                <v stress="1">o</v>
                <cons>mnj</cons>
@@ -52,7 +52,7 @@
                <cons>mj</cons>
                <v stress="-1">i</v>
             </w>
-            <w orth="загривок">
+            <w orth="загривок,">
                <cons>z</cons>
                <v stress="-1">a</v>
                <cons>grj</cons>
@@ -81,7 +81,7 @@
                <cons>lnqj</cons>
                <v stress="-1">i</v>
             </w>
-            <w orth="шаровой">
+            <w orth="шаровой.">
                <cons>š</cons>
                <v stress="-1">a</v>
                <cons>r</cons>
@@ -102,7 +102,7 @@
                <cons>lj</cons>
                <v stress="-1">i</v>
             </w>
-            <w orth="с мест">
+            <w orth="с мест,">
                <cons>smj</cons>
                <v stress="1">e</v>
                <cons>st</cons>
@@ -141,7 +141,7 @@
                <v stress="-1">i</v>
                <cons>q</cons>
             </w>
-            <w orth="стол">
+            <w orth="стол,">
                <cons>st</cons>
                <v stress="1">o</v>
                <cons>l</cons>
@@ -189,7 +189,7 @@
                <v stress="-1">a</v>
                <cons>s</cons>
             </w>
-            <w orth="раньше">
+            <w orth="раньше,">
                <cons>r</cons>
                <v stress="1">a</v>
                <cons>nqš</cons>
@@ -200,7 +200,7 @@
                <v stress="1">e</v>
                <cons>m</cons>
             </w>
-            <w orth="вошёл">
+            <w orth="вошёл.">
                <cons>v</cons>
                <v stress="-1">a</v>
                <cons>š</cons>
@@ -251,7 +251,7 @@
                <v stress="-1">i</v>
                <cons>q</cons>
             </w>
-            <w orth="и подмог">
+            <w orth="и подмог,">
                <v stress="-1">i</v>
                <cons>p</cons>
                <v stress="-1">a</v>
@@ -266,7 +266,7 @@
                <v stress="-1">a</v>
                <cons>k</cons>
             </w>
-            <w orth="этот">
+            <w orth="этот,">
                <v stress="1">e</v>
                <cons>t</cons>
                <v stress="-1">a</v>
@@ -307,7 +307,7 @@
                <v stress="-1">i</v>
                <cons>q</cons>
             </w>
-            <w orth="комок">
+            <w orth="комок.">
                <cons>k</cons>
                <v stress="-1">a</v>
                <cons>m</cons>
@@ -337,7 +337,7 @@
                <v stress="-1">a</v>
                <cons>t</cons>
             </w>
-            <w orth="на рапире">
+            <w orth="на рапире.">
                <cons>n</cons>
                <v stress="-1">a</v>
                <cons>r</cons>
@@ -369,7 +369,7 @@
                <v stress="-1">i</v>
                <cons>m</cons>
             </w>
-            <w orth="вслед">
+            <w orth="вслед,">
                <cons>fslj</cons>
                <v stress="1">e</v>
                <cons>t</cons>
@@ -385,7 +385,7 @@
                <v stress="1">u</v>
                <cons>l</cons>
             </w>
-            <w orth="своё">
+            <w orth="своё,">
                <cons>sv</cons>
                <v stress="-1">a</v>
                <cons>j</cons>
@@ -424,7 +424,7 @@
                <v stress="1">i</v>
                <cons>)</cons>
             </w>
-            <w orth="штиблет">
+            <w orth="штиблет.">
                <cons>štj</cons>
                <v stress="-1">i</v>
                <cons>blj</cons>
@@ -450,7 +450,7 @@
                <v stress="1">i</v>
                <cons>tq</cons>
             </w>
-            <w orth="о мазуте">
+            <w orth="о мазуте,">
                <v stress="-1">a</v>
                <cons>m</cons>
                <v stress="-1">a</v>
@@ -508,7 +508,7 @@
                <v stress="-1">a</v>
                <cons>q</cons>
             </w>
-            <w orth="сути">
+            <w orth="сути,">
                <cons>s</cons>
                <v stress="1">u</v>
                <cons>tj</cons>
@@ -537,7 +537,7 @@
                <v stress="1">o</v>
                <cons>q</cons>
             </w>
-            <w orth="лузги">
+            <w orth="лузги.">
                <cons>l</cons>
                <v stress="-1">u</v>
                <cons>zgj</cons>
@@ -587,7 +587,7 @@
                <v stress="1">u</v>
                <cons>x</cons>
             </w>
-            <w orth="во всём">
+            <w orth="во всём,">
                <cons>v</cons>
                <v stress="-1">a</v>
                <cons>fsj</cons>
@@ -595,7 +595,7 @@
                <cons>m</cons>
             </w>
          </l>
-         <l rhythm="01-1-11-1-11-1" ambientMeter="ternary">
+         <l rhythm="01-11-1-1-11-1" ambientMeter="binary">
             <w orth="Что">
                <cons>čt</cons>
                <v stress="-1">a</v>
@@ -608,12 +608,12 @@
             </w>
             <w orth="былей">
                <cons>b</cons>
-               <v stress="-1">i</v>
+               <v stress="1">i</v>
                <cons>lj</cons>
-               <v stress="1">e</v>
+               <v stress="-1">i</v>
                <cons>q</cons>
             </w>
-            <w orth="начерталось">
+            <w orth="начерталось:">
                <cons>n</cons>
                <v stress="-1">a</v>
                <cons>čj</cons>
@@ -648,7 +648,7 @@
                <v stress="1">i</v>
                <cons>m</cons>
             </w>
-            <w orth="лицом">
+            <w orth="лицом.">
                <cons>lj</cons>
                <v stress="-1">i</v>
                <cons>ts</cons>
@@ -674,7 +674,7 @@
                <cons>stqj</cons>
                <v stress="-1">u</v>
             </w>
-            <w orth="завистлив">
+            <w orth="завистлив,">
                <cons>z</cons>
                <v stress="-1">a</v>
                <cons>vj</cons>
@@ -704,7 +704,7 @@
                <cons>stqj</cons>
                <v stress="-1">u</v>
             </w>
-            <w orth="одной">
+            <w orth="одной,">
                <v stress="-1">a</v>
                <cons>dn</cons>
                <v stress="1">o</v>
@@ -757,7 +757,7 @@
                <cons>m</cons>
                <v stress="1">u</v>
             </w>
-            <w orth="страной">
+            <w orth="страной.">
                <cons>str</cons>
                <v stress="-1">a</v>
                <cons>n</cons>
