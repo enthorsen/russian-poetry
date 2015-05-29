@@ -13,7 +13,8 @@
             <head>
                 <xsl:comment>#include virtual="../inc/poetry-header.html"</xsl:comment>
                 <link rel="stylesheet" type="text/css" href="../css/verseTableCSS.css"/>
-                <title><xsl:value-of select="poem/@author"/>: <xsl:value-of select="poem/@title"/></title>
+                <title><xsl:value-of select="poem/@author"/>: <xsl:value-of select="poem/@title"
+                    /></title>
             </head>
             <body>
                 <xsl:comment>#include virtual="../inc/poetry-boilerplate.html"</xsl:comment>
@@ -54,6 +55,7 @@
                 <div class="svg">
                     <xsl:apply-templates select="poem" mode="stressGraph"/>
                 </div>
+                <xsl:apply-templates select="poem/source"/>
             </body>
         </html>
     </xsl:template>
@@ -363,6 +365,8 @@
         </xsl:if>
     </xsl:template>
 
+
+
     <xsl:template match="poem" mode="stressGraph">
         <xsl:variable name="valueCount" select="count($stressValences)" as="xs:integer"/>
         <xsl:variable name="xScale" select="20" as="xs:integer"/>
@@ -438,6 +442,44 @@
         <xsl:sequence select="$stressed div count($vowels)"/>
     </xsl:function>
 
+    <xsl:template match="poem/source">
+        
+            <p type="note">
+                <xsl:if test="title != ancestor::poem/@title">
+                    <xsl:text>"</xsl:text>
+                    <xsl:value-of select="title"/>
+                    <xsl:text>". </xsl:text>
+                </xsl:if>
+                <em>
+                    <xsl:value-of select="source"/>
+                </em>
+                <xsl:if test="issue">
+                    <xsl:text> </xsl:text>
+                    <xsl:value-of select="issue"/>
+                </xsl:if>
+                <xsl:text> (</xsl:text>
+                <xsl:value-of select="date"/>
+                <xsl:text>)</xsl:text>
+                <xsl:if test="reprint">
+                    <br/>
+                    <xsl:text>Excerpted in </xsl:text>
+                    <em>
+                        <xsl:value-of select="reprint/source"/>
+                    </em>
+                    <xsl:text> (</xsl:text>
+                    <xsl:value-of select="reprint/date"/>
+                    <xsl:text>)</xsl:text>
+                    <xsl:if test="reprint/title != title">
+                        <xsl:text> as "</xsl:text>
+                        <xsl:value-of select="reprint/title"/>
+                        <xsl:text>". </xsl:text>
+                    </xsl:if>
+
+                </xsl:if>
+            </p>
+        
+
+    </xsl:template>
 
 
 </xsl:stylesheet>

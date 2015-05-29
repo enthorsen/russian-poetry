@@ -63,7 +63,7 @@
 
     </xsl:template>
 
-    <xsl:template match="date|place|title|author"/>
+    <xsl:template match="poem/date|poem/place|poem/title|poem/author"/>
 
     <xsl:template match="divs">
         <divs>
