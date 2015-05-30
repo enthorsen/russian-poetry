@@ -12,12 +12,9 @@
         </xsl:copy>
     </xsl:template>
 
-    <xsl:variable name="root" select="." as="document-node()"/>
-
     <!-- Moves contextual information (title, attributed date, attributed place) to attributes in the root node-->
 
     <xsl:template match="poem">
-
         <poem author="{author}">
             <xsl:attribute name="title">
                 <xsl:choose>
@@ -337,8 +334,8 @@
         </l>
     </xsl:template>
 
-    <xsl:template match="l" mode="meter">
-        <xsl:variable name="total">
+     <xsl:template match="l" mode="meter">
+        <xsl:variable name="total" as="xs:integer">
             <xsl:value-of select="count(w/v)"/>
         </xsl:variable>
 
@@ -371,6 +368,7 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
+
 
         <xsl:variable name="seq">
             <xsl:for-each select="w/v">
@@ -477,7 +475,7 @@
                                 <v>
                                     <xsl:attribute name="stress">
                                         <xsl:value-of select="xs:integer(1)"/>
-                                    </xsl:attribute>        
+                                    </xsl:attribute>
                                     <xsl:value-of select="."/>
                                 </v>
                             </xsl:when>
@@ -872,14 +870,35 @@
         <xsl:param name="begin" as="xs:integer"/>
         <xsl:param name="end" as="xs:integer"/>
         <xsl:param name="line" as="element(l)"/>
-        <xsl:message select="avg(for $i in (4+$begin to $end) return $line/(w/v)[$i]/@stress - $line/(w/v)[$i - 2]/@stress)"/>
-        <xsl:value-of 
-            select="avg(for $i in (4+$begin to $end) return $line/(w/v)[$i]/@stress - $line/(w/v)[$i - 2]/@stress)"
-        />
+        <xsl:choose>
+            <xsl:when test="($end - $begin lt 4) and ($end - $begin ge 2)">
+                <xsl:variable name="vowels" as="element(v)+"
+                    select="for $i in ($begin to $end) return $line/descendant::v[$i]"/>
+                <xsl:variable name="stressNumber" select="count($vowels[@stress eq '1'])"/>
+                <xsl:variable name="postCaesuraHead"
+                    select="($vowels[@stress eq '1'])[last()]/sum((count(preceding-sibling::v), count(parent::w/preceding-sibling::w/v)))- $begin"/>
+                <xsl:choose>
+                    <xsl:when
+                        test="$stressNumber = 1 and $postCaesuraHead = djb:headLength($line/parent::lg)">
+                        <xs:double>.001</xs:double>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xs:double>.80</xs:double>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message
+                    select="avg(for $i in (4+$begin to $end) return $line/(w/v)[$i]/@stress - $line/(w/v)[$i - 2]/@stress)"/>
+                <xsl:value-of
+                    select="avg(for $i in (4+$begin to $end) return $line/(w/v)[$i]/@stress - $line/(w/v)[$i - 2]/@stress)"
+                />
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
 
     <xsl:function name="djb:headLength" as="xs:double*">
-        <xsl:param name="lg" as="document-node()"/>
+        <xsl:param name="lg" as="element(lg)"/>
         <xsl:variable name="lineCount" select="count($lg/l)"/>
         <xsl:variable name="headLengths"
             select="$lg/l/(v[@stress='1'])[1]/sum((count(preceding-sibling::v), count(parent::w/preceding-sibling::w/v)))"/>
