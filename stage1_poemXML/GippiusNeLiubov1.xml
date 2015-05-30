@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<poem xmlns:djb="http://www.obdurodon.org/"
+      author=""
+      title=""
+      date=""
+      placeAttr="">
+   <divs>
+      <lg ambientMeter="binary" type="stanza" caesura="5">
+         <l rhythm="01-11-101-11-1" ambientMeter="">
+            <w orth="Как">
+               <cons>k</cons>
+               <v stress="1">a</v>
+               <cons>k</cons>
+            </w>
+            <w orth="ветер">
+               <cons>vj</cons>
+               <v stress="1">e</v>
+               <cons>tj</cons>
+               <v stress="-1">i</v>
+               <cons>r</cons>
+            </w>
+            <w orth="мокрый,">
+               <cons>m</cons>
+               <v stress="1">o</v>
+               <cons>kr</cons>
+               <v stress="-1">i</v>
+               <cons>q</cons>
+            </w>
+            <w orth="ты">
+               <cons>t</cons>
+               <v stress="-1">i</v>
+            </w>
+            <w orth="бьёшься">
+               <cons>bqj</cons>
+               <v stress="1">o</v>
+               <cons>šqsj</cons>
+               <v stress="-1">i</v>
+            </w>
+            <w orth="в ставни,">
+               <cons>fst</cons>
+               <v stress="1">a</v>
+               <cons>vnj</cons>
+               <v stress="-1">i</v>
+            </w>
+         </l>
+         <l rhythm="01-11-1-1100" ambientMeter="">
+            <w orth="Как">
+               <cons>k</cons>
+               <v stress="1">a</v>
+               <cons>k</cons>
+            </w>
+            <w orth="ветер">
+               <cons>vj</cons>
+               <v stress="1">e</v>
+               <cons>tj</cons>
+               <v stress="-1">i</v>
+               <cons>r</cons>
+            </w>
+            <w orth="чёрный,">
+               <cons>čj</cons>
+               <v stress="1">o</v>
+               <cons>rn</cons>
+               <v stress="-1">i</v>
+               <cons>q</cons>
+            </w>
+            <w orth="поёшь:">
+               <cons>p</cons>
+               <v stress="-1">a</v>
+               <cons>j</cons>
+               <v stress="1">o</v>
+               <cons>š</cons>
+            </w>
+            <w orth="ты">
+               <cons>t</cons>
+               <v stress="-1">i</v>
+            </w>
+            <w orth="мой!">
+               <cons>m</cons>
+               <v stress="1">o</v>
+               <cons>q</cons>
+            </w>
+         </l>
+         <l rhythm="01-11-10101-1" ambientMeter="">
+            <w orth="Я">
+               <cons>j</cons>
+               <v stress="1">a</v>
+            </w>
+            <w orth="древний">
+               <cons>drj</cons>
+               <v stress="1">e</v>
+               <cons>vnj</cons>
+               <v stress="-1">i</v>
+               <cons>q</cons>
+            </w>
+            <w orth="хаос,">
+               <cons>x</cons>
+               <v stress="1">a</v>
+               <v stress="-1">a</v>
+               <cons>s</cons>
+            </w>
+            <w orth="я">
+               <cons>j</cons>
+               <v stress="-1">i</v>
+            </w>
+            <w orth="друг">
+               <cons>dr</cons>
+               <v stress="1">u</v>
+               <cons>k</cons>
+            </w>
+            <w orth="твой">
+               <cons>tv</cons>
+               <v stress="-1">a</v>
+               <cons>q</cons>
+            </w>
+            <w orth="давний,">
+               <cons>d</cons>
+               <v stress="1">a</v>
+               <cons>vnj</cons>
+               <v stress="-1">i</v>
+               <cons>q</cons>
+            </w>
+         </l>
+         <l rhythm="01-11-1-11-11" ambientMeter="">
+            <w orth="Твой">
+               <cons>tv</cons>
+               <v stress="1">o</v>
+               <cons>q</cons>
+            </w>
+            <w orth="друг">
+               <cons>dr</cons>
+               <v stress="1">u</v>
+               <cons>k</cons>
+            </w>
+            <w orth="единый,—">
+               <cons>j</cons>
+               <v stress="-1">i</v>
+               <cons>dj</cons>
+               <v stress="1">i</v>
+               <cons>n</cons>
+               <v stress="-1">i</v>
+               <cons>q</cons>
+            </w>
+            <w orth="открой,">
+               <v stress="-1">a</v>
+               <cons>tkr</cons>
+               <v stress="1">o</v>
+               <cons>q</cons>
+            </w>
+            <w orth="открой!">
+               <v stress="-1">a</v>
+               <cons>tkr</cons>
+               <v stress="1">o</v>
+               <cons>q</cons>
+            </w>
+         </l>
+      </lg>
+   </divs>
+</poem>
