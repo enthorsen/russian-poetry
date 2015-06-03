@@ -39,13 +39,13 @@
                     flex-direction:column;
                     -webkit-flex-direction:column;
                     margin-left: 1em;
-                    width: <xsl:value-of select="djb:svgWidth()"/>;
+                    width: <xsl:value-of select="djb:svgWidth()"/>px;
                     }
                     td:nth-child(5){
                     font-family:monospace;
                     }
                     svg{
-                    width:225px;
+                    width:<xsl:value-of select="djb:svgWidth()"/>px;
                     }</style>
                 <title><xsl:value-of select="poem/@author"/>: <xsl:value-of select="poem/@title"
                     /></title>
