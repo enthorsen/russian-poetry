@@ -13,12 +13,45 @@
             <head>
                 <xsl:comment>#include virtual="../inc/poetry-header.html"</xsl:comment>
                 <link rel="stylesheet" type="text/css" href="../css/verseTableCSS.css"/>
+                <style type="text/css">
+                    html,
+                    body{
+                    height:100%;
+                    }
+                    .wrap{
+                    height:100vh;
+                    display:flex;
+                    display:-webkit-flex;
+                    }
+                    .main{
+                    flex:auto;
+                    display:flex;
+                    display:-webkit-flex;
+                    }
+                    .left{
+                    display:flex;
+                    display:-webkit-flex;
+                    overflow-y:scroll;
+                    }
+                    .right{
+                    display:flex;
+                    display:-webkit-flex;
+                    flex-direction:column;
+                    -webkit-flex-direction:column;
+                    margin-left: 1em;
+                    width: <xsl:value-of select="djb:svgWidth()"/>;
+                    }
+                    td:nth-child(5){
+                    font-family:monospace;
+                    }
+                    svg{
+                    width:225px;
+                    }</style>
                 <title><xsl:value-of select="poem/@author"/>: <xsl:value-of select="poem/@title"
                     /></title>
             </head>
             <body>
                 <xsl:comment>#include virtual="../inc/poetry-boilerplate.html"</xsl:comment>
-
                 <h2>
                     <span id="title">
                         <xsl:value-of select="poem/@title"/>
@@ -29,33 +62,39 @@
                     </span>
                     <xsl:text>)</xsl:text>
                 </h2>
-                <div class="verseTable">
-                    <xsl:for-each select="poem/divs">
-                        <xsl:variable name="divType" select="@type"/>
-                        <xsl:if test="count(parent::poem/divs) gt 1">
-                            <h5>
-                                <xsl:value-of select="@type"/>
-                                <xsl:text>&#160;</xsl:text>
-                                <xsl:value-of
-                                    select="count(preceding-sibling::divs[@type = $divType]) + 1"/>
-                            </h5>
-                        </xsl:if>
-                        <table>
-                            <tr>
-                                <th>Line</th>
-                                <th>Text</th>
-                                <th>Meter</th>
-                                <th>Rhyme</th>
-                                <th>Stressed<br/>Vowels</th>
-                            </tr>
-                            <xsl:apply-templates select="lg" mode="table"/>
-                        </table>
-                    </xsl:for-each>
+                <div class="wrap">
+                    <div class="main">
+                        <div class="left">
+                            <xsl:for-each select="poem/divs">
+                                <xsl:variable name="divType" select="@type"/>
+                                <xsl:if test="count(parent::poem/divs) gt 1">
+                                    <h5>
+                                        <xsl:value-of select="@type"/>
+                                        <xsl:text>&#160;</xsl:text>
+                                        <xsl:value-of
+                                            select="count(preceding-sibling::divs[@type = $divType]) + 1"
+                                        />
+                                    </h5>
+                                </xsl:if>
+                                <table>
+                                    <tr>
+                                        <th>Line</th>
+                                        <th>Text</th>
+                                        <th>Meter</th>
+                                        <th>Rhyme</th>
+                                        <th>Stressed<br/>Vowels</th>
+                                    </tr>
+                                    <xsl:apply-templates select="lg" mode="table"/>
+                                </table>
+                            </xsl:for-each>
+                        </div>
+                        <div class="right">
+                            <xsl:apply-templates select="poem" mode="stressGraph"/>
+
+                            <xsl:apply-templates select="poem/source"/>
+                        </div>
+                    </div>
                 </div>
-                <div class="svg">
-                    <xsl:apply-templates select="poem" mode="stressGraph"/>
-                </div>
-                <xsl:apply-templates select="poem/source"/>
             </body>
         </html>
     </xsl:template>
@@ -443,43 +482,46 @@
     </xsl:function>
 
     <xsl:template match="poem/source">
-        
-            <p type="note">
-                <xsl:if test="title != ancestor::poem/@title">
-                    <xsl:text>"</xsl:text>
-                    <xsl:value-of select="title"/>
+
+        <p type="note">
+            <xsl:if test="title != ancestor::poem/@title">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="title"/>
+                <xsl:text>". </xsl:text>
+            </xsl:if>
+            <em>
+                <xsl:value-of select="source"/>
+            </em>
+            <xsl:if test="issue">
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="issue"/>
+            </xsl:if>
+            <xsl:text> (</xsl:text>
+            <xsl:value-of select="date"/>
+            <xsl:text>)</xsl:text>
+            <xsl:if test="reprint">
+                <br/>
+                <xsl:text>Excerpted in </xsl:text>
+                <em>
+                    <xsl:value-of select="reprint/source"/>
+                </em>
+                <xsl:text> (</xsl:text>
+                <xsl:value-of select="reprint/date"/>
+                <xsl:text>)</xsl:text>
+                <xsl:if test="reprint/title != title">
+                    <xsl:text> as "</xsl:text>
+                    <xsl:value-of select="reprint/title"/>
                     <xsl:text>". </xsl:text>
                 </xsl:if>
-                <em>
-                    <xsl:value-of select="source"/>
-                </em>
-                <xsl:if test="issue">
-                    <xsl:text> </xsl:text>
-                    <xsl:value-of select="issue"/>
-                </xsl:if>
-                <xsl:text> (</xsl:text>
-                <xsl:value-of select="date"/>
-                <xsl:text>)</xsl:text>
-                <xsl:if test="reprint">
-                    <br/>
-                    <xsl:text>Excerpted in </xsl:text>
-                    <em>
-                        <xsl:value-of select="reprint/source"/>
-                    </em>
-                    <xsl:text> (</xsl:text>
-                    <xsl:value-of select="reprint/date"/>
-                    <xsl:text>)</xsl:text>
-                    <xsl:if test="reprint/title != title">
-                        <xsl:text> as "</xsl:text>
-                        <xsl:value-of select="reprint/title"/>
-                        <xsl:text>". </xsl:text>
-                    </xsl:if>
 
-                </xsl:if>
-            </p>
-        
+            </xsl:if>
+        </p>
+
 
     </xsl:template>
+    <xsl:function name="djb:svgWidth">
+        <xsl:value-of select="(count($stressValences)+3) * 20"/>
+    </xsl:function>
 
 
 </xsl:stylesheet>

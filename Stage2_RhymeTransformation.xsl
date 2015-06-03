@@ -26,8 +26,8 @@
         </divs>
     </xsl:template>
 
-    <xsl:template match="lg" mode="setUp">
-        <lg ambientMeter="{@ambientMeter}" type="{@type}">
+    <xsl:template match="lg[@type='stanza']" mode="setUp">
+        <lg ambientMeter="{@ambientMeter}" type="{@type}" caesura="{@caesura}">
             <!-- Rhyme Stage One: Determine if possible rhyme is masc, 
                 fem, dactylic -->
             <xsl:apply-templates select="l" mode="rhymeContext"/>
@@ -35,14 +35,14 @@
         </lg>
     </xsl:template>
 
-    <xsl:template match="lg" mode="match">
-        <lg ambientMeter="{@ambientMeter}" type="{@type}">
+    <xsl:template match="lg[@type='stanza']" mode="match">
+        <lg ambientMeter="{@ambientMeter}" type="{@type}" caesura="{@caesura}">
             <!-- Rhyme Stage Three: Return lines which are exact matches-->
             <xsl:apply-templates select="l" mode="rhymeMatch"/>
         </lg>
     </xsl:template>
 
-    <xsl:template match="lg" mode="stanzaAmbient">
+    <xsl:template match="lg[@type='stanza']" mode="stanzaAmbient">
         <xsl:variable name="noMatchingLines">
             <xsl:value-of select="avg(l/count(tokenize(@matchingLines, ' ')))"/>
         </xsl:variable>
@@ -51,7 +51,7 @@
         <xsl:variable name="ambientRhyme">
             <xsl:value-of select="string-join(distinct-values(l/@matchingLines), ',')"/>
         </xsl:variable>
-        <lg ambientMeter="{@ambientMeter}" type="{@type}" ambRhyme="{$ambientRhyme}"
+        <lg ambientMeter="{@ambientMeter}" type="{@type}" caesura="{@caesura}" ambRhyme="{$ambientRhyme}"
             avgLPerRhyme="{$noMatchingLines}">
             <xsl:apply-templates/>
         </lg>

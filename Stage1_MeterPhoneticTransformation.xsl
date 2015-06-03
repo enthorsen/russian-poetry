@@ -108,7 +108,7 @@
         </xsl:variable>
 
         <l rhythm="{@rhythm}">
-            <!--<xsl:attribute name="ambientMeter">
+            <xsl:attribute name="ambientMeter">
                 <xsl:choose>
                     <xsl:when test="$avgDistanceBinary = 0">
                         <xsl:text>binary</xsl:text>
@@ -120,7 +120,7 @@
                         <xsl:value-of select="parent::lg/@ambientMeter"/>
                     </xsl:otherwise>
                 </xsl:choose>
-            </xsl:attribute>-->
+            </xsl:attribute>
             <xsl:apply-templates/>
         </l>
     </xsl:template>
@@ -141,7 +141,8 @@
             <xsl:apply-templates select="l" mode="stress"/>
         </lg>
     </xsl:template>
-    <xsl:template match="lg" mode="caesura">
+    
+    <xsl:template match="lg[@type='stanza']" mode="caesura">
         <xsl:variable name="currentLG" select="."/>
         <lg type="{@type}">
             <!--Check for Caesura-->
@@ -168,7 +169,7 @@
         </lg>
     </xsl:template>
 
-    <xsl:template match="lg" mode="findMeter">
+    <xsl:template match="lg[@type='stanza']" mode="findMeter">
         <lg type="{@type}">
             <xsl:attribute name="caesura">
                 <xsl:choose>
@@ -184,9 +185,11 @@
             <xsl:apply-templates select="l" mode="meter"/>
         </lg>
     </xsl:template>
+    <xsl:template match="lg[not(@type = 'stanza')]">
+        <lg type="{@type}"><xsl:apply-templates/></lg>
+    </xsl:template>
 
-
-    <xsl:template match="lg" mode="ambientMeter">
+    <xsl:template match="lg[@type='stanza']" mode="ambientMeter">
         <lg type="{@type}" caesura="{@caesura}">
             <xsl:attribute name="ambientMeter">
                 <xsl:choose>
@@ -207,14 +210,14 @@
         </lg>
     </xsl:template>
 
-    <xsl:template match="lg" mode="propagateMeter">
+    <xsl:template match="lg[@type='stanza']" mode="propagateMeter">
         <lg type="{@type}" ambientMeter="{@ambientMeter}" caesura="{@caesura}">
             <xsl:apply-templates select="l" mode="propagateMeter"/>
         </lg>
     </xsl:template>
 
     <xsl:template match="l" mode="propagateMeter">
-        <l rhythm="{@rhythm}" caesura="{@caesura}">
+        <l rhythm="{@rhythm}">
             <xsl:attribute name="ambientMeter">
                 <xsl:choose>
                     <xsl:when test="not(parent::lg/@ambientMeter = 'indeterminate')">
@@ -242,12 +245,31 @@
         </w>
     </xsl:template>
 
+    <xsl:function name="djb:vowelPosition" as="xs:integer+">
+        <xsl:param name="rootVowel" as="element(v)"/>
+        <xsl:sequence
+            select="sum((count($rootVowel/preceding-sibling::v), count($rootVowel/parent::w/preceding-sibling::w/v)))"
+        />
+    </xsl:function>
+
     <xsl:template match="v" mode="propagateMeter">
 
         <xsl:variable name="posUltStress">
-            <xsl:value-of
-                select="count(ancestor::l//v)-sum((count((ancestor::l//v[@stress='1'])[last()]/following-sibling::v),count((ancestor::l//v[@stress='1'])[last()]/parent::w/following-sibling::w/v)))"
-            />
+            <xsl:choose>
+                <xsl:when
+                    test="ancestor::lg[@caesura ='' or @caesura = 'none'] or djb:vowelPosition(.) gt xs:integer(ancestor::lg/@caesura)">
+                    <xsl:value-of
+                        select="count(ancestor::l//v)-sum((count((ancestor::l//v[@stress='1'])[last()]/following-sibling::v),count((ancestor::l//v[@stress='1'])[last()]/parent::w/following-sibling::w/v)))"
+                    />
+                </xsl:when>
+                <xsl:when test="djb:vowelPosition(.) le xs:integer(ancestor::lg/@caesura)">
+                    <xsl:value-of
+                        select="max(ancestor::l//v[@stress = '1'][position() lt xs:integer(ancestor::lg/@caesura)]/position())"
+                    />
+                </xsl:when>
+            </xsl:choose>
+
+
         </xsl:variable>
 
         <xsl:variable name="posCurrent">
@@ -334,7 +356,7 @@
         </l>
     </xsl:template>
 
-     <xsl:template match="l" mode="meter">
+    <xsl:template match="l" mode="meter">
         <xsl:variable name="total" as="xs:integer">
             <xsl:value-of select="count(w/v)"/>
         </xsl:variable>
@@ -364,6 +386,7 @@
                         select="djb:avgDistanceTernary(0, xs:integer(parent::lg/@caesura), .)"/>
                     <xsl:variable name="avgDistanceTernary2" as="xs:double*"
                         select="djb:avgDistanceTernary(xs:integer(sum((parent::lg/@caesura,1))), $total, .)"/>
+                    <xsl:message><xsl:text>I didn't break at: </xsl:text><xsl:value-of select="."/></xsl:message>
                     <xsl:value-of select="($avgDistanceTernary1 + $avgDistanceTernary2) div 2"/>
                 </xsl:otherwise>
             </xsl:choose>
@@ -438,7 +461,7 @@
     <xsl:template match="stress" mode="consVowels">
         <v>
             <xsl:attribute name="stress">
-                <xsl:value-of select="xs:integer(1)"/>
+                <xsl:value-of select="1"/>
             </xsl:attribute>
             <xsl:apply-templates/>
         </v>
@@ -474,7 +497,7 @@
                             <xsl:when test="matches(., 'ё')">
                                 <v>
                                     <xsl:attribute name="stress">
-                                        <xsl:value-of select="xs:integer(1)"/>
+                                        <xsl:value-of select="1"/>
                                     </xsl:attribute>
                                     <xsl:value-of select="."/>
                                 </v>
@@ -482,7 +505,7 @@
                             <xsl:otherwise>
                                 <v>
                                     <xsl:attribute name="stress">
-                                        <xsl:value-of select="xs:integer(-1)"/>
+                                        <xsl:value-of select="-1"/>
                                     </xsl:attribute>
                                     <xsl:value-of select="."/>
                                 </v>
@@ -506,7 +529,7 @@
                     <xsl:matching-substring>
                         <v>
                             <xsl:attribute name="stress">
-                                <xsl:value-of select="xs:integer(0)"/>
+                                <xsl:value-of select="0"/>
                             </xsl:attribute>
                             <xsl:value-of select="."/>
                         </v>
@@ -861,9 +884,31 @@
         <xsl:param name="begin" as="xs:integer"/>
         <xsl:param name="end" as="xs:integer"/>
         <xsl:param name="line" as="element(l)"/>
-        <xsl:value-of
-            select="avg(for $i in (3+$begin to $end) return $line/(w/v)[$i]/@stress - $line/(w/v)[$i - 2]/@stress)"
-        />
+        <xsl:choose>
+            <xsl:when test="($end - $begin lt 3)">
+                <xsl:variable name="vowels" as="element(v)+"
+                    select="for $i in ($begin to $end) return $line/descendant::v[$i]"/>
+                <xsl:variable name="stressNumber" select="count($vowels[@stress eq '1'])"/>
+                <xsl:variable name="postCaesuraHead"
+                    select="($vowels[@stress eq '1'])[last()]/sum((count(preceding-sibling::v), count(parent::w/preceding-sibling::w/v)))- $begin"/>
+                <xsl:choose>
+                    <xsl:when
+                        test="$stressNumber = 1 and $postCaesuraHead = djb:headLength($line/parent::lg)">
+                        <xs:double>.001</xs:double>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xs:double>.80</xs:double>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message
+                    select="avg(for $i in (3+$begin to $end) return $line/(w/v)[$i]/@stress - $line/(w/v)[$i - 1]/@stress)"/>
+                <xsl:value-of
+                    select="avg(for $i in (3+$begin to $end) return $line/(w/v)[$i]/@stress - $line/(w/v)[$i - 1]/@stress)"
+                />
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
 
     <xsl:function name="djb:avgDistanceTernary" as="xs:double*">
