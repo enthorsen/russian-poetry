@@ -5,8 +5,8 @@
       date="22 июня 1904"
       placeAttr="Одесса">
    <divs>
-      <lg ambientMeter="binary" type="stanza" caesura="none">
-         <l rhythm="01-1-1-11-11-1-1-11-1" ambientMeter="ternary">
+      <lg ambientMeter="binary" type="stanza" caesura="6">
+         <l rhythm="01-1-1-11-11-1-1-11-1" ambientMeter="binary">
             <w orth="Я">
                <cons>j</cons>
                <v stress="-1" surface="я">а</v>
@@ -161,7 +161,7 @@
          </l>
       </lg>
       <lg ambientMeter="binary" type="stanza" caesura="6">
-         <l rhythm="-11-11-1-1-11-10-11-1" ambientMeter="ternary">
+         <l rhythm="-11-11-1-1-11-10-11-1" ambientMeter="binary">
             <w orth="И сердце">
                <v stress="-1">i</v>
                <cons>sj</cons>
@@ -233,7 +233,7 @@
                <cons>q</cons>
             </w>
          </l>
-         <l rhythm="-10-11-10-11-11-11-1" ambientMeter="ternary">
+         <l rhythm="-10-11-10-11-11-11-1" ambientMeter="binary">
             <w orth="И вновь">
                <v stress="-1">i</v>
                <cons>vn</cons>

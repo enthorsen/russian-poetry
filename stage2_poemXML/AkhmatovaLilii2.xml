@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<poem xmlns:djb="http://www.obdurodon.org/"
+<poem xmlns:ent="http://whatever"
       author="Анна Андреевна Ахматова"
       title="Лилии"
       date="22 июня 1904"
@@ -7,14 +7,13 @@
    <divs>
       <lg ambientMeter="binary"
           type="stanza"
-          caesura="none"
           ambRhyme="1 3,2 4"
           avgLPerRhyme="2">
          <l posRhyme="1"
             compText="istx"
             matchingLines="1 3"
             rhythm="01-1-1-11-11-1-1-11-1"
-            ambientMeter="ternary">
+            ambientMeter="binary">
             <w orth="Я">
                <cons>j</cons>
                <v stress="-1" surface="я">а</v>
@@ -182,14 +181,13 @@
       </lg>
       <lg ambientMeter="binary"
           type="stanza"
-          caesura="6"
           ambRhyme="1 3,2 4"
           avgLPerRhyme="2">
          <l posRhyme="1"
             compText="olj"
             matchingLines="1 3"
             rhythm="-11-11-1-1-11-10-11-1"
-            ambientMeter="ternary">
+            ambientMeter="binary">
             <w orth="И сердце">
                <v stress="-1">i</v>
                <cons>sj</cons>
@@ -269,7 +267,7 @@
             compText="olj"
             matchingLines="1 3"
             rhythm="-10-11-10-11-11-11-1"
-            ambientMeter="ternary">
+            ambientMeter="binary">
             <w orth="И вновь">
                <v stress="-1">i</v>
                <cons>vn</cons>

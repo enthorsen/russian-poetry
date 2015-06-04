@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<poem xmlns:ent="http://whatever"
+<poem xmlns:djb="http://www.obdurodon.org/"
       author="Борис Леонидович Пастернак"
       title="Его речь"
       date=""
       placeAttr="">
    <divs>
-      <lg ambientMeter="binary" type="stanza">
+      <lg ambientMeter="binary" type="stanza" caesura="none">
          <l rhythm="01-1-1-11-11" ambientMeter="binary">
             <w orth="Я">
                <cons>j</cons>
@@ -33,7 +33,7 @@
                <v stress="1">o</v>
             </w>
          </l>
-         <l rhythm="-1101-1-1-11-1" ambientMeter="binary">
+         <l rhythm="-1101-1-1-11-1" ambientMeter="ternary">
             <w orth="Пронзил">
                <cons>pr</cons>
                <v stress="-1">a</v>
@@ -91,7 +91,7 @@
                <cons>q</cons>
             </w>
          </l>
-         <l rhythm="01-11-11-11-1" ambientMeter="binary">
+         <l rhythm="01-11-11-11-1" ambientMeter="ternary">
             <w orth="Все">
                <cons>fsj</cons>
                <v stress="-1">i</v>
@@ -147,7 +147,7 @@
                <cons>l</cons>
             </w>
          </l>
-         <l rhythm="0001-1-1-11-1" ambientMeter="binary">
+         <l rhythm="0001-1-1-11-1" ambientMeter="ternary">
             <w orth="Как">
                <cons>k</cons>
                <v stress="-1">a</v>
@@ -260,7 +260,7 @@
                <cons>k</cons>
             </w>
          </l>
-         <l rhythm="01-11-1-1-11-1" ambientMeter="binary">
+         <l rhythm="01-11-1-1-11-1" ambientMeter="ternary">
             <w orth="Как">
                <cons>k</cons>
                <v stress="-1">a</v>
@@ -315,7 +315,7 @@
                <cons>k</cons>
             </w>
          </l>
-         <l rhythm="0101-1-1-11-1" ambientMeter="binary">
+         <l rhythm="0101-1-1-11-1" ambientMeter="ternary">
             <w orth="Он">
                <v stress="-1">a</v>
                <cons>n</cons>
@@ -375,7 +375,7 @@
                <cons>t</cons>
             </w>
          </l>
-         <l rhythm="01-11-11-11-1" ambientMeter="binary">
+         <l rhythm="01-11-11-11-1" ambientMeter="ternary">
             <w orth="Он">
                <v stress="-1">a</v>
                <cons>n</cons>
@@ -432,7 +432,7 @@
                <cons>t</cons>
             </w>
          </l>
-         <l rhythm="-11-111-1-11-1" ambientMeter="binary">
+         <l rhythm="-11-111-1-11-1" ambientMeter="ternary">
             <w orth="Слова">
                <cons>sl</cons>
                <v stress="-1">a</v>
@@ -484,7 +484,7 @@
                <cons>p</cons>
             </w>
          </l>
-         <l rhythm="-11-11-11-11-1" ambientMeter="binary">
+         <l rhythm="-11-11-11-11-1" ambientMeter="ternary">
             <w orth="Дышал">
                <cons>d</cons>
                <v stress="-1">i</v>
@@ -544,7 +544,7 @@
                <v stress="1">i</v>
             </w>
          </l>
-         <l rhythm="-11-11-1-1-11-1" ambientMeter="binary">
+         <l rhythm="-11-11-1-1-11-1" ambientMeter="ternary">
             <w orth="И эта">
                <v stress="-1">i</v>
                <v stress="1">e</v>
@@ -595,7 +595,7 @@
                <cons>m</cons>
             </w>
          </l>
-         <l rhythm="01-11-1-1-11-1" ambientMeter="binary">
+         <l rhythm="01-11-1-1-11-1" ambientMeter="ternary">
             <w orth="Что">
                <cons>čt</cons>
                <v stress="-1">a</v>
@@ -656,7 +656,7 @@
                <cons>m</cons>
             </w>
          </l>
-         <l rhythm="-11-11-1-1-11-1" ambientMeter="binary">
+         <l rhythm="-11-11-1-1-11-1" ambientMeter="ternary">
             <w orth="Столетий">
                <cons>st</cons>
                <v stress="-1">a</v>
