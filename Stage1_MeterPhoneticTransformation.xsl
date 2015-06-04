@@ -59,7 +59,10 @@
             <xsl:variable name="divsPreCaesura">
                 <xsl:apply-templates select="divs" mode="first"/>
             </xsl:variable>
-            <xsl:apply-templates select="$divsPreCaesura" mode="second"/>
+            <xsl:variable name="divsCaesura">
+                <xsl:apply-templates select="$divsPreCaesura" mode="second"/>
+            </xsl:variable>
+            <xsl:apply-templates select="$divsCaesura" mode="third"/>
             <xsl:apply-templates select="source"/>
         </poem>
 
@@ -84,44 +87,72 @@
             <xsl:variable name="lgAmbientMeter">
                 <xsl:apply-templates select="$lgMetered" mode="ambientMeter"/>
             </xsl:variable>
-            <xsl:variable name="lgMeterPropagated">
-                <xsl:apply-templates select="$lgAmbientMeter" mode="propagateMeter"/>
-            </xsl:variable>
+            <xsl:apply-templates select="$lgAmbientMeter" mode="propagateMeter"/>
+        </divs>
+    </xsl:template>
+    <xsl:template match="divs" mode="third">
+        <divs>
             <xsl:variable name="lgMeterOrphansRescued">
-                <xsl:apply-templates select="$lgMeterPropagated" mode="meterCheck"/>
+                <xsl:apply-templates select="lg" mode="meterCheck"/>
             </xsl:variable>
             <xsl:apply-templates select="$lgMeterOrphansRescued" mode="postAmbient"/>
         </divs>
     </xsl:template>
 
     <xsl:template match="lg[@type='stanza']" mode="meterCheck">
-        <lg ambientMeter="{@ambientMeter}" type="{@type}" caesura="{@caesura}">
+        <lg ambientMeter="{@ambientMeter}" type="{@type}">
+            <xsl:attribute name="caesura">
+                <xsl:variable name="caesurae"
+                    select="parent::divs/lg[@type='stanza'][@caesura!='none']/@caesura"/>
+                <xsl:variable name="avgCaesura">
+                <xsl:choose>
+                    <xsl:when test="count($caesurae) gt 0">
+                        <xsl:value-of select="sum(($caesurae)) div count($caesurae)"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xs:double>1</xs:double>
+                    </xsl:otherwise>
+                </xsl:choose>
+                </xsl:variable>
+                <xsl:message>
+                    <xsl:text>Caesurae: </xsl:text>
+                    <xsl:value-of select="$caesurae"/>
+                    <xsl:text>; Average caesura: </xsl:text>
+                    <xsl:value-of select="$avgCaesura"/>
+                </xsl:message>
+
+                <xsl:choose>
+                    <xsl:when test="@caesura = $avgCaesura">
+                        <xsl:value-of select="@caesura"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>none</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:attribute>
             <xsl:apply-templates select="l" mode="meterCheck"/>
         </lg>
     </xsl:template>
 
     <xsl:template match="l" mode="meterCheck">
-        <xsl:variable name="total">
-            <xsl:value-of select="count(descendant::v)"/>
-        </xsl:variable>
-
-        <!--        <xsl:variable name="avgDistanceBinary" select="djb:avgDistanceBinary(0, $total, .)"/>
-        <xsl:variable name="avgDistanceTernary" select="djb:avgDistanceTernary(0, $total, .)"/>
--->
+        <xsl:variable name="perfectBinary" select="djb:perfectBinary(w/v)"/>
+        <xsl:variable name="perfectTernary" select="djb:perfectTernary(w/v)"/>
         <l rhythm="{@rhythm}">
             <xsl:attribute name="ambientMeter">
-                <!--<xsl:choose>
-                    <xsl:when test="$avgDistanceBinary = 0">
+                <xsl:choose>
+                    <xsl:when test="$perfectBinary and $perfectTernary">
+                        <xsl:value-of select="parent::lg/@ambientMeter"/>
+                    </xsl:when>
+                    <xsl:when test="$perfectBinary and not($perfectTernary)">
                         <xsl:text>binary</xsl:text>
                     </xsl:when>
-                    <xsl:when test="$avgDistanceTernary = 0">
+                    <xsl:when test="not($perfectBinary) and $perfectTernary">
                         <xsl:text>ternary</xsl:text>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="parent::lg/@ambientMeter"/>
                     </xsl:otherwise>
-                </xsl:choose>-->
-                <xsl:text>binary</xsl:text>
+                </xsl:choose>
             </xsl:attribute>
             <xsl:apply-templates/>
         </l>
@@ -157,7 +188,8 @@
                     <xsl:sequence select="djb:wordBreakPositions(current(), $currentLG)"/>
                 </xsl:for-each>
             </xsl:variable>
-            <xsl:for-each select="2 to xs:integer($maxVowelPosition) - 2 ">
+            <xsl:for-each
+                select="2 to xs:integer($maxVowelPosition - floor($maxVowelPosition div 2) + 1)">
                 <xsl:if test="$wordBreaks[current()] ge (($numLines - 1) div $numLines)">
                     <xsl:attribute name="caesura" select="xs:integer(current())"/>
                 </xsl:if>
@@ -189,15 +221,18 @@
     </xsl:template>
 
     <xsl:template match="lg[@type='stanza']" mode="ambientMeter">
+        <xsl:variable name="probablyBinary" select="count(l[@ambientMeter='binary'])"/>
+        <xsl:variable name="probablyTernary" select="count(l[@ambientMeter='ternary'])"/>
+        <xsl:variable name="probablyIndeterminate" select="count(l[@ambientMeter='indeterminate'])"/>
         <lg type="{@type}" caesura="{@caesura}">
             <xsl:attribute name="ambientMeter">
                 <xsl:choose>
                     <xsl:when
-                        test="count(l[@ambientMeter = 'binary']) gt count(l[@ambientMeter = 'ternary'])">
+                        test="$probablyBinary gt ($probablyTernary + $probablyIndeterminate)">
                         <xsl:text>binary</xsl:text>
                     </xsl:when>
                     <xsl:when
-                        test="count(l[@ambientMeter = 'binary']) lt count(l[@ambientMeter = 'ternary'])">
+                        test="$probablyTernary gt ($probablyBinary + $probablyIndeterminate)">
                         <xsl:text>ternary</xsl:text>
                     </xsl:when>
                     <xsl:otherwise>
@@ -244,12 +279,6 @@
         </w>
     </xsl:template>
 
-    <xsl:function name="djb:vowelPosition" as="xs:integer+">
-        <xsl:param name="rootVowel" as="element(v)"/>
-        <xsl:sequence
-            select="sum((count($rootVowel/preceding-sibling::v), count($rootVowel/parent::w/preceding-sibling::w/v), 1))"
-        />
-    </xsl:function>
 
     <xsl:template match="v[@stress='0']" mode="propagateMeter">
         <v>
@@ -316,67 +345,17 @@
         <xsl:variable name="total" as="xs:integer">
             <xsl:value-of select="count(w/v)"/>
         </xsl:variable>
-        <!--
-        <xsl:variable name="avgDistanceBinary" as="xs:double*">
-            <xsl:choose>
-                <xsl:when test="parent::lg/@caesura = 'none' or not(parent::lg/@caesura)">
-                    <xsl:value-of select="abs(djb:avgDistanceBinary(0, $total, .))"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:variable name="avgDistanceBinary1" as="xs:double*"
-                        select="djb:avgDistanceBinary(0, xs:integer(parent::lg/@caesura), .)"/>
-                    <xsl:variable name="avgDistanceBinary2" as="xs:double*"
-                        select="djb:avgDistanceBinary(xs:integer(sum((parent::lg/@caesura,1))), $total, .)"/>
-                    <xsl:value-of
-                        select="(abs($avgDistanceBinary1) + abs($avgDistanceBinary2)) div 2"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
 
-        <xsl:variable name="avgDistanceTernary" as="xs:double*">
-            <xsl:choose>
-                <xsl:when test="parent::lg/@caesura = 'none' or not(parent::lg/@caesura)">
-                    <xsl:value-of select="abs(djb:avgDistanceTernary(0, $total, .))"/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:variable name="avgDistanceTernary1" as="xs:double*"
-                        select="abs(djb:avgDistanceTernary(0, xs:integer(parent::lg/@caesura), .))"/>
-                    <xsl:variable name="avgDistanceTernary2" as="xs:double*"
-                        select="abs(djb:avgDistanceTernary(xs:integer(sum((parent::lg/@caesura,1))), $total, .))"/>
-                    <xsl:message>
-                        <xsl:text>I didn't break at: </xsl:text>
-                        <xsl:value-of select="."/>
-                    </xsl:message>
-                    <xsl:value-of
-                        select="(abs($avgDistanceTernary1) + abs($avgDistanceTernary2)) div 2"/>
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-
--->
         <xsl:variable name="seq">
-            <xsl:sequence select="w/v/@stress"/>
+            <xsl:for-each select="w/v">
+                <xsl:value-of select="@stress"/>
+            </xsl:for-each>
         </xsl:variable>
 
         <l rhythm="{$seq}">
-            <xsl:attribute name="ambientMeter">                
-             <xsl:value-of select="djb:findMeter(descendant::v, parent::lg/@caesura)"/>
+            <xsl:attribute name="ambientMeter">
+                <xsl:value-of select="djb:findMeter(descendant::v)"/>
             </xsl:attribute>
-
-
-            <!--                <xsl:choose>
-                    <xsl:when test="$avgDistanceBinary lt $avgDistanceTernary">
-                        <xsl:text>binary</xsl:text>
-                    </xsl:when>
-                    <xsl:when test="$avgDistanceBinary gt $avgDistanceTernary">
-                        <xsl:text>ternary</xsl:text>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:text>indeterminate</xsl:text>
-                    </xsl:otherwise>
-                </xsl:choose>
--->
-
             <xsl:apply-templates/>
         </l>
     </xsl:template>
@@ -896,6 +875,54 @@
         </xsl:choose>
     </xsl:function>
 
+    <xsl:function name="djb:findMeter">
+        <xsl:param name="vowels" as="element(v)+"/>
+        <xsl:variable name="stressedVowels" as="element(v)+">
+            <xsl:sequence select="$vowels[@stress='1']"/>
+        </xsl:variable>
+        <xsl:variable name="avgDistance" as="xs:double+">
+            <xsl:for-each select="$stressedVowels">
+                <xsl:variable select="position()" as="xs:integer" name="first"/>
+                <xsl:variable select="position()+1" as="xs:integer" name="second"/>
+
+                <xsl:if test="position() ne last()">
+                    <xsl:value-of
+                        select="djb:vowelPosition($stressedVowels[$second]) - djb:vowelPosition($stressedVowels[$first])"
+                    />
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:variable name="binary" as="xs:double+">
+            <xsl:for-each select="$avgDistance">
+                <xsl:choose>
+                    <xsl:when test="(ceiling(. div 2) - (. div 2)) = 0"> 1 </xsl:when>
+                    <xsl:otherwise> 0 </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:variable name="ternary" as="xs:double*">
+            <xsl:for-each select="$avgDistance">
+                <xsl:choose>
+                    <xsl:when test="(ceiling(. div 3) - (. div 3)) = 0"> 1 </xsl:when>
+                    <xsl:otherwise> 0 </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:variable name="avgBinary" select="sum(($binary)) div count($binary)"/>
+        <xsl:variable name="avgTernary" select="sum(($ternary)) div count($ternary)"/>
+        <xsl:choose>
+            <xsl:when test="$avgBinary gt $avgTernary and $avgBinary gt .2">
+                <xsl:text>binary</xsl:text>
+            </xsl:when>
+            <xsl:when test="$avgTernary gt $avgBinary and $avgTernary gt .2">
+                <xsl:text>ternary</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text>indeterminate</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
     <xsl:function name="djb:headLength" as="xs:double*">
         <xsl:param name="lg" as="element(lg)"/>
         <xsl:variable name="lineCount" select="count($lg/l)"/>
@@ -907,6 +934,78 @@
         </xsl:message>
     </xsl:function>
 
+    <xsl:function name="djb:perfectBinary" as="xs:boolean">
+        <xsl:param name="vowels" as="element(v)+"/>
+        <xsl:variable name="stressedVowels" as="element(v)+">
+            <xsl:sequence select="$vowels[@stress='1']"/>
+        </xsl:variable>
+        <xsl:variable name="avgDistance" as="xs:double+">
+            <xsl:for-each select="$stressedVowels">
+                <xsl:variable select="position()" as="xs:integer" name="first"/>
+                <xsl:variable select="position()+1" as="xs:integer" name="second"/>
+
+                <xsl:if test="position() ne last()">
+                    <xsl:value-of
+                        select="djb:vowelPosition($stressedVowels[$second]) - djb:vowelPosition($stressedVowels[$first])"
+                    />
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:variable name="binary" as="xs:double+">
+            <xsl:for-each select="$avgDistance">
+                <xsl:choose>
+                    <xsl:when test="(ceiling(. div 2) - (. div 2)) = 0"> 1 </xsl:when>
+                    <xsl:otherwise> 0 </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:variable name="avgBinary" select="sum(($binary)) div count($binary)"/>
+        <xsl:choose>
+            <xsl:when test="$avgBinary = 1">
+                <xsl:sequence select="true()"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="false()"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
+    <xsl:function name="djb:perfectTernary" as="xs:boolean">
+        <xsl:param name="vowels" as="element(v)+"/>
+        <xsl:variable name="stressedVowels" as="element(v)+">
+            <xsl:sequence select="$vowels[@stress='1']"/>
+        </xsl:variable>
+        <xsl:variable name="avgDistance" as="xs:double+">
+            <xsl:for-each select="$stressedVowels">
+                <xsl:variable select="position()" as="xs:integer" name="first"/>
+                <xsl:variable select="position()+1" as="xs:integer" name="second"/>
+
+                <xsl:if test="position() ne last()">
+                    <xsl:value-of
+                        select="djb:vowelPosition($stressedVowels[$second]) - djb:vowelPosition($stressedVowels[$first])"
+                    />
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:variable name="ternary" as="xs:double*">
+            <xsl:for-each select="$avgDistance">
+                <xsl:choose>
+                    <xsl:when test="(ceiling(. div 3) - (. div 3)) = 0"> 1 </xsl:when>
+                    <xsl:otherwise> 0 </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:variable name="avgTernary" select="sum(($ternary)) div count($ternary)"/>
+        <xsl:choose>
+            <xsl:when test="$avgTernary = 1">
+                <xsl:sequence select="true()"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="false()"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
     <xsl:function name="djb:stressPercentage" as="xs:double*">
         <xsl:param name="stressPosition" as="xs:integer"/>
         <xsl:param name="lgContext" as="element(lg)"/>
@@ -915,12 +1014,14 @@
             select="$lgContext/descendant::v[djb:vowelPosition(.) eq $stressPosition]"
             as="element(v)*"/>
         <xsl:choose>
-            <xsl:when test="count($vowels) gt 0">
+            <xsl:when test="count($vowels[@stress='1']) gt 0">
                 <xsl:variable name="stressed" select="count($vowels[@stress eq '1'])"
                     as="xs:integer"/>
                 <xsl:variable name="unstressed" select="count($vowels[@stress eq '-1'])"
                     as="xs:integer"/>
                 <xsl:variable name="total" select="$stressed + $unstressed" as="xs:integer"/>
+                <xsl:message
+                    select="concat(string-join($vowels, ', '),'; Stressed: ', $stressed, '; Unstressed: ', $unstressed)"/>
                 <xsl:sequence select="$stressed div $total"/>
             </xsl:when>
             <xsl:otherwise>
@@ -971,11 +1072,11 @@
         <xsl:sequence select="$wordBreak div count($vowels)"/>
     </xsl:function>
 
-    <xsl:function name="djb:findMeter">
-        <xsl:param name="vowels" as="element(v)+"/>
-        <xsl:param name="caesura" as="xs:integer"/>
 
+    <xsl:function name="djb:vowelPosition" as="xs:integer+">
+        <xsl:param name="rootVowel" as="element(v)"/>
+        <xsl:sequence
+            select="sum((count($rootVowel/preceding-sibling::v), count($rootVowel/parent::w/preceding-sibling::w/v), 1))"
+        />
     </xsl:function>
-
-
 </xsl:stylesheet>

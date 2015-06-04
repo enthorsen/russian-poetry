@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<poem xmlns:ent="http://whatever"
+<poem xmlns:djb="http://www.obdurodon.org/"
       author="Анна Андреевна Ахматова"
       title="Любовь"
       date="1912"
       placeAttr="">
    <divs>
-      <lg ambientMeter="ternary" type="stanza">
+      <lg ambientMeter="ternary" type="stanza" caesura="none">
          <l rhythm="01-1-11-1-11" ambientMeter="ternary">
             <w orth="То">
                <cons>t</cons>
@@ -118,7 +118,7 @@
             </w>
          </l>
       </lg>
-      <lg ambientMeter="ternary" type="stanza">
+      <lg ambientMeter="ternary" type="stanza" caesura="none">
          <l rhythm="01-1-11-1-11" ambientMeter="ternary">
             <w orth="То">
                <cons>t</cons>
@@ -219,7 +219,7 @@
             </w>
          </l>
       </lg>
-      <lg ambientMeter="ternary" type="stanza">
+      <lg ambientMeter="ternary" type="stanza" caesura="none">
          <l rhythm="-11-101-1-11" ambientMeter="ternary">
             <w orth="Умеет">
                <v stress="-1">u</v>

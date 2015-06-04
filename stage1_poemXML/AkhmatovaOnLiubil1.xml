@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<poem xmlns:ent="http://whatever"
+<poem xmlns:djb="http://www.obdurodon.org/"
       author="Анна Андреевна Ахматова"
       title="Он любил"
       date="1910"
       placeAttr="">
    <divs>
-      <lg ambientMeter="ternary" type="stanza">
-         <l rhythm="0-1101-1-11-1" ambientMeter="ternary">
+      <lg ambientMeter="indeterminate" type="stanza" caesura="none">
+         <l rhythm="0-1101-1-11-1" ambientMeter="indeterminate">
             <w orth="Он">
                <v stress="-1">a</v>
                <cons>n</cons>
@@ -37,7 +37,7 @@
                <v stress="-1">i</v>
             </w>
          </l>
-         <l rhythm="-1-11-11-11-1-11-1" ambientMeter="ternary">
+         <l rhythm="-1-11-11-11-1-11-1" ambientMeter="indeterminate">
             <w orth="За вечерней">
                <cons>z</cons>
                <v stress="-1">a</v>
@@ -98,7 +98,7 @@
                <v stress="-1">i</v>
             </w>
          </l>
-         <l rhythm="-1-11-111-11-1" ambientMeter="ternary">
+         <l rhythm="-1-11-111-11-1" ambientMeter="indeterminate">
             <w orth="Не любил,">
                <cons>nj</cons>
                <v stress="-1">i</v>
@@ -128,7 +128,7 @@
                <v stress="-1">i</v>
             </w>
          </l>
-         <l rhythm="-1-111-1-11-1" ambientMeter="ternary">
+         <l rhythm="-1-111-1-11-1" ambientMeter="indeterminate">
             <w orth="Не любил">
                <cons>nj</cons>
                <v stress="-1">i</v>
@@ -179,7 +179,7 @@
             </w>
             <w orth="я">
                <cons>j</cons>
-               <v stress="1">a</v>
+               <v stress="-1">i</v>
             </w>
             <w orth="была">
                <cons>b</cons>
