@@ -149,13 +149,13 @@
                                     as="xs:string+"/>
                                 <xsl:variable name="posAdjust" as="xs:integer">
                                     <xsl:value-of
-                                        select="1 + string-length(replace(@orth, '[А-ЯЁа-яё]+[\p{P}]*', ''))"
+                                        select="1 + string-length(replace(@orth, '[А-ЯЁа-яё]+[\p{P}\n\-]*', ''))"
                                     />
                                 </xsl:variable>
                                 <xsl:variable name="encliticAdjust" as="xs:integer">
                                     <xsl:choose>
                                         <xsl:when
-                                            test="matches(@orth, '^([\p{P}А-ЯЁа-яё]*\s)?[\p{P}А-ЯЁа-яё]+[\s](л[иь]|б[ы]|-то|ж[е])$')">
+                                            test="matches(@orth, '^([\p{P}\sА-ЯЁа-яё]*\s)?[\p{P}А-ЯЁа-яё]+[\s](л[иь]|б[ы]|-то|ж[е])$')">
                                             <xs:integer>1</xs:integer>
                                         </xsl:when>
                                         <xsl:otherwise>
@@ -251,9 +251,8 @@
 
                     <xsl:variable name="totSyll" as="xs:integer" select="count(w/v)"/>
                     <xsl:variable name="posFinalStress" as="xs:integer"
-                        select="djb:vowelPosition((descendant::v)[last()])"/>
-                    <xsl:message select="$posFinalStress"/>
-                    <xsl:variable name="caesura">
+                        select="djb:vowelPosition((descendant::v[@stress='1'])[last()])"/>
+                    <xsl:variable name="caesura" as="xs:integer">
                         <xsl:choose>
                             <xsl:when test="ancestor::lg/@caesura != 'none'">
                                 <xsl:value-of select="ancestor::lg/@caesura"/>
@@ -263,9 +262,26 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:variable>
+                    <xsl:variable name="preCaesuraFeet" as="xs:double">
+                        <xsl:value-of select="djb:preCaesuraFeet(.)"/>
+                    </xsl:variable>
+                    <xsl:variable name="totalFeet"
+                        select="ceiling(($posFinalStress - $caesura + $preCaesuraFeet*2) div 2)"/>
+
+                    <xsl:message>
+                        <xsl:text>Total Syllables: </xsl:text>
+                        <xsl:value-of select="$totSyll"/>
+                        <xsl:text>; Position of Final Stress: </xsl:text>
+                        <xsl:value-of select="$posFinalStress"/>
+                        <xsl:text>; Total Feet: </xsl:text>
+                        <xsl:value-of select="$totalFeet"/>
+                        <xsl:text>; Pre-Caesura Feet: </xsl:text>
+                        <xsl:value-of select="$preCaesuraFeet"/>
+                    </xsl:message>
+
                     <xsl:variable name="stressString">
                         <xsl:for-each select="w/v">
-                            <xsl:variable name="currentPos">
+                            <xsl:variable name="currentPos" as="xs:integer">
                                 <xsl:value-of select="djb:vowelPosition(.)"/>
                             </xsl:variable>
                             <xsl:choose>
@@ -281,21 +297,24 @@
                             </xsl:choose>
                             <xsl:choose>
                                 <xsl:when test="$currentPos = $caesura and . is parent::w/v[last()]">
+                                    <xsl:if test="$preCaesuraFeet*2 != $caesura">
+                                        <xsl:text>)</xsl:text>
+                                    </xsl:if>
                                     <xsl:text>&#x205E;</xsl:text>
                                 </xsl:when>
                                 <xsl:when test="ancestor::l/@ambientMeter = 'binary'">
                                     <xsl:choose>
-                                        <xsl:when test="$currentPos lt $caesura">
+                                        <xsl:when test="$currentPos le $preCaesuraFeet*2">
                                             <xsl:if
                                                 test="$currentPos div 2 = floor($currentPos div 2)">
                                                 <xsl:choose>
                                                   <xsl:when
-                                                  test="following-sibling::v[@stress = '1'] or parent::w/following-sibling::w/v[@stress = '1']">
-                                                  <xsl:text>|</xsl:text>
+                                                  test="$currentPos = $preCaesuraFeet*2 and $currentPos lt $caesura">
+                                                  <xsl:text>(</xsl:text>
                                                   </xsl:when>
                                                   <xsl:when
-                                                  test="(following-sibling::v or parent::w/following-sibling::w/v) and $currentPos = (ceiling($posFinalStress div 2) * 2)">
-                                                  <xsl:text>(</xsl:text>
+                                                  test="following-sibling::v[@stress = '1'] or parent::w/following-sibling::w/v[@stress = '1']">
+                                                  <xsl:text>t</xsl:text>
                                                   </xsl:when>
                                                 </xsl:choose>
                                             </xsl:if>
@@ -304,12 +323,15 @@
                                             <xsl:if
                                                 test="($currentPos - $caesura) div 2 = floor(($currentPos - $caesura) div 2)">
                                                 <xsl:choose>
-                                                  <xsl:when
-                                                  test="following-sibling::v[@stress = '1'] or parent::w/following-sibling::w/v[@stress = '1']">
-                                                  <xsl:text>|</xsl:text>
+                                                  <xsl:when test="$currentPos lt $posFinalStress">
+                                                  <xsl:text>t</xsl:text>
                                                   </xsl:when>
-                                                  <xsl:when
+                                                  <!--                                                  <xsl:when
                                                   test="(following-sibling::v or parent::w/following-sibling::w/v) and $currentPos = (ceiling($posFinalStress div 2) * 2)">
+                                                  <xsl:text>(</xsl:text>
+                                                  </xsl:when>-->
+                                                  <xsl:when
+                                                  test="$currentPos = (($totalFeet - $preCaesuraFeet)*2 + $caesura) and $currentPos lt $totSyll">
                                                   <xsl:text>(</xsl:text>
                                                   </xsl:when>
                                                 </xsl:choose>
@@ -321,7 +343,7 @@
                                                 <xsl:when
                                                   test="following-sibling::v[@stress = '1'] or parent::w/following-sibling::w/v[@stress = '1']">
                                                   <span class="outlier">
-                                                  <xsl:text>|</xsl:text>
+                                                  <xsl:text>t</xsl:text>
                                                   </span>
                                                 </xsl:when>
                                                 <xsl:when
@@ -337,7 +359,7 @@
                                         <xsl:choose>
                                             <xsl:when
                                                 test="following-sibling::v[@stress = '1'] or parent::w/following-sibling::w/v[@stress = '1']">
-                                                <xsl:text>|</xsl:text>
+                                                <xsl:text>t</xsl:text>
                                             </xsl:when>
                                             <xsl:when
                                                 test="(following-sibling::v or parent::w/following-sibling::w/v) and $currentPos = (ceiling($posFinalStress div 3) * 3)">
@@ -350,7 +372,7 @@
                             <xsl:if test=". is (ancestor::l//v)[last()]">
                                 <xsl:if
                                     test="
-                                        (ancestor::l[@ambientMeter = 'binary'] and $currentPos * 1 gt (ceiling($posFinalStress div 2) * 2)) or
+                                        (ancestor::l[@ambientMeter = 'binary'] and $currentPos * 1 gt ($totalFeet - $preCaesuraFeet)*2 + $caesura) or
                                         (ancestor::l[@ambientMeter = 'ternary'] and $currentPos * 1 gt (ceiling($posFinalStress div 3) * 3))">
                                     <xsl:text>)</xsl:text>
                                 </xsl:if>
@@ -358,33 +380,43 @@
                         </xsl:for-each>
                     </xsl:variable>
                     <xsl:message select="$stressString"/>
-                    <xsl:variable name="feet"
-                        select="tokenize(normalize-space(xs:string($stressString)), '\|')"/>
-                    <xsl:for-each select="$feet">
-                        <xsl:choose>
-                            <xsl:when test="not(contains(., '('))">
-                                <span>
-                                    <xsl:attribute name="data-meter" select="$firstStress"/>
-                                    <xsl:attribute name="class" select="current()"/>
-                                    <xsl:value-of select="."/>
-                                </span>
-                                <xsl:if test="not(position() = count($feet))">
-                                    <xsl:text>|</xsl:text>
-                                </xsl:if>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:variable name="preHyperMetrical" select="tokenize(., '\(')"/>
-                                <span>
-                                    <xsl:attribute name="class" select="$preHyperMetrical[1]"/>
-                                    <xsl:attribute name="data-meter" select="$firstStress"/>
-                                    <xsl:value-of select="$preHyperMetrical[1]"/>
-                                </span>
-                                <span class="hypermetric">
-                                    <xsl:value-of select="concat('(', $preHyperMetrical[2])"/>
-                                </span>
-                                <xsl:text/>
-                            </xsl:otherwise>
-                        </xsl:choose>
+                    <xsl:variable name="segments"
+                        select="tokenize(normalize-space(xs:string($stressString)), '&#x205E;')"/>
+                    <xsl:message select="string-join($segments, ', ')"/>
+                    <xsl:for-each select="$segments">
+                        <xsl:variable name="feet">
+                            <xsl:value-of select="tokenize(., 't')"/>
+                        </xsl:variable>
+                        <xsl:message select="string-join($feet, ', ')"/>
+                        <xsl:for-each select="$feet">
+                            <xsl:message select="position()"/>
+                            <xsl:choose>
+                                <xsl:when test="not(contains(., '('))">
+                                    <span>
+                                        <xsl:attribute name="data-meter" select="$firstStress"/>
+                                        <xsl:attribute name="class" select="current()"/>
+                                        <xsl:value-of select="."/>
+                                    </span>
+                                    <xsl:if test="not(position() = count($feet))">
+                                        <xsl:text>|</xsl:text>
+                                    </xsl:if>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:variable name="preHyperMetrical" select="tokenize(., '\(')"/>
+                                    <span>
+                                        <xsl:attribute name="class" select="$preHyperMetrical[1]"/>
+                                        <xsl:attribute name="data-meter" select="$firstStress"/>
+                                        <xsl:value-of select="$preHyperMetrical[1]"/>
+                                    </span>
+                                    <span class="hypermetric">
+                                        <xsl:value-of select="concat('(', $preHyperMetrical[2])"/>
+                                    </span>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </xsl:for-each>
+                        <xsl:if test="not(position() = count($segments))">
+                            <xsl:text>&#x205E;</xsl:text>
+                        </xsl:if>
                     </xsl:for-each>
                     <xsl:if test="not(@ambientMeter = parent::lg/@ambientMeter)">
                         <xsl:text>*</xsl:text>
@@ -572,6 +604,32 @@
         <xsl:sequence
             select="sum((count($rootVowel/preceding-sibling::v), count($rootVowel/parent::w/preceding-sibling::w/v), 1))"
         />
+    </xsl:function>
+
+    <xsl:function name="djb:preCaesuraFeet">
+        <xsl:param name="currentLine" as="element(l)"/>
+        <xsl:variable name="caesura" as="xs:integer">
+            <xsl:choose>
+                <xsl:when test="$currentLine/parent::lg/@caesura != 'none'">
+                    <xsl:value-of select="$currentLine/parent::lg/@caesura"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xs:integer>0</xs:integer>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="preCaesuraFeetSequence" as="xs:integer+">
+            <xsl:for-each select="$currentLine/parent::lg/l">
+                <xsl:value-of
+                    select="count(descendant::v[@stress='1'][djb:vowelPosition(.) le $caesura])"/>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:message>
+            <xsl:text>Precaesura stresses: </xsl:text>
+            <xsl:value-of select="$preCaesuraFeetSequence"/>
+        </xsl:message>
+        <xsl:value-of select="max($preCaesuraFeetSequence)"/>
     </xsl:function>
 
 
