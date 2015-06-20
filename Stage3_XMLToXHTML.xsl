@@ -251,16 +251,22 @@
 
                     <xsl:variable name="totSyll" as="xs:integer" select="count(w/v)"/>
                     <xsl:variable name="posFinalStress" as="xs:integer"
-                        select="
-                            (w/v[@stress = '1'])[last()]/sum((count(preceding-sibling::v),
-                            count(parent::w/preceding-sibling::w/v))) + 1"/>
+                        select="djb:vowelPosition((descendant::v)[last()])"/>
                     <xsl:message select="$posFinalStress"/>
+                    <xsl:variable name="caesura">
+                        <xsl:choose>
+                            <xsl:when test="ancestor::lg/@caesura != 'none'">
+                                <xsl:value-of select="ancestor::lg/@caesura"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xs:integer>0</xs:integer>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:variable>
                     <xsl:variable name="stressString">
                         <xsl:for-each select="w/v">
                             <xsl:variable name="currentPos">
-                                <xsl:value-of
-                                    select="1 + count(preceding-sibling::v) + count(parent::w/preceding-sibling::w/v)"
-                                />
+                                <xsl:value-of select="djb:vowelPosition(.)"/>
                             </xsl:variable>
                             <xsl:choose>
                                 <xsl:when test="@stress = '1'">
@@ -274,19 +280,57 @@
                                 </xsl:when>
                             </xsl:choose>
                             <xsl:choose>
+                                <xsl:when test="$currentPos = $caesura and . is parent::w/v[last()]">
+                                    <xsl:text>&#x205E;</xsl:text>
+                                </xsl:when>
                                 <xsl:when test="ancestor::l/@ambientMeter = 'binary'">
-                                    <xsl:if test="$currentPos div 2 = floor($currentPos div 2)">
-                                        <xsl:choose>
-                                            <xsl:when
-                                                test="following-sibling::v[@stress = '1'] or parent::w/following-sibling::w/v[@stress = '1']">
-                                                <xsl:text>|</xsl:text>
-                                            </xsl:when>
-                                            <xsl:when
-                                                test="(following-sibling::v or parent::w/following-sibling::w/v) and $currentPos = (ceiling($posFinalStress div 2) * 2)">
-                                                <xsl:text>(</xsl:text>
-                                            </xsl:when>
-                                        </xsl:choose>
-                                    </xsl:if>
+                                    <xsl:choose>
+                                        <xsl:when test="$currentPos lt $caesura">
+                                            <xsl:if
+                                                test="$currentPos div 2 = floor($currentPos div 2)">
+                                                <xsl:choose>
+                                                  <xsl:when
+                                                  test="following-sibling::v[@stress = '1'] or parent::w/following-sibling::w/v[@stress = '1']">
+                                                  <xsl:text>|</xsl:text>
+                                                  </xsl:when>
+                                                  <xsl:when
+                                                  test="(following-sibling::v or parent::w/following-sibling::w/v) and $currentPos = (ceiling($posFinalStress div 2) * 2)">
+                                                  <xsl:text>(</xsl:text>
+                                                  </xsl:when>
+                                                </xsl:choose>
+                                            </xsl:if>
+                                        </xsl:when>
+                                        <xsl:when test="$currentPos gt $caesura">
+                                            <xsl:if
+                                                test="($currentPos - $caesura) div 2 = floor(($currentPos - $caesura) div 2)">
+                                                <xsl:choose>
+                                                  <xsl:when
+                                                  test="following-sibling::v[@stress = '1'] or parent::w/following-sibling::w/v[@stress = '1']">
+                                                  <xsl:text>|</xsl:text>
+                                                  </xsl:when>
+                                                  <xsl:when
+                                                  test="(following-sibling::v or parent::w/following-sibling::w/v) and $currentPos = (ceiling($posFinalStress div 2) * 2)">
+                                                  <xsl:text>(</xsl:text>
+                                                  </xsl:when>
+                                                </xsl:choose>
+                                            </xsl:if>
+                                        </xsl:when>
+                                        <xsl:when
+                                            test="$currentPos eq $caesura and not(. is parent::w/v[last()])">
+                                            <xsl:choose>
+                                                <xsl:when
+                                                  test="following-sibling::v[@stress = '1'] or parent::w/following-sibling::w/v[@stress = '1']">
+                                                  <span class="outlier">
+                                                  <xsl:text>|</xsl:text>
+                                                  </span>
+                                                </xsl:when>
+                                                <xsl:when
+                                                  test="(following-sibling::v or parent::w/following-sibling::w/v) and $currentPos = (ceiling($posFinalStress div 2) * 2)">
+                                                  <xsl:text>(</xsl:text>
+                                                </xsl:when>
+                                            </xsl:choose>
+                                        </xsl:when>
+                                    </xsl:choose>
                                 </xsl:when>
                                 <xsl:when test="ancestor::l/@ambientMeter = 'ternary'">
                                     <xsl:if test="$currentPos div 3 = floor($currentPos div 3)">
@@ -521,6 +565,13 @@
     </xsl:template>
     <xsl:function name="djb:svgWidth">
         <xsl:value-of select="(count($stressValences)+3) * 20"/>
+    </xsl:function>
+
+    <xsl:function name="djb:vowelPosition" as="xs:integer+">
+        <xsl:param name="rootVowel" as="element(v)"/>
+        <xsl:sequence
+            select="sum((count($rootVowel/preceding-sibling::v), count($rootVowel/parent::w/preceding-sibling::w/v), 1))"
+        />
     </xsl:function>
 
 

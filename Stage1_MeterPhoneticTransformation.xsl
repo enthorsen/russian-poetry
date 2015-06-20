@@ -890,6 +890,9 @@
                         select="djb:vowelPosition($stressedVowels[$second]) - djb:vowelPosition($stressedVowels[$first])"
                     />
                 </xsl:if>
+                <xsl:if test="count($stressedVowels) lt 2">
+                    <xsl:sequence select="5"/>
+                </xsl:if>
             </xsl:for-each>
         </xsl:variable>
         <xsl:variable name="binary" as="xs:double+">

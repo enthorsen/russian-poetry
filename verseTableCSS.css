@@ -1,0 +1,172 @@
+div.verseTable{
+float:left;
+}
+
+div.svg{
+float:left;
+    margin:0 0 1em 2em;}
+
+h3{
+    line-height:5px;
+}
+h4{
+    text-indent:30px;
+}
+
+
+table{
+    border-collapse:collapse;
+    border:1px solid lightgray;
+    padding-left:5%;
+    padding-right:5%;
+    margin-bottom:20px;
+}
+
+th{
+    background:#f7fcfd;
+}
+
+td,
+th{
+    border-left:1px solid lightgray;
+    border-right:1px solid lightgray;
+    border-top:none;
+    border-bottom:none;
+    padding-left:9px;
+    padding-right:12px;
+}
+
+
+
+td.number{
+    text-align:right;
+}
+
+td.meter{
+    font-family:"Courier New", Courier, monospace;
+}
+
+tr{
+    border:0px;
+}
+tr.epigraph{
+    background:#f7fcfd;
+}
+td.epigraph{
+    padding-top:0px;
+    padding-bottom:0px;
+}
+
+td:nth-child(5){
+    text-align: right;
+    font-family:monospace, courier;
+}
+
+tr.blank{
+    background:#f7fcfd;
+    height:15px;
+}
+
+tr.odd{
+    background:#e5f5f9;
+}
+
+tr.even{
+    background:#ccece6;
+}
+
+span.stress{
+    color:red;
+    text-shadow:0px 0px 2px pink;
+
+}
+
+span.hypermetric{
+
+}
+
+span[data-meter='head-Zero'].x{
+    color:black;
+}
+span[data-meter='head-Zero'].xo{
+    color:black;
+}
+span[data-meter='head-Zero'].xoo{
+    color:black;
+}
+span[data-meter='head-Zero'].ox{
+    color:magenta;
+}
+span[data-meter='head-Zero'].oxo{
+    color:magenta;
+}
+span[data-meter='head-Zero'].oox{
+    color:goldenrod;
+}
+span[data-meter='head-One'].x{
+    color:magenta;
+}
+span[data-meter='head-One'].xo{
+    color:magenta;
+}
+span[data-meter='head-One'].xoo{
+    color:magenta;
+}
+span[data-meter='head-One'].ox{
+    color:black;
+}
+span[data-meter='head-One'].oxo{
+    color:black;
+}
+span[data-meter='head-One'].oox{
+    color:goldenrod;
+}
+span[data-meter='head-Two'].x{
+    color:goldenrod;
+}
+span[data-meter='head-Two'].xo{
+    color:goldenrod;
+}
+span[data-meter='head-Two'].xoo{
+    color:goldenrod;
+}
+span[data-meter='head-Two'].ox{
+    color:magenta;
+}
+span[data-meter='head-Two'].oxo{
+    color:magenta;
+}
+span[data-meter='head-Two'].oox{
+    color:black;
+}
+
+span[data-meter|='head'].oo{
+    color:blue;
+}
+span[data-meter|='head'].ooo{
+    color:blue;
+}
+
+span[data-meter|='head'].xx{
+    color:red;
+}
+span[data-meter|='head'].xxx{
+    color:red;
+}
+
+span.vowela{
+
+    color:olive;
+}
+span.vowele{
+    color:orange;
+}
+span.vowelo{
+    color:blue;
+}
+span.voweli{
+    color:red;
+}
+span.vowelu{
+    color:purple;
+}

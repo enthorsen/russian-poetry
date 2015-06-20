@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<poem xmlns:ent="http://whatever"
+<poem xmlns:djb="http://www.obdurodon.org/"
       author="Анна Андреевна Ахматова"
       title="Лилии"
       date="22 июня 1904"
@@ -7,6 +7,7 @@
    <divs>
       <lg ambientMeter="binary"
           type="stanza"
+          caesura="6"
           ambRhyme="1 3,2 4"
           avgLPerRhyme="2">
          <l posRhyme="1"
@@ -181,6 +182,7 @@
       </lg>
       <lg ambientMeter="binary"
           type="stanza"
+          caesura="6"
           ambRhyme="1 3,2 4"
           avgLPerRhyme="2">
          <l posRhyme="1"
