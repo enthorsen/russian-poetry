@@ -381,13 +381,14 @@
                     </xsl:variable>
                     <xsl:message select="$stressString"/>
                     <xsl:variable name="segments"
-                        select="tokenize(normalize-space(xs:string($stressString)), '&#x205E;')"/>
-                    <xsl:message select="string-join($segments, ', ')"/>
+                        select="tokenize(normalize-space(xs:string($stressString)), '&#x205E;')" as="xs:string+"/>
+                    <xsl:message select="concat('There are ',count($segments),' segments: ',string-join($segments, ', '))"/>
                     <xsl:for-each select="$segments">
-                        <xsl:variable name="feet">
-                            <xsl:value-of select="tokenize(., 't')"/>
+                        <xsl:message>Currently processing segment: <xsl:value-of select="."/></xsl:message>
+                        <xsl:variable name="feet" as="xs:string+">
+                            <xsl:sequence select="tokenize(., 't')"/>
                         </xsl:variable>
-                        <xsl:message select="string-join($feet, ', ')"/>
+                        <xsl:message select="concat('There are ',count($feet),' feet (',string-join($feet, ', '),') in segment: ',.)"/>
                         <xsl:for-each select="$feet">
                             <xsl:message select="position()"/>
                             <xsl:choose>
