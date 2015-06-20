@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 280">
+  <g transform="translate(30,220)">
+    <line x1="0" y1="0" x2="200" y2="0" stroke="black" stroke-width="1"/>
+    <line x1="0" y1="0" x2="0" y2="-210" stroke="black" stroke-width="1"/>
+    <text x="100" y="40" text-anchor="middle">Syllable</text>
+    <line x1="0" y1="-20" x2="200" y2="-20" stroke="lightgray" stroke-width="1"/>
+    <text x="-5" y="-15" text-anchor="end">10</text>
+    <line x1="0" y1="-40" x2="200" y2="-40" stroke="lightgray" stroke-width="1"/>
+    <text x="-5" y="-35" text-anchor="end">20</text>
+    <line x1="0" y1="-60" x2="200" y2="-60" stroke="lightgray" stroke-width="1"/>
+    <text x="-5" y="-55" text-anchor="end">30</text>
+    <line x1="0" y1="-80" x2="200" y2="-80" stroke="lightgray" stroke-width="1"/>
+    <text x="-5" y="-75" text-anchor="end">40</text>
+    <line x1="0" y1="-100" x2="200" y2="-100" stroke="lightgray" stroke-width="1"/>
+    <text x="-5" y="-95" text-anchor="end">50</text>
+    <line x1="0" y1="-120" x2="200" y2="-120" stroke="lightgray" stroke-width="1"/>
+    <text x="-5" y="-115" text-anchor="end">60</text>
+    <line x1="0" y1="-140" x2="200" y2="-140" stroke="lightgray" stroke-width="1"/>
+    <text x="-5" y="-135" text-anchor="end">70</text>
+    <line x1="0" y1="-160" x2="200" y2="-160" stroke="lightgray" stroke-width="1"/>
+    <text x="-5" y="-155" text-anchor="end">80</text>
+    <line x1="0" y1="-180" x2="200" y2="-180" stroke="lightgray" stroke-width="1"/>
+    <text x="-5" y="-175" text-anchor="end">90</text>
+    <line x1="0" y1="-200" x2="200" y2="-200" stroke="lightgray" stroke-width="1"/>
+    <text x="-5" y="-195" text-anchor="end">100</text>
+    <line x1="20" y1="-0" x2="40" y2="-185.1851851851852" stroke="black" stroke-width="1"/>
+    <line x1="20" y1="0" x2="20" y2="-210" stroke="lightgray" stroke-width="1"/>
+    <circle cx="20" cy="-0" r="3" fill="red">
+      <title>0</title>
+    </circle>
+    <text x="20" y="20" text-anchor="middle">1</text>
+    <line x1="40" y1="-185.1851851851852" x2="60" y2="-0" stroke="black" stroke-width="1"/>
+    <line x1="40" y1="0" x2="40" y2="-210" stroke="lightgray" stroke-width="1"/>
+    <circle cx="40" cy="-185.1851851851852" r="3" fill="red">
+      <title>93</title>
+    </circle>
+    <text x="40" y="20" text-anchor="middle">2</text>
+    <line x1="60" y1="-0" x2="80" y2="-148.14814814814812" stroke="black" stroke-width="1"/>
+    <line x1="60" y1="0" x2="60" y2="-210" stroke="lightgray" stroke-width="1"/>
+    <circle cx="60" cy="-0" r="3" fill="red">
+      <title>0</title>
+    </circle>
+    <text x="60" y="20" text-anchor="middle">3</text>
+    <line x1="80" y1="-148.14814814814812" x2="100" y2="-7.4074074074074066" stroke="black"
+      stroke-width="1"/>
+    <line x1="80" y1="0" x2="80" y2="-210" stroke="lightgray" stroke-width="1"/>
+    <circle cx="80" cy="-148.14814814814812" r="3" fill="red">
+      <title>74</title>
+    </circle>
+    <text x="80" y="20" text-anchor="middle">4</text>
+    <line x1="100" y1="-7.4074074074074066" x2="120" y2="-96.2962962962963" stroke="black"
+      stroke-width="1"/>
+    <line x1="100" y1="0" x2="100" y2="-210" stroke="lightgray" stroke-width="1"/>
+    <circle cx="100" cy="-7.4074074074074066" r="3" fill="red">
+      <title>4</title>
+    </circle>
+    <text x="100" y="20" text-anchor="middle">5</text>
+    <line x1="120" y1="-96.2962962962963" x2="140" y2="-0" stroke="black" stroke-width="1"/>
+    <line x1="120" y1="0" x2="120" y2="-210" stroke="lightgray" stroke-width="1"/>
+    <circle cx="120" cy="-96.2962962962963" r="3" fill="red">
+      <title>48</title>
+    </circle>
+    <text x="120" y="20" text-anchor="middle">6</text>
+    <line x1="140" y1="-0" x2="160" y2="-200" stroke="black" stroke-width="1"/>
+    <line x1="140" y1="0" x2="140" y2="-210" stroke="lightgray" stroke-width="1"/>
+    <circle cx="140" cy="-0" r="3" fill="red">
+      <title>0</title>
+    </circle>
+    <text x="140" y="20" text-anchor="middle">7</text>
+    <line x1="160" y1="-200" x2="180" y2="-0" stroke="black" stroke-width="1"/>
+    <line x1="160" y1="0" x2="160" y2="-210" stroke="lightgray" stroke-width="1"/>
+    <circle cx="160" cy="-200" r="3" fill="red">
+      <title>100</title>
+    </circle>
+    <text x="160" y="20" text-anchor="middle">8</text>
+    <line x1="180" y1="0" x2="180" y2="-210" stroke="lightgray" stroke-width="1"/>
+    <circle cx="180" cy="-0" r="3" fill="red">
+      <title>0</title>
+    </circle>
+    <text x="180" y="20" text-anchor="middle">9</text>
+  </g>
+</svg>
