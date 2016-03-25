@@ -947,11 +947,14 @@
                 <xsl:variable select="position()" as="xs:integer" name="first"/>
                 <xsl:variable select="position()+1" as="xs:integer" name="second"/>
 
-                <xsl:if test="position() ne last()">
+                <xsl:choose><xsl:when test="position() ne last()">
                     <xsl:value-of
                         select="djb:vowelPosition($stressedVowels[$second]) - djb:vowelPosition($stressedVowels[$first])"
                     />
-                </xsl:if>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="0"/>
+                </xsl:otherwise></xsl:choose>
             </xsl:for-each>
         </xsl:variable>
         <xsl:variable name="binary" as="xs:double+">
@@ -983,11 +986,14 @@
                 <xsl:variable select="position()" as="xs:integer" name="first"/>
                 <xsl:variable select="position()+1" as="xs:integer" name="second"/>
 
-                <xsl:if test="position() ne last()">
+                <xsl:choose><xsl:when test="position() ne last()">
                     <xsl:value-of
                         select="djb:vowelPosition($stressedVowels[$second]) - djb:vowelPosition($stressedVowels[$first])"
                     />
-                </xsl:if>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="0"/>
+                </xsl:otherwise></xsl:choose>
             </xsl:for-each>
         </xsl:variable>
         <xsl:variable name="ternary" as="xs:double*">
