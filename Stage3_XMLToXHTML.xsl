@@ -142,7 +142,7 @@
                         <xsl:choose>
                             <xsl:when test="v[@stress eq '1']">
                                 <xsl:variable name="preStress"
-                                    select="sum(v[@stress eq '1']/preceding-sibling::*/string-length(replace(replace(replace(., 'j', ''), 'ts', 'c'), 'šč', 'š')))"
+                                    select="sum(v[@stress eq '1']/preceding-sibling::*/string-length(translate(replace(replace(replace(., 'j', ''), 'ts', 'c'), 'šč', 'š'),'[a-z]\1{2,}','\1')))"
                                     as="xs:integer"/>
                                 <xsl:variable name="explodedOrth"
                                     select="
@@ -164,6 +164,14 @@
                                         </xsl:non-matching-substring>
                                     </xsl:analyze-string>
                                 </xsl:variable>
+                                <xsl:variable name="assimilitedProclitic" as="xs:integer">
+                                    <xsl:choose>
+                                        <xsl:when test="contains($preEnclitic,'з с') or contains($preEnclitic,'т т') or contains($preEnclitic,'т д') or contains($preEnclitic,'д д') or contains($preEnclitic,'д т') or contains($preEnclitic,'з з') or contains($preEnclitic,'в ф') or contains($preEnclitic,'в в')">
+                                            <xsl:value-of select="1"/>
+                                        </xsl:when>
+                                        <xsl:otherwise><xsl:value-of select="0"/></xsl:otherwise>
+                                    </xsl:choose>
+                                </xsl:variable>
                                 <xsl:variable name="posChange" as="xs:integer"
                                     select="string-length($preEnclitic) - string-length(replace($preEnclitic, '\s|\W|’', ''))"/>
                                 <xsl:message
@@ -182,14 +190,12 @@
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:variable>
-                                <xsl:message
-                                    select="concat('Preenclitic is ', $preEnclitic, '\nNumber of Doubles: ', $doubleLettersAdjust)"/>
                                 <xsl:variable name="stressPos" as="xs:integer">
                                     <!--<xsl:value-of
                                         select="sum((v[@stress = '1']/preceding-sibling::*/string-length(normalize-space(replace(replace(translate(., 'j', ''), 'ts', 'c'), 'šč', 'š'))))) + $posAdjust - $encliticAdjust + $doubleLettersAdjust"
                                     />-->
                                     <xsl:value-of
-                                        select="sum(v[@stress = '1']/preceding-sibling::*/string-length(replace(., 'j', ''))) + $posChange + $doubleLettersAdjust + 1"
+                                        select="sum(v[@stress = '1']/preceding-sibling::*/string-length(replace(., 'j', ''))) + $posChange + $doubleLettersAdjust + $assimilitedProclitic + 1"
                                     />
                                 </xsl:variable>
 
