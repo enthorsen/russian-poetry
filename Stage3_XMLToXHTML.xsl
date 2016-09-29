@@ -141,45 +141,55 @@
                     <xsl:for-each select="w">
                         <xsl:choose>
                             <xsl:when test="v[@stress eq '1']">
+                                <xsl:variable name="preStress"
+                                    select="sum(v[@stress eq '1']/preceding-sibling::*/string-length(replace(replace(replace(., 'j', ''), 'ts', 'c'), 'šč', 'š')))"
+                                    as="xs:integer"/>
                                 <xsl:variable name="explodedOrth"
                                     select="
                                         for $char in string-to-codepoints(@orth)
                                         return
                                             codepoints-to-string($char)"
                                     as="xs:string+"/>
-                                <xsl:variable name="posAdjust" as="xs:integer">
-                                    <xsl:value-of
-                                        select="1 + string-length(replace(@orth, '[А-ЯЁа-яё]+[\p{P}\n\-]*', ''))"
-                                    />
+                                <xsl:variable name="preEnclitic" as="xs:string">
+                                    <xsl:analyze-string select="@orth" regex="(.*[а-яё])\W+$">
+                                        <xsl:matching-substring>
+                                            <xsl:sequence
+                                                select="replace(regex-group(1), '[\s|-]+(л[иь]|б[ы]|ка|то|ж[е])', '')"
+                                            />
+                                        </xsl:matching-substring>
+                                        <xsl:non-matching-substring>
+                                            <xsl:sequence
+                                                select="replace(., '[\s|-]+(л[иь]|б[ы]|ка|то|ж[е])', '')"
+                                            />
+                                        </xsl:non-matching-substring>
+                                    </xsl:analyze-string>
                                 </xsl:variable>
-                                <xsl:variable name="encliticAdjust" as="xs:integer">
+                                <xsl:variable name="posChange" as="xs:integer"
+                                    select="string-length($preEnclitic) - string-length(replace($preEnclitic, '\s|\W|’', ''))"/>
+                                <xsl:message
+                                    select="concat('Shift for stress is', xs:string($posChange))"/>
+                                <xsl:variable name="doubleLettersAdjust" as="xs:integer">
+                                    <xsl:variable name="divideDoubles"
+                                        select="tokenize($preEnclitic, '([а-яё])\1{2,}')"
+                                        as="xs:string+"/>
                                     <xsl:choose>
                                         <xsl:when
-                                            test="matches(@orth, '^([\p{P}\sА-ЯЁа-яё]*\s)?[\p{P}А-ЯЁа-яё]+[\s](л[иь]|б[ы]|-то|ж[е])$')">
-                                            <xs:integer>1</xs:integer>
+                                            test="string-length($divideDoubles[1]) gt $preStress">
+                                            <xsl:value-of select="0"/>
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <xs:integer>0</xs:integer>
+                                            <xsl:value-of select="1"/>
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:variable>
-                                <xsl:variable name="doubleLettersAdjust">
-                                    <xsl:variable name="prePostDoubles"
-                                        select="tokenize(@orth, '([а-я])\1')"/>
-                                    <xsl:choose>
-                                        <xsl:when
-                                            test="string-length($prePostDoubles[1]) lt sum((v[@stress = '1']/preceding-sibling::*/string-length(normalize-space(replace(replace(translate(., 'j', ''), 'ts', 'c'), 'šč', 'š')))))">
-                                            <xs:integer>1</xs:integer>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xs:integer>0</xs:integer>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
-                                </xsl:variable>
-
+                                <xsl:message
+                                    select="concat('Preenclitic is ', $preEnclitic, '\nNumber of Doubles: ', $doubleLettersAdjust)"/>
                                 <xsl:variable name="stressPos" as="xs:integer">
-                                    <xsl:value-of
+                                    <!--<xsl:value-of
                                         select="sum((v[@stress = '1']/preceding-sibling::*/string-length(normalize-space(replace(replace(translate(., 'j', ''), 'ts', 'c'), 'šč', 'š'))))) + $posAdjust - $encliticAdjust + $doubleLettersAdjust"
+                                    />-->
+                                    <xsl:value-of
+                                        select="sum(v[@stress = '1']/preceding-sibling::*/string-length(replace(., 'j', ''))) + $posChange + $doubleLettersAdjust + 1"
                                     />
                                 </xsl:variable>
 
@@ -251,7 +261,7 @@
 
                     <xsl:variable name="totSyll" as="xs:integer" select="count(w/v)"/>
                     <xsl:variable name="posFinalStress" as="xs:integer"
-                        select="djb:vowelPosition((descendant::v[@stress='1'])[last()])"/>
+                        select="djb:vowelPosition((descendant::v[@stress = '1'])[last()])"/>
                     <xsl:variable name="caesura" as="xs:integer">
                         <xsl:choose>
                             <xsl:when test="ancestor::lg/@caesura != 'none'">
@@ -266,7 +276,7 @@
                         <xsl:value-of select="djb:preCaesuraFeet(.)"/>
                     </xsl:variable>
                     <xsl:variable name="totalFeet"
-                        select="ceiling(($posFinalStress - $caesura + $preCaesuraFeet*2) div 2)"/>
+                        select="ceiling(($posFinalStress - $caesura + $preCaesuraFeet * 2) div 2)"/>
 
                     <xsl:message>
                         <xsl:text>Total Syllables: </xsl:text>
@@ -297,19 +307,19 @@
                             </xsl:choose>
                             <xsl:choose>
                                 <xsl:when test="$currentPos = $caesura and . is parent::w/v[last()]">
-                                    <xsl:if test="$preCaesuraFeet*2 != $caesura">
+                                    <xsl:if test="$preCaesuraFeet * 2 != $caesura">
                                         <xsl:text>)</xsl:text>
                                     </xsl:if>
                                     <xsl:text>&#x205E;</xsl:text>
                                 </xsl:when>
                                 <xsl:when test="ancestor::l/@ambientMeter = 'binary'">
                                     <xsl:choose>
-                                        <xsl:when test="$currentPos le $preCaesuraFeet*2">
+                                        <xsl:when test="$currentPos le $preCaesuraFeet * 2">
                                             <xsl:if
                                                 test="$currentPos div 2 = floor($currentPos div 2)">
                                                 <xsl:choose>
                                                   <xsl:when
-                                                  test="$currentPos = $preCaesuraFeet*2 and $currentPos lt $caesura">
+                                                  test="$currentPos = $preCaesuraFeet * 2 and $currentPos lt $caesura">
                                                   <xsl:text>(</xsl:text>
                                                   </xsl:when>
                                                   <xsl:when
@@ -331,7 +341,7 @@
                                                   <xsl:text>(</xsl:text>
                                                   </xsl:when>-->
                                                   <xsl:when
-                                                  test="$currentPos = (($totalFeet - $preCaesuraFeet)*2 + $caesura) and $currentPos lt $totSyll">
+                                                  test="$currentPos = (($totalFeet - $preCaesuraFeet) * 2 + $caesura) and $currentPos lt $totSyll">
                                                   <xsl:text>(</xsl:text>
                                                   </xsl:when>
                                                 </xsl:choose>
@@ -372,7 +382,7 @@
                             <xsl:if test=". is (ancestor::l//v)[last()]">
                                 <xsl:if
                                     test="
-                                        (ancestor::l[@ambientMeter = 'binary'] and $currentPos * 1 gt ($totalFeet - $preCaesuraFeet)*2 + $caesura) or
+                                        (ancestor::l[@ambientMeter = 'binary'] and $currentPos * 1 gt ($totalFeet - $preCaesuraFeet) * 2 + $caesura) or
                                         (ancestor::l[@ambientMeter = 'ternary'] and $currentPos * 1 gt (ceiling($posFinalStress div 3) * 3))">
                                     <xsl:text>)</xsl:text>
                                 </xsl:if>
@@ -381,14 +391,18 @@
                     </xsl:variable>
                     <xsl:message select="$stressString"/>
                     <xsl:variable name="segments"
-                        select="tokenize(normalize-space(xs:string($stressString)), '&#x205E;')" as="xs:string+"/>
-                    <xsl:message select="concat('There are ',count($segments),' segments: ',string-join($segments, ', '))"/>
+                        select="tokenize(normalize-space(xs:string($stressString)), '&#x205E;')"
+                        as="xs:string+"/>
+                    <xsl:message
+                        select="concat('There are ', count($segments), ' segments: ', string-join($segments, ', '))"/>
                     <xsl:for-each select="$segments">
-                        <xsl:message>Currently processing segment: <xsl:value-of select="."/></xsl:message>
+                        <xsl:message>Currently processing segment: <xsl:value-of select="."
+                            /></xsl:message>
                         <xsl:variable name="feet" as="xs:string+">
                             <xsl:sequence select="tokenize(., 't')"/>
                         </xsl:variable>
-                        <xsl:message select="concat('There are ',count($feet),' feet (',string-join($feet, ', '),') in segment: ',.)"/>
+                        <xsl:message
+                            select="concat('There are ', count($feet), ' feet (', string-join($feet, ', '), ') in segment: ', .)"/>
                         <xsl:for-each select="$feet">
                             <xsl:message select="position()"/>
                             <xsl:choose>
@@ -597,7 +611,7 @@
 
     </xsl:template>
     <xsl:function name="djb:svgWidth">
-        <xsl:value-of select="(count($stressValences)+3) * 20"/>
+        <xsl:value-of select="(count($stressValences) + 3) * 20"/>
     </xsl:function>
 
     <xsl:function name="djb:vowelPosition" as="xs:integer+">
@@ -623,7 +637,7 @@
         <xsl:variable name="preCaesuraFeetSequence" as="xs:integer+">
             <xsl:for-each select="$currentLine/parent::lg/l">
                 <xsl:value-of
-                    select="count(descendant::v[@stress='1'][djb:vowelPosition(.) le $caesura])"/>
+                    select="count(descendant::v[@stress = '1'][djb:vowelPosition(.) le $caesura])"/>
             </xsl:for-each>
         </xsl:variable>
         <xsl:message>
