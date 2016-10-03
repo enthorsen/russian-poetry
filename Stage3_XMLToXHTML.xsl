@@ -154,12 +154,12 @@
                                     <xsl:analyze-string select="@orth" regex="(.*[а-яё])\W+$">
                                         <xsl:matching-substring>
                                             <xsl:sequence
-                                                select="replace(regex-group(1), '[\s|-]+(л[иь]|б[ы]|ка|то|ж[е])', '')"
+                                                select="replace(regex-group(1), '[\s]+(л[иь]|б[ы]|ж[е])$', '')"
                                             />
                                         </xsl:matching-substring>
                                         <xsl:non-matching-substring>
                                             <xsl:sequence
-                                                select="replace(., '[\s|-]+(л[иь]|б[ы]|ка|то|ж[е])', '')"
+                                                select="replace(., '[\s|-]+(л[иь]|б[ы]|ка|то|ж[е])$', '')"
                                             />
                                         </xsl:non-matching-substring>
                                     </xsl:analyze-string>
